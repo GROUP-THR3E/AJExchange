@@ -1,0 +1,15 @@
+{
+    "name": "group-thr3e/ajexchange",
+    "description": "A basic marketplace app",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "GroupThr3e\\Ajexchange\\": "src/"
+        }
+    },
+    "require": {
+        "slim/slim": "4.*",
+        "twig/twig": "^3.0"
+    }
+}
