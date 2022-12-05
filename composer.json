@@ -5,11 +5,10 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "GroupThr3e\\Ajexchange\\": "src/"
+            "GroupThr3e\\AJExchange\\": "src/"
         }
     },
     "require": {
-        "slim/slim": "4.*",
-        "twig/twig": "^3.0"
+        "slim/slim": "4.*"
     }
 }
