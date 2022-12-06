@@ -1,6 +1,11 @@
 # Views
 All the frontend html should be stored in the .phtml view files. These should be
-stored in the `src/Views` folder.
+stored in the `src/Views` folder. The paths should reflect the routes the pages are
+accessed. For example, the view for `/products/view` should be stored in
+`/src/Views/products/view.phtml`.
+
+Views will use `_layout.phtml` as a template for the page, and the named
+view's contents will be put in the body of `_layout.phtml`.
 
 Views are rendered using the view class, as shown in the example below.
 
