@@ -38,7 +38,7 @@ class View
         throw new InvalidArgumentException();
     }
 
-    public static function render(string $name, array $data): string
+    public static function render(string $name, array $data = []): string
     {
         $view = new View($name, $data);
         return $view->renderInternal();
