@@ -10,3 +10,4 @@ parameter.
 - `/listings/create` - create new listings
 - `/listings/delete` - delete listing
 - `/listings/exchange` - buy/swap/take listing
+- `/users/login` - user login
