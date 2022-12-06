@@ -38,7 +38,7 @@ return function(App $app) {
         $success = db::createProduct($args['name'], $args['price']);
         if ($success === true) {
             return $response
-                ->withResponse('Location: /products');
+                ->withHeader('Location: /products');
                 ->withStatus(302);
         } else {
             $view = View::get('/products/create', ['success' => false]);
