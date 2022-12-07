@@ -6,6 +6,14 @@ use GroupThr3e\AJExchange\Models\Office;
 
 class OfficeDataset extends DatasetBase
 {
+    public function getOffice (int $officeId): Office
+    {
+        $query = 'SELECT * FROM Office WHERE officeId = :officeId';
+        $statement = $this->dbHandle->prepare($query);
+        $statement->execute(['officeId' => $officeId]);
+        return new Office($statement->fetch());
+    }
+
     public function getOffices(): array
     {
         $query = 'SELECT * FROM Office';
