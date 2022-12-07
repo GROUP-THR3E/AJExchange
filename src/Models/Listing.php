@@ -23,7 +23,7 @@ class Listing
     }
 
     /**
-     * @return int
+     * @return int the id of the listing
      */
     public function getListingId(): int
     {
@@ -31,7 +31,7 @@ class Listing
     }
 
     /**
-     * @return string
+     * @return string the name of the listing
      */
     public function getListingName(): string
     {
@@ -39,7 +39,7 @@ class Listing
     }
 
     /**
-     * @return string
+     * @return string the description of the litsing
      */
     public function getDescription(): string
     {
@@ -47,7 +47,7 @@ class Listing
     }
 
     /**
-     * @return array
+     * @return array the tags the user assigned to the listing
      */
     public function getTags(): array
     {
@@ -55,7 +55,7 @@ class Listing
     }
 
     /**
-     * @return string
+     * @return string the type of listing (sale,swap,giving away)
      */
     public function getType(): string
     {
@@ -63,7 +63,7 @@ class Listing
     }
 
     /**
-     * @return string
+     * @return string the date the listing was submitted
      */
     public function getDateListed(): string
     {
@@ -71,7 +71,7 @@ class Listing
     }
 
     /**
-     * @return int
+     * @return int the id of the user who submitted the listing
      */
     public function getUserId(): int
     {
@@ -79,7 +79,7 @@ class Listing
     }
 
     /**
-     * @return User|null
+     * @return User|null the user who submitted the listing. May be null if the user table wasn't joined during data access
      */
     public function getUser(): ?User
     {

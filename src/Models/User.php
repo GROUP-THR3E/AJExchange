@@ -59,9 +59,9 @@ class User
     }
 
     /**
-     * @return Office the office the user is assigned to. This may be null if it was not loaded during the SQL query
+     * @return Office|null the office the user is assigned to. This may be null if it was not loaded during the SQL query
      */
-    public function getOffice(): Office
+    public function getOffice(): ?Office
     {
         return $this->office;
     }
