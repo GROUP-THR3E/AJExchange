@@ -1,3 +1,61 @@
 .outerDiv {
     max-width: 768px;
 }
+
+.listing-grid-container {
+    max-width: 960px;
+    display: grid;
+    grid-template-columns: 1fr 6fr 3fr;
+    grid-template-rows: 4fr 4fr 2fr;
+    gap: 25px;
+    padding: 20px;
+}
+
+.listing-grid-design {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    font-size: 15px;
+    text-align: center
+}
+
+.view-main-image {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 3;
+}
+
+.view-item-description {
+    grid-column-start: 3;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 1;
+}
+
+.view-interact-item {
+    grid-column-start: 3;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 2;
+}
+
+.view-about {
+    grid-column-start: 2;
+    grid-column-end: 4;
+    grid-row-start: 3;
+    grid-row-end: 3;
+
+}
+
+.view-extra-images {
+    grid-column-start: 1;
+    grid-column-end: 1;
+    grid-row-start: 1;
+    grid-row-end: 4;
+}
+
+.extraImage {
+    height: 100px;
+    width: 100px;
+}
