@@ -8,7 +8,7 @@ class DatasetBase
 {
     protected PDO $dbHandle;
 
-    protected function __construct()
+    public function __construct()
     {
         $this->dbHandle = DatabaseSingleton::getHandle();
     }
