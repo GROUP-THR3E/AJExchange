@@ -1,5 +1,7 @@
 <?php
 
+namespace GroupThr3e\AJExchange\Models;
+
 class User
 {
     protected int $userId;
