@@ -6,7 +6,7 @@ use PDO;
 
 class DatabaseSingleton
 {
-    private static PDO $dbHandle;
+    private static ?PDO $dbHandle = null;
 
     public static function getHandle()
     {
