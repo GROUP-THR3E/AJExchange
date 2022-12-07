@@ -15,10 +15,9 @@ class Listing
 
     public function __construct(array $dbRow)
     {
-        $this->listingId = $dbRow['dbRow'];
+        $this->listingId = $dbRow['listingId'];
         $this->listingName = $dbRow['listingName'];
         $this->description = $dbRow['description'];
-        $this->tags = $dbRow['tags'];
         $this->type = $dbRow['type'];
         $this->dateListed = $dbRow['dateListed'];
         $this->userId = $dbRow['userId'];
