@@ -2,8 +2,6 @@
 
 use GroupThr3e\AJExchange\Util\Auth;
 use GroupThr3e\AJExchange\Util\View;
-use Lcobucci\JWT\Signer\Key\InMemory;
-use PSR7Sessions\Storageless\Http\SessionMiddleware;
 use Slim\Factory\AppFactory;
 
 require_once '../vendor/autoload.php';
