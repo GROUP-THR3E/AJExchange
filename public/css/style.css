@@ -101,3 +101,101 @@
     height: 100px;
     width: 100px;
 }
+
+.outerDiv {
+    max-width: 1280px;
+}
+
+.banner-image {
+    height: 140px;
+    width: 100%;
+}
+
+.banner-fig {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    font-size: 42px;
+}
+
+.text-over-banner {
+    position: relative;
+    height: 110px;
+}
+
+.view-extra-home-images {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 1;
+    position: relative;
+}
+
+.home-grid-design {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 10px;
+}
+
+.home-grid-container {
+    display: grid;
+    grid-template-columns: 7fr 3fr;
+    gap: 30px;
+    padding-top: 20px;
+}
+
+.home-images {
+    height: 200px;
+    width: 200px;
+}
+
+.home-image-titles {
+    font-size: 25px;
+    padding-right: 10px;
+}
+
+.home-image-descriptions {
+    font-size: 20px;
+    text-align: center;
+    text-overflow: ellipsis;
+    margin: 0 10px;
+    width: 150px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+home-image-containers {
+    width: 150px;
+}
+
+.home-image-misc {
+    margin-top: 60px;
+    margin-bottom: 60px;
+}
+
+.home-logos {
+    height: 50px;
+    width: 50px;
+}
+
+.home-logo-descriptions {
+    font-size: 23px;
+    text-align: center;
+    vertical-align: center;
+    margin: 0 10px;
+    width: 150px;
+    display: inline;
+}
+
+.home-logo-misc {
+    margin-top: 50px;
+}
+
+.home-welcome {
+    text-align: center
+}
+
+.home-list {
+    display:inline;
+}
