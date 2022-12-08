@@ -1,4 +1,12 @@
 <?php
+/**
+ * @var Listing $listings
+ *
+ *
+ */
+
+use GroupThr3e\AJExchange\Models\Listing;
+
 $title = "Search page";
 ?>
 
@@ -24,17 +32,19 @@ $title = "Search page";
         </div>
     </div>
     <div class="grid-item">
+        <?php foreach($listings as $listing): ?>
         <div class="flex-container">
             <div>
                 <img class="listing-image" src="">
             </div>
             <div class= "listing-description">
-                <h4>Title</h4>
-                <h5>This is an amazing item</h5>
-                <h6>Seller name, Location</h6>
-                <h4>Sold for £Price</h4>
+                <h4>Title: <?= $listing->getListingName()?></h4>
+                <h5>Description: <?=$listing->getDescription()?></h5>
+                <h6>Seller name: <?= $listing->getUser()->getFullName()?> Location: <?= $listing->getUser()->getOffice()->getAddress()?></h6>
+                <h4>Price: £<?= $listing->getPrice()?></h4>
             </div>
         </div>
+        <?php endforeach; ?>
     </div>
 </div>
 

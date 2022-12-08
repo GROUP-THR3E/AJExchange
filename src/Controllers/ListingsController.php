@@ -8,7 +8,10 @@ use Slim\Psr7\Response;
 
 return function(App $app) {
     $app->get('/listings/search', function (Request $request, Response $response) {
-        $view = View::render('listings/search');
+        $dataset = new ListingDataset();
+        $params = $request->getQueryParams();
+        $listings = $dataset->searchListings($params['query']);
+        $view = View::render('listings/search', ['listings' => $listings]);
         $response->getBody()->write($view);
         return $response;
     });
