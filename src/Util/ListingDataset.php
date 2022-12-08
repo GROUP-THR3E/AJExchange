@@ -13,10 +13,19 @@ class ListingDataset extends DatasetBase
      */
     public function getListing(int $listingId): Listing
     {
-        $query = 'SELECT * FROM Listing WHERE listingId = :listingId';
+        $query = '
+            SELECT * FROM Listing 
+            INNER JOIN User ON Listing.userId = User.userId
+            INNER JOIN Office ON User.officeId = Office.officeId
+            WHERE listingId = :listingId';
+
         $statement = $this->dbHandle->prepare($query);
         $statement->execute(['listingId' => $listingId]);
-        return new Listing($statement->fetch());
+        $result = $statement->fetch();
+        $listing = new Listing($result);
+        $listing->setUser($result);
+        $listing->getUser()->setOffice($result);
+        return $listing;
     }
 
     /**
@@ -27,13 +36,21 @@ class ListingDataset extends DatasetBase
      */
     public function getListings(int $limit = 20, int $offset = 0): array
     {
-        $query = 'SELECT * FROM Listing LIMIT :limit OFFSET :offset';
+        $query = '
+            SELECT * FROM Listing
+            INNER JOIN User ON Listing.userId = User.userId
+            INNER JOIN Office ON User.officeId = Office.officeId
+            LIMIT :limit OFFSET :offset';
+
         $statement = $this->dbHandle->prepare($query);
         $statement->execute(['limit' => $limit, 'offset' => $offset]);
 
         $listings = [];
-        foreach ($statement->fetchAll() as $listing) {
-            $listings[] = new Listing($listing);
+        foreach ($statement->fetchAll() as $result) {
+            $listing = new Listing($result);
+            $listing->setUser($result);
+            $listing ->getUser()->setOffice($result);
+            $listings[] = $listing;
         }
         return $listings;
     }
@@ -41,7 +58,12 @@ class ListingDataset extends DatasetBase
     public function searchListings(string $query = '', array $tags = [], ?string $type = null, ?int $officeId = null,
                                    ?int $userId = null, int $limit = 20, int $offset = 0): array
     {
-        $sqlQuery = 'SELECT * FROM Listing INNER JOIN User on Listing.userId = User.userId WHERE listingName LIKE :query';
+        $sqlQuery = '
+            SELECT * FROM Listing
+            INNER JOIN User ON Listing.userId = User.userId
+            INNER JOIN Office ON User.officeId = Office.officeId
+            WHERE listingName LIKE :query';
+
         $sqlParams = ['query' => "%$query%"];
         if ($type !== null) {
             $sqlQuery .= ' AND type = :type';
@@ -65,6 +87,7 @@ class ListingDataset extends DatasetBase
         foreach ($statement->fetchAll() as $result) {
             $listing = new Listing($result);
             $listing->setUser($result);
+            $listing->getUser()->setOffice($result);
             $results[] = $listing;
         }
         return $results;
