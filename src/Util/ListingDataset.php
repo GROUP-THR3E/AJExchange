@@ -2,6 +2,7 @@
 
 namespace GroupThr3e\AJExchange\Util;
 
+use DateTime;
 use GroupThr3e\AJExchange\Models\Listing;
 
 class ListingDataset extends DatasetBase
@@ -55,6 +56,17 @@ class ListingDataset extends DatasetBase
         return $listings;
     }
 
+    /**
+     * Searches all listings with the specifies parameters
+     * @param string $query the query to search listing titles with
+     * @param array $tags the tags to search with (currently not implemented)
+     * @param string|null $type the type to search for
+     * @param int|null $officeId the id of the office to show results from
+     * @param int|null $userId the id of the user
+     * @param int $limit the amount of results to show
+     * @param int $offset the offset to use
+     * @return array the search results
+     */
     public function searchListings(string $query = '', array $tags = [], ?string $type = null, ?int $officeId = null,
                                    ?int $userId = null, int $limit = 20, int $offset = 0): array
     {
@@ -91,5 +103,28 @@ class ListingDataset extends DatasetBase
             $results[] = $listing;
         }
         return $results;
+    }
+
+    /**
+     * Adds a new listing to the database
+     * @param string $name the name of the new listing
+     * @param string $description the description of the listing
+     * @param string $type the type of the listing (sale,exchange,giving away)
+     * @param array $tags the tags of the listing
+     * @param int $userId the id of the user listing the item
+     * @return bool return true of the creation was successful
+     */
+    public function createListing(string $name, string $description, string $type, array $tags, int $userId): bool
+    {
+        $query = 'INSERT INTO Listing (listingName, description, type, dateListed, userId)
+                  VALUES (:listingName, :description, :type, :dateListed, :userId)';
+        $statement = $this->dbHandle->prepare($query);
+        return $statement->execute([
+            'listingName' => $name,
+            'description' => $description,
+            'type' => $type,
+            'dateListed' => (new DateTime())->format('Y-m-d H:i:s'),
+            'userId' => $userId
+        ]);
     }
 }
