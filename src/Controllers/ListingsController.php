@@ -1,5 +1,6 @@
 <?php
 
+use GroupThr3e\AJExchange\Util\ListingDataset;
 use GroupThr3e\AJExchange\Util\View;
 use Slim\App;
 use Slim\Psr7\Request;
@@ -12,8 +13,10 @@ return function(App $app) {
         return $response;
     });
 
-    $app->get('/listings', function (Request $request, Response $response) {
-        $view = View::render('/listings/view');
+    $app->get('/listings/{listingId:[0-9]+}', function (Request $request, Response $response, array $args) {
+        $dataset = new ListingDataset();
+        $listing = $dataset->getListing($args['listingId']);
+        $view = View::render('/listings/view', ['listing' => $listing]);
         $response->getBody()->write($view);
         return $response;
     });
