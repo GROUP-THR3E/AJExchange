@@ -11,4 +11,10 @@ return function(App $app) {
         $response->getBody()->write($view);
         return $response;
     });
+    
+    $app->get('/listings/create', function (Request $request, Response $response) {
+        $view = View::render('/listings/view', ['name' => 'test']);
+        $response->getBody()->write($view);
+        return $response;
+    });
 };
