@@ -28,4 +28,10 @@ return function(App $app) {
 
         return $response;
     });
+
+    $app->post('/users/logout', function (Request $request, Response $response) {
+        $auth = Auth::getAuthManager();
+        $auth->logout();
+        return $response->withHeader('Location', '/')->withStatus(302);
+    });
 };

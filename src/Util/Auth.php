@@ -38,7 +38,7 @@ class Auth
      * @param Request $request
      * @return User|string
      */
-    public function authenticateCredentials(string $email, string $password, Request $request): User|string
+    public function authenticateCredentials(string $email, string $password): User|string
     {
         $userDataset = new UserDataset();
         $user = $userDataset->getUserByEmail($email);
@@ -50,6 +50,16 @@ class Auth
         $this->user = $user;
         $_SESSION['user'] = $user->getUserId();
         return $user;
+    }
+
+    /**
+     * Logs the user out
+     * @return void
+     */
+    public function logout(): void
+    {
+        $this->user = null;
+        unset($_SESSION['user']);
     }
 
     /**
