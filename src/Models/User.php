@@ -6,6 +6,7 @@ class User
 {
     protected int $userId;
     protected string $email;
+    protected string $password;
     protected string $fullName;
     protected string $role;
     protected int $officeId;
@@ -15,6 +16,7 @@ class User
     {
         $this->userId = $dbRow['userId'];
         $this->email = $dbRow['email'];
+        $this->password = $dbRow['password'];
         $this->fullName = $dbRow['fullName'];
         $this->role = $dbRow['role'];
         $this->officeId = $dbRow['officeId'];
@@ -34,6 +36,14 @@ class User
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    /**
+     * @return string the hashed password of the user
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
     }
 
     /**
