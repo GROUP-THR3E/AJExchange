@@ -29,4 +29,21 @@ return function(App $app) {
         $response->getBody()->write($view);
         return $response;
     });
+
+    $app->post('/listings/create', function (Request $request, Response $response) {
+        $dataset = new ListingDataset();
+        $params = $request->getParsedBody();
+        $dataset->createListing(
+            $params['inputTitle'],
+            $params['description'],
+            $params['listingType'] === 'inputPrice' ? $params['inputPrice'] : null,
+            $params['listingType'] === 'exchange' ? $params['inputItem'] : null,
+            $params['listingType'],
+            [],
+            1
+        );
+        $view = View::render('/listings/createSuccessful');
+        $response->getBody()->write($view);
+        return $response;
+    });
 };
