@@ -1,3 +1,47 @@
 .outerDiv {
     max-width: 768px;
 }
+
+.container-fluid, .cols{
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+}
+.grid-container{
+
+    column-gap: 5px;
+    row-gap: 5px;
+    display: grid;
+    grid-template-columns: auto auto;
+    padding: 2px;
+}
+.flex-container{
+
+    display: flex;
+    margin: 20px;
+    padding: 2px;
+    font-size: 15px;
+    column-gap: 10px
+
+}
+
+
+.grid-item, .grid-filters, .grid-filter-menu, .listing-description{
+
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+}
+
+
+.grid-filter-menu{grid-column: 1/2; font-size:15px}
+.grid-item{grid-column: 2/8;}
+
+
+
+.listing-image{
+    height: 250px;
+    width: 250px;
+}
