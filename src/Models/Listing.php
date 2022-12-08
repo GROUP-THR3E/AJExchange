@@ -7,6 +7,8 @@ class Listing
     protected int $listingId;
     protected string $listingName;
     protected string $description;
+    protected ?int $price;
+    protected ?string $desiredItem;
     protected array $tags;
     protected string $type;
     protected string $dateListed;
@@ -18,6 +20,8 @@ class Listing
         $this->listingId = $dbRow['listingId'];
         $this->listingName = $dbRow['listingName'];
         $this->description = $dbRow['description'];
+        $this->price = $dbRow['price'];
+        $this->desiredItem = $dbRow['desiredItem'];
         $this->type = $dbRow['type'];
         $this->dateListed = $dbRow['dateListed'];
         $this->userId = $dbRow['userId'];
@@ -45,6 +49,22 @@ class Listing
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+    /**
+     * @return int|null the price of the listing, null if the listing is not a sale
+     */
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    /**
+     * @return string|null the item the submitter is willing to exchange the listing for, null if the listing is not an exchange
+     */
+    public function getDesiredItem(): ?string
+    {
+        return $this->desiredItem;
     }
 
     /**
