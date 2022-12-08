@@ -114,14 +114,16 @@ class ListingDataset extends DatasetBase
      * @param int $userId the id of the user listing the item
      * @return bool return true of the creation was successful
      */
-    public function createListing(string $name, string $description, string $type, array $tags, int $userId): bool
+    public function createListing(string $name, string $description, int $price, int $desiredItem, string $type, array $tags, int $userId): bool
     {
-        $query = 'INSERT INTO Listing (listingName, description, type, dateListed, userId)
-                  VALUES (:listingName, :description, :type, :dateListed, :userId)';
+        $query = 'INSERT INTO Listing (listingName, description, price, desiredItem, type, dateListed, userId)
+                  VALUES (:listingName, :description, :price, :desiredItem, :type, :dateListed, :userId)';
         $statement = $this->dbHandle->prepare($query);
         return $statement->execute([
             'listingName' => $name,
             'description' => $description,
+            'price' => $price,
+            'desiredItem' => $desiredItem,
             'type' => $type,
             'dateListed' => (new DateTime())->format('Y-m-d H:i:s'),
             'userId' => $userId
