@@ -109,12 +109,14 @@ class ListingDataset extends DatasetBase
      * Adds a new listing to the database
      * @param string $name the name of the new listing
      * @param string $description the description of the listing
+     * @param float|null $price the price of the item
+     * @param string|null $desiredItem the item th eu
      * @param string $type the type of the listing (sale,exchange,giving away)
      * @param array $tags the tags of the listing
      * @param int $userId the id of the user listing the item
      * @return bool return true of the creation was successful
      */
-    public function createListing(string $name, string $description, int $price, int $desiredItem, string $type, array $tags, int $userId): bool
+    public function createListing(string $name, string $description, ?float $price, ?string $desiredItem, string $type, array $tags, int $userId): bool
     {
         $query = 'INSERT INTO Listing (listingName, description, price, desiredItem, type, dateListed, userId)
                   VALUES (:listingName, :description, :price, :desiredItem, :type, :dateListed, :userId)';

@@ -7,7 +7,7 @@ class Listing
     protected int $listingId;
     protected string $listingName;
     protected string $description;
-    protected ?int $price;
+    protected ?float $price;
     protected ?string $desiredItem;
     protected array $tags;
     protected string $type;
@@ -44,7 +44,7 @@ class Listing
     }
 
     /**
-     * @return string the description of the litsing
+     * @return string the description of the listing
      */
     public function getDescription(): string
     {
@@ -52,9 +52,9 @@ class Listing
     }
 
     /**
-     * @return int|null the price of the listing, null if the listing is not a sale
+     * @return float|null the price of the listing, null if the listing is not a sale
      */
-    public function getPrice(): ?int
+    public function getPrice(): ?float
     {
         return $this->price;
     }
