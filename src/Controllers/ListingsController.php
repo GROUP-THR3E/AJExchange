@@ -36,7 +36,7 @@ return function(App $app) {
         $dataset->createListing(
             $params['inputTitle'],
             $params['description'],
-            $params['listingType'] === 'inputPrice' ? $params['inputPrice'] : null,
+            $params['listingType'] === 'sell' ? $params['inputPrice'] : null,
             $params['listingType'] === 'exchange' ? $params['inputItem'] : null,
             $params['listingType'],
             [],
