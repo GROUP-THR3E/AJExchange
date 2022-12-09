@@ -8,17 +8,17 @@ use GroupThr3e\AJExchange\Models\Listing;
 $title = 'listing';
 ?>
 
-<div class="listing-grid-container my-5 listing-grid-design mx-auto">
-    <div class="view-main-image listing-grid-design">
+<div class="view-listing-grid-container my-5 listing-grid-design mx-auto">
+    <div class="view-listing-main-image listing-grid-design">
         <img class="mainImage h-100 w-100" src="" alt="">
     </div>
-    <div class="view-item-description listing-grid-design">
+    <div class="view-listing-description listing-grid-design">
         <h6><?= $listing->getUser()->getFullName() ?>, <?= $listing->getUser()->getOffice()->getAddress() ?></h6>
         <div>
             <h4><?= $listing->getListingName() ?></h4>
         </div>
     </div>
-    <div class="view-interact-item listing-grid-design">
+    <div class="view-listing-interact listing-grid-design">
         <?php if($listing->getType()=='sell'): ?>
         <h6>Is looking to sell for: £<?= $listing->getPrice() ?> </h6>
         <?php elseif($listing->getType()=='exchange'): ?>
@@ -28,11 +28,11 @@ $title = 'listing';
         <?php endif; ?>
         <button type="submit" class="btn btn-primary w-100 mt-4">Submit</button>
     </div>
-    <div class="view-extra-images listing-grid-design d-flex flex-column gap-2">
+    <div class="view-listing-extra-images listing-grid-design d-flex flex-column gap-2">
         <img class="extraImage" src="" alt="">
         <img class="extraImage" src="" alt="">
         <img class="extraImage" src="" alt="">
         <img class="extraImage" src="" alt="">
     </div>
-    <div class="view-about listing-grid-design"><?=$listing->getDescription() ?></div>
+    <div class="view-listing-description listing-grid-design"><?=$listing->getDescription() ?></div>
 </div>
