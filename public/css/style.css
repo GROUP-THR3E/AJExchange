@@ -2,12 +2,13 @@
     max-width: 768px;
 }
 
+/* Listing search page css */
 .search-grid-container {
-    max-width: 960px;
+    max-width: 1260px;
     column-gap: 5px;
     row-gap: 5px;
     display: grid;
-    grid-template-columns: 2fr 8fr;
+    grid-template-columns: 3fr 16fr;
     padding: 2px;
     text-align: center;
 }
@@ -21,26 +22,24 @@
 }
 
 .listing-search-results, .listing-filters-grid, .listings-filters-menu {
-    border: 1px solid rgba(0, 0, 0, 0.8);
-    padding: 20px;
+    padding: 20px 0;
     font-size: 30px;
     text-align: left;
 }
 
 .listings-filters-menu {
-    grid-column: 1/2;
-    font-size: 15px;
+    font-size: 16px;
 }
 
 .listing-search-results {
     grid-column: 2/8;
 }
 
-.listing-description {
+.listing-search-result-description {
     text-align: left;
 }
 
-.listing-image {
+.listing-search-result-image {
     height: 250px;
     width: 250px;
 }
