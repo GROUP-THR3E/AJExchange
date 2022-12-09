@@ -133,7 +133,7 @@
 /* home page css */
 .banner-image {
     height: 140px;
-    width: 100%;
+    width: 80%;
 }
 
 .banner-fig {
@@ -141,6 +141,11 @@
     top: 30px;
     left: 30px;
     font-size: 42px;
+}
+
+.banner-text {
+    padding-top: 30px;
+    padding-left: 30px;
 }
 
 .text-over-banner {
@@ -216,6 +221,44 @@
     text-align: center
 }
 
+.home-welcome-design {
+    background: #d50032;
+    border-radius: 20px;
+}
+
+.home-banner-design {
+    background: #373741;
+    border-radius: 10px;
+}
+
+.white-design-text {
+    color: white;
+}
+
 .home-list {
     display:inline;
+    padding: 0;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #d50032;
+}
+
+a:visited {
+    color: #1dc3e1;
+}
+
+.bg-primary, .btn-primary {
+    background-color: #d50032 !important;
+}
+
+.categories-color {
+    color: white;
+    background-color: #373741;
+    border-radius: 30px;
 }
