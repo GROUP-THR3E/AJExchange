@@ -11,6 +11,7 @@ $app = AppFactory::create();
 View::setPath('../src/Views');
 $config = parse_ini_file('../config.ini');
 
+$app->add([Auth::getAuthManager(), 'authorizeRequest']);
 $app->add([Auth::getAuthManager(), 'authenticateRequest']);
 
 // Imports each controller file and runs it

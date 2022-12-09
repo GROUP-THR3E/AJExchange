@@ -3,26 +3,27 @@
 namespace GroupThr3e\AJExchange\Util;
 
 use GroupThr3e\AJExchange\Models\User;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use PSR7Sessions\Storageless\Http\SessionMiddleware;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Slim\Psr7\Response;
 
 class Auth
 {
     private ?User $user = null;
     private static ?Auth $auth = null;
+    public static string $AUTH_URL = '/users/login';
 
     /**
      * Authenticates the user with the request cookie
-     * @param Request $request
-     * @param RequestHandler $handler
-     * @return Response
+     * @param RequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
      */
-    public function authenticateRequest(Request $request, RequestHandler $handler): Response
+    public function authenticateRequest(RequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Checks if the session is set and looks up user
-        if ($_SESSION['user'] !== null) {
+        if (isset($_SESSION['user'])) {
             $userDataset = new UserDataset();
             $user = $userDataset->getUser($_SESSION['user']);
             $this->user = $user;
@@ -31,11 +32,21 @@ class Auth
         return $handler->handle($request);
     }
 
+    public function authorizeRequest(RequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        $path = $request->getUri()->getPath();
+        if (($path === self::$AUTH_URL) && $this->user !== null)
+            return (new Response())->withHeader('Location', '/')->withStatus(302);
+        else if ($path !== self::$AUTH_URL && $this-> user === null)
+            return (new Response())->withHeader('Location', self::$AUTH_URL)->withStatus(302);
+
+        return $handler->handle($request);
+    }
+
     /**
      * Authenticates the given user
      * @param string $email
      * @param string $password
-     * @param Request $request
      * @return User|string
      */
     public function authenticateCredentials(string $email, string $password): User|string
