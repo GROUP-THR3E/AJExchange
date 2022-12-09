@@ -10,10 +10,10 @@ use GroupThr3e\AJExchange\Models\Listing;
 $title = "Search page";
 ?>
 
-<div class="grid-container-search mx-auto p-3 m-5">
-    <div class="grid-filters">
-        <div class="grid-filter-menu ">
-            <div class="text-center">
+<div class="outerDiv search-grid-container mx-auto p-3 m-5">
+    <div class="listing-filters-grid">
+        <div class="listings-filters-menu ">
+            <div class="mb-2">
                 <strong>Filters:</strong>
             </div>
             <div class="form-check">
@@ -26,24 +26,24 @@ $title = "Search page";
                 <input class="form-check-input" type="checkbox" id="price_2" name="price_2" value=4>
                 <label id = "filter-label" for="price_2">£50-£100</label><br>
             </div>
-            <div class="text-center">
+            <form class="mt-4">
                 <button type="button" class="btn btn-danger">Submit</button>
-            </div>
+            </form>
         </div>
     </div>
-    <div class="grid-item">
+    <div class="listing-search-results">
         <?php foreach($listings as $listing): ?>
-        <div class="flex-container">
-            <div>
-                <img class="listing-image" src="">
+            <div class="listing-search-result">
+                <div>
+                    <img class="listing-search-result-image" src="">
+                </div>
+                <div class= "listing-search-result-description">
+                    <h4>Title: <?= $listing->getListingName()?></h4>
+                    <h5>Description: <?=$listing->getDescription()?></h5>
+                    <h6>Seller name: <?= $listing->getUser()->getFullName()?> Location: <?= $listing->getUser()->getOffice()->getAddress()?></h6>
+                    <h4>Price: £<?= $listing->getPrice()?></h4>
+                </div>
             </div>
-            <div class= "listing-description">
-                <h4>Title: <?= $listing->getListingName()?></h4>
-                <h5>Description: <?=$listing->getDescription()?></h5>
-                <h6>Seller name: <?= $listing->getUser()->getFullName()?> Location: <?= $listing->getUser()->getOffice()->getAddress()?></h6>
-                <h4>Price: £<?= $listing->getPrice()?></h4>
-            </div>
-        </div>
         <?php endforeach; ?>
     </div>
 </div>
