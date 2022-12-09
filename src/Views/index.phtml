@@ -1,6 +1,7 @@
 <?php
 
 use GroupThr3e\AJExchange\Models\HomepageData;
+use GroupThr3e\AJExchange\Util\Auth;
 
 /**
  * @var HomepageData $data
@@ -50,8 +51,8 @@ $title = 'index';
         </div>
         <div>
             <div class="py-3 home-grid-design home-logo-misc">
-                <h2 class="home-welcome">Welcome, User</h2>
-                <h4 class="home-welcome">(Location)</h4>
+                <h2 class="home-welcome">Welcome, <?= Auth::getAuthManager()->getUser()->getFullName() ?></h2>
+                <h4 class="home-welcome"><?= Auth::getAuthManager()->getUser()->getOffice()->getOfficeName() ?></h4>
                 <div class="home-logo-container">
                     <a href="/listings/create"> <img class="home-logos my-4" src="https://dummyimage.com/50x50/000/fff" alt=""> </a>
                     <h5 class="home-logo-descriptions"><a class="list-Item-Link" href="/listings/create">List Item</a></h5>

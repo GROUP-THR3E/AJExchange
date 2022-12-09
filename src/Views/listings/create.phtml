@@ -1,10 +1,13 @@
 <?php
+
+use GroupThr3e\AJExchange\Util\Auth;
+
 $title = 'Create Listing';
 ?>
 
 <form action="/listings/create" method="post" class="createOuterDiv p-3 m-5 mx-auto">
     <div class="text-center">
-        <h2>Welcome User (In Location)</h2>
+        <h2>Welcome <?= Auth::getAuthManager()->getUser()->getFullName() ?> (In <?= Auth::getAuthManager()->getUser()->getOffice()->getOfficeName() ?>)</h2>
         <h3>Please list an item</h3>
     </div>
     <div class="my-4 mb-3">

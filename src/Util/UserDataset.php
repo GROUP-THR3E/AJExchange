@@ -8,10 +8,13 @@ class UserDataset extends DatasetBase
 {
     public function getUser (int $userId): User
     {
-        $query = 'SELECT * FROM User WHERE userId = :userId';
+        $query = 'SELECT * FROM User INNER JOIN Office ON User.officeId = Office.officeId WHERE userId = :userId';
         $statement = $this->dbHandle->prepare($query);
         $statement->execute(['userId' => $userId]);
-        return new User($statement->fetch());
+        $result = $statement->fetch();
+        $user = new User($result);
+        $user->setOffice($result);
+        return $user;
     }
 
     /**
@@ -21,9 +24,13 @@ class UserDataset extends DatasetBase
      */
     public function getUserByEmail(string $email): ?User
     {
-        $statement = $this->dbHandle->prepare('SELECT * FROM User WHERE email = :email');
+        $statement = $this->dbHandle->prepare('SELECT * FROM User INNER JOIN Office ON User.officeId = Office.officeId WHERE email = :email');
         $statement->execute(['email' => $email]);
         $result = $statement->fetch();
-        return $result !== false ? new User($result) : null;
+        if ($result === false) return null;
+
+        $user = new User($result);
+        $user->setOffice($result);
+        return $user;
     }
 }
