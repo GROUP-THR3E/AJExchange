@@ -173,15 +173,19 @@
     padding-right: 10px;
 }
 
+.home-image-descriptions-container {
+    font-size: 20px;
+    height:3em;
+    overflow: hidden;
+}
+
 .home-image-descriptions {
     font-size: 20px;
-    text-align: center;
+    display: block;
+    margin: 0 auto;
     word-wrap: break-word;
-    margin: 0 10px;
     width: 150px;
     line-height: 1.5em;
-    height: 3em;
-    display: block;
     overflow: hidden;
 }
 
@@ -218,4 +222,8 @@
 
 .home-list {
     display:inline;
+}
+
+.home-image-containers {
+    width: 200px;
 }
