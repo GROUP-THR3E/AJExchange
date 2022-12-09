@@ -12,7 +12,7 @@ $title = 'listing';
     <div class="view-listing-main-image listing-grid-design">
         <img class="mainImage h-100 w-100" src="" alt="">
     </div>
-    <div class="view-listing-description listing-grid-design">
+    <div class="view-listing-header listing-grid-design">
         <h6><?= $listing->getUser()->getFullName() ?>, <?= $listing->getUser()->getOffice()->getAddress() ?></h6>
         <div>
             <h4><?= $listing->getListingName() ?></h4>
@@ -29,10 +29,10 @@ $title = 'listing';
         <button type="submit" class="btn btn-primary w-100 mt-4">Submit</button>
     </div>
     <div class="view-listing-extra-images listing-grid-design d-flex flex-column gap-2">
-        <img class="extraImage" src="" alt="">
-        <img class="extraImage" src="" alt="">
-        <img class="extraImage" src="" alt="">
-        <img class="extraImage" src="" alt="">
+        <img class="view-listing-extra-image" src="" alt="">
+        <img class="view-listing-extra-image" src="" alt="">
+        <img class="view-listing-extra-image" src="" alt="">
+        <img class="view-listing-extra-image" src="" alt="">
     </div>
     <div class="view-listing-description listing-grid-design"><?=$listing->getDescription() ?></div>
 </div>
