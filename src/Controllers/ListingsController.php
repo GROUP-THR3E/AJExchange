@@ -1,5 +1,6 @@
 <?php
 
+use GroupThr3e\AJExchange\Util\Auth;
 use GroupThr3e\AJExchange\Util\ListingDataset;
 use GroupThr3e\AJExchange\Util\View;
 use Slim\App;
@@ -40,7 +41,7 @@ return function(App $app) {
             $params['listingType'] === 'exchange' ? $params['inputItem'] : null,
             $params['listingType'],
             [],
-            1
+            Auth::getAuthManager()->getUser()->getUserId()
         );
         $view = View::render('/listings/createSuccessful');
         $response->getBody()->write($view);
