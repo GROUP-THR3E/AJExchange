@@ -22,6 +22,4 @@ class HomepageData
         $this->recentGiveaways = $recentGiveaways;
         $this->tags = $tags;
     }
-
-
 }
