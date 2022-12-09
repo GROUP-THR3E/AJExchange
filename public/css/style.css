@@ -1,5 +1,5 @@
 .outerDiv {
-    max-width: 768px;
+    max-width: 1280px;
 }
 
 /* Listing search page css */
@@ -144,11 +144,6 @@
 .navbar-start-content,
 .navbar-end-content {
     width: 200px;
-}
-
-
-.outerDiv {
-    max-width: 1280px;
 }
 
 .banner-image {
