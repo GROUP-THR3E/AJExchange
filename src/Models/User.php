@@ -68,13 +68,4 @@ class User extends ModelBase
     {
         return $this->office;
     }
-
-    /**
-     * Sets office from db result
-     * @param array $dbRow the database result to use
-     */
-    public function setOffice(array $dbRow): void
-    {
-        $this->office = new Office($dbRow);
-    }
 }

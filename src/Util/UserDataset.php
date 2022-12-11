@@ -11,10 +11,7 @@ class UserDataset extends DatasetBase
         $query = 'SELECT * FROM User INNER JOIN Office ON User.officeId = Office.officeId WHERE userId = :userId';
         $statement = $this->dbHandle->prepare($query);
         $statement->execute(['userId' => $userId]);
-        $result = $statement->fetch();
-        $user = new User($result);
-        $user->setOffice($result);
-        return $user;
+        return new User($statement->fetch());
     }
 
     /**
@@ -29,8 +26,6 @@ class UserDataset extends DatasetBase
         $result = $statement->fetch();
         if ($result === false) return null;
 
-        $user = new User($result);
-        $user->setOffice($result);
-        return $user;
+        return new User($result);
     }
 }

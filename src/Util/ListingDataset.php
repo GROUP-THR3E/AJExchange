@@ -22,11 +22,7 @@ class ListingDataset extends DatasetBase
 
         $statement = $this->dbHandle->prepare($query);
         $statement->execute(['listingId' => $listingId]);
-        $result = $statement->fetch();
-        $listing = new Listing($result);
-        $listing->setUser($result);
-        $listing->getUser()->setOffice($result);
-        return $listing;
+        return new Listing($statement->fetch());
     }
 
     /**
@@ -48,10 +44,7 @@ class ListingDataset extends DatasetBase
 
         $listings = [];
         foreach ($statement->fetchAll() as $result) {
-            $listing = new Listing($result);
-            $listing->setUser($result);
-            $listing ->getUser()->setOffice($result);
-            $listings[] = $listing;
+            $listings[] = new Listing($result);
         }
         return $listings;
     }
@@ -97,10 +90,7 @@ class ListingDataset extends DatasetBase
 
         $results = [];
         foreach ($statement->fetchAll() as $result) {
-            $listing = new Listing($result);
-            $listing->setUser($result);
-            $listing->getUser()->setOffice($result);
-            $results[] = $listing;
+            $results[] = new Listing($result);
         }
         return $results;
     }
