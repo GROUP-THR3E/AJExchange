@@ -2,7 +2,7 @@
 
 namespace GroupThr3e\AJExchange\Models;
 
-class User
+class User extends ModelBase
 {
     protected int $userId;
     protected string $email;
@@ -12,15 +12,6 @@ class User
     protected int $officeId;
     protected Office $office;
 
-    public function __construct(array $dbRow)
-    {
-        $this->userId = $dbRow['userId'];
-        $this->email = $dbRow['email'];
-        $this->password = $dbRow['password'];
-        $this->fullName = $dbRow['fullName'];
-        $this->role = $dbRow['role'];
-        $this->officeId = $dbRow['officeId'];
-    }
 
     /**
      * @return int the id of the user
