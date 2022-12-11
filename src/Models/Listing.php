@@ -94,13 +94,4 @@ class Listing extends ModelBase
     {
         return $this->user;
     }
-
-    /**
-     * Sets user with values from a database result
-     * @param array $dbRow the database result to use
-     */
-    public function setUser(array $dbRow): void
-    {
-        $this->user = new User($dbRow);
-    }
 }
