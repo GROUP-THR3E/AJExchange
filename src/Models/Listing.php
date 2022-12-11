@@ -2,7 +2,7 @@
 
 namespace GroupThr3e\AJExchange\Models;
 
-class Listing
+class Listing extends ModelBase
 {
     protected int $listingId;
     protected string $listingName;
@@ -14,18 +14,6 @@ class Listing
     protected string $dateListed;
     protected int $userId;
     protected ?User $user;
-
-    public function __construct(array $dbRow)
-    {
-        $this->listingId = $dbRow['listingId'];
-        $this->listingName = $dbRow['listingName'];
-        $this->description = $dbRow['description'];
-        $this->price = $dbRow['price'];
-        $this->desiredItem = $dbRow['desiredItem'];
-        $this->type = $dbRow['type'];
-        $this->dateListed = $dbRow['dateListed'];
-        $this->userId = $dbRow['userId'];
-    }
 
     /**
      * @return int the id of the listing
