@@ -3,6 +3,7 @@
 namespace GroupThr3e\AJExchange\Util;
 
 use DateTime;
+use GroupThr3e\AJExchange\Constants\ApprovalStatus;
 use GroupThr3e\AJExchange\Models\Listing;
 
 class ListingDataset extends DatasetBase
@@ -23,8 +24,8 @@ class ListingDataset extends DatasetBase
             GROUP BY Listing.listingId';
 
         $query = '
-        SELECT listingId, listingName, description, price, desiredItem, type, dateListed, userId, email, password, 
-               fullName, role, officeId, officeName, address, GROUP_CONCAT(filename) as imageUrls
+        SELECT listingId, listingName, description, price, desiredItem, type, dateListed, approvalStatus, userId, email, 
+               password, fullName, role, officeId, officeName, address, GROUP_CONCAT(filename) as imageUrls
         FROM (
             SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, filename FROM Listing
             INNER JOIN User ON Listing.userId = User.userId
@@ -54,18 +55,19 @@ class ListingDataset extends DatasetBase
      * @return array the search results
      */
     public function searchListings(string $query = '', array $tags = [], ?string $type = null, ?int $officeId = null,
-                                   ?int $userId = null, int $limit = 20, int $offset = 0): array
+                                   ?int $userId = null, ?string $approvalStatus = null, int $limit = 20, int $offset = 0): array
     {
         $sqlQuery = sprintf(
-            'SELECT listingId, listingName, description, price, desiredItem, type, dateListed, userId, email, password, 
-               fullName, role, officeId, officeName, address, GROUP_CONCAT(filename) as imageUrls
+            'SELECT listingId, listingName, description, price, desiredItem, type, dateListed, approvalStatus, 
+                    userId, email, password, fullName, role, officeId, officeName, address, GROUP_CONCAT(filename) as imageUrls
             FROM (
                 SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, filename FROM Listing
                 INNER JOIN User ON Listing.userId = User.userId
                 INNER JOIN Office ON User.officeId = Office.officeId
                 LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId
                 WHERE listingName LIKE :query
-                %s %s %s
+                AND imageIndex = 1
+                %s %s %s %s
                 ORDER BY Listing.listingId, ListingImage.imageIndex
                 LIMIT :limit OFFSET :offset
             ) as Results
@@ -73,7 +75,8 @@ class ListingDataset extends DatasetBase
             ',
             $type === null ? '' : 'AND type = :type',
             $officeId === null ? '' : 'AND officeId = :officeId',
-            $userId === null ? '' : 'AND userId = :userId'
+            $userId === null ? '' : 'AND userId = :userId',
+            $approvalStatus === null ? '' : 'AND approvalStatus = :approvalStatus'
         );
 
         $sqlParams = ['query' => "%$query%"];
@@ -83,6 +86,8 @@ class ListingDataset extends DatasetBase
             $sqlParams['officeId'] = $officeId;
         } if ($userId !== null) {
             $sqlParams['userId'] = $userId;
+        } if ($approvalStatus !== null) {
+            $sqlParams['approvalStatus'] = $approvalStatus;
         }
 
         $sqlParams['limit'] = $limit;
@@ -111,8 +116,8 @@ class ListingDataset extends DatasetBase
      */
     public function createListing(string $name, string $description, ?float $price, ?string $desiredItem, string $type, array $tags, int $userId, array $images): bool
     {
-        $query = 'INSERT INTO Listing (listingName, description, price, desiredItem, type, dateListed, userId)
-                  VALUES (:listingName, :description, :price, :desiredItem, :type, :dateListed, :userId)';
+        $query = 'INSERT INTO Listing (listingName, description, price, desiredItem, type, dateListed, approvalStatus, userId)
+                  VALUES (:listingName, :description, :price, :desiredItem, :type, :dateListed, :approvalStatus, :userId)';
         $insertListing = $this->dbHandle->prepare($query);
         $insertListing->execute([
             'listingName' => $name,
@@ -121,6 +126,7 @@ class ListingDataset extends DatasetBase
             'desiredItem' => $desiredItem,
             'type' => $type,
             'dateListed' => (new DateTime())->format('Y-m-d H:i:s'),
+            'approvalStatus' => ApprovalStatus::PENDING,
             'userId' => $userId
         ]);
 
