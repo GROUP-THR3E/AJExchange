@@ -10,10 +10,17 @@ class Listing extends ModelBase
     protected ?float $price;
     protected ?string $desiredItem;
     protected array $tags;
+    public array $imageUrls;
     protected string $type;
     protected string $dateListed;
     protected int $userId;
     protected ?User $user;
+
+    public function __construct(array $dbRow, array $imageUrls = [])
+    {
+        parent::__construct($dbRow);
+        $this->imageUrls = $imageUrls;
+    }
 
     /**
      * @return int the id of the listing
@@ -61,6 +68,14 @@ class Listing extends ModelBase
     public function getTags(): array
     {
         return $this->tags;
+    }
+
+    /**
+     * @return string[] an array of 0-5 image urls
+     */
+    public function getImageUrls(): array
+    {
+        return $this->imageUrls;
     }
 
     /**
