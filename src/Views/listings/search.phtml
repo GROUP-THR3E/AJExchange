@@ -1,7 +1,7 @@
 <?php
 /**
  * @var View $this
- * @var Listing $listings
+ * @var Listing[] $listings
  */
 
 use GroupThr3e\AJExchange\Models\Listing;
@@ -35,7 +35,7 @@ $title = "Search page";
             <div class="listing-search-result">
                 <div>
                     <a href="<?=$listing->getListingID()?>">
-                        <img class="listing-search-result-image" alt="" src="<?= 'test' ?>">
+                        <img class="listing-search-result-image" alt="" src="<?= $this->listingImage($listing->getImageUrls()[0]) ?>">
                     </a>
                 </div>
                 <div class= "listing-search-result-description">
