@@ -18,11 +18,28 @@ class ListingDataset extends DatasetBase
             SELECT * FROM Listing 
             INNER JOIN User ON Listing.userId = User.userId
             INNER JOIN Office ON User.officeId = Office.officeId
-            WHERE listingId = :listingId';
+            LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId    
+            WHERE ListingImage.listingId = :listingId
+            GROUP BY Listing.listingId';
+
+        $query = '
+        SELECT listingId, listingName, description, price, desiredItem, type, dateListed, userId, email, password, 
+               fullName, role, officeId, officeName, address, GROUP_CONCAT(filename) as imageUrls
+        FROM (
+            SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, filename FROM Listing
+            INNER JOIN User ON Listing.userId = User.userId
+            INNER JOIN Office ON User.officeId = Office.officeId
+            LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId
+            WHERE Listing.listingId = :listingId
+            ORDER BY Listing.listingId, ListingImage.imageIndex
+        ) as Results
+        GROUP BY listingId;
+        ';
 
         $statement = $this->dbHandle->prepare($query);
         $statement->execute(['listingId' => $listingId]);
-        return new Listing($statement->fetch());
+        $result = $statement->fetch();
+        return new Listing($result, explode(',', $result['imageUrls']));
     }
 
     /**
@@ -34,17 +51,25 @@ class ListingDataset extends DatasetBase
     public function getListings(int $limit = 20, int $offset = 0): array
     {
         $query = '
-            SELECT * FROM Listing
+        SELECT listingId, listingName, description, price, desiredItem, type, dateListed, userId, email, password, 
+               fullName, role, officeId, officeName, address, GROUP_CONCAT(filename) as imageUrls
+        FROM (
+            SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, filename FROM Listing
             INNER JOIN User ON Listing.userId = User.userId
             INNER JOIN Office ON User.officeId = Office.officeId
-            LIMIT :limit OFFSET :offset';
+            LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId
+            ORDER BY Listing.listingId, ListingImage.imageIndex
+            LIMIT :limit OFFSET :offset
+        ) as Results
+        GROUP BY listingId;
+        ';
 
         $statement = $this->dbHandle->prepare($query);
         $statement->execute(['limit' => $limit, 'offset' => $offset]);
 
         $listings = [];
         foreach ($statement->fetchAll() as $result) {
-            $listings[] = new Listing($result);
+            $listings[] = new Listing($result, explode(',', $result['imageUrls']));
         }
         return $listings;
     }
@@ -63,25 +88,35 @@ class ListingDataset extends DatasetBase
     public function searchListings(string $query = '', array $tags = [], ?string $type = null, ?int $officeId = null,
                                    ?int $userId = null, int $limit = 20, int $offset = 0): array
     {
-        $sqlQuery = '
-            SELECT * FROM Listing
-            INNER JOIN User ON Listing.userId = User.userId
-            INNER JOIN Office ON User.officeId = Office.officeId
-            WHERE listingName LIKE :query';
+        $sqlQuery = sprintf(
+            'SELECT listingId, listingName, description, price, desiredItem, type, dateListed, userId, email, password, 
+               fullName, role, officeId, officeName, address, GROUP_CONCAT(filename) as imageUrls
+            FROM (
+                SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, filename FROM Listing
+                INNER JOIN User ON Listing.userId = User.userId
+                INNER JOIN Office ON User.officeId = Office.officeId
+                LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId
+                WHERE listingName LIKE :query
+                %s %s %s
+                ORDER BY Listing.listingId, ListingImage.imageIndex
+                LIMIT :limit OFFSET :offset
+            ) as Results
+            GROUP BY listingId;
+            ',
+            $type === null ? '' : 'AND type = :type',
+            $officeId === null ? '' : 'AND officeId = :officeId',
+            $userId === null ? '' : 'AND userId = :userId'
+        );
 
         $sqlParams = ['query' => "%$query%"];
         if ($type !== null) {
-            $sqlQuery .= ' AND type = :type';
             $sqlParams['type'] = $type;
         } if ($officeId !== null) {
-            $sqlQuery .= ' AND officeId = :officeId';
             $sqlParams['officeId'] = $officeId;
         } if ($userId !== null) {
-            $sqlQuery .= ' AND userId = :userId';
             $sqlParams['userId'] = $userId;
         }
 
-        $sqlQuery .= ' LIMIT :limit OFFSET :offset';
         $sqlParams['limit'] = $limit;
         $sqlParams['offset'] = $offset;
 
@@ -90,7 +125,7 @@ class ListingDataset extends DatasetBase
 
         $results = [];
         foreach ($statement->fetchAll() as $result) {
-            $results[] = new Listing($result);
+            $results[] = new Listing($result, explode(',', $result['imageUrls']));
         }
         return $results;
     }
