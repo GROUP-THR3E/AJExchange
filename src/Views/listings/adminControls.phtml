@@ -1,0 +1,56 @@
+<?php
+/**
+ * @var Listing $listings
+ *
+ *
+ */
+
+use GroupThr3e\AJExchange\Models\Listing;
+use GroupThr3e\AJExchange\Util\Auth;
+
+$title = "Admin Controls page";
+?>
+<h1 class="admin-welcome">Welcome,  <?= Auth::getAuthManager()->getUser()->getFullName() ?>, please check the listings belows:</h1>>
+<div class="outerDiv search-grid-container mx-auto">
+    <div class="admin-filters-grid">
+        <div class="listings-filters-menu ">
+            <div class="mb-2">
+                <strong>Filters:</strong>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="to_approve" name="to_approve" value=1>
+                <label for="to_approve">To be approved</label><br>
+                <input class="form-check-input" type="checkbox" id="approved" name="approved" value=2>
+                <label for="approved">Approved</label><br>
+                <input class="form-check-input" type="checkbox" id="declined" name="declined" value=3>
+                <label for="declined">Declined</label><br>
+            </div>
+            <form class="mt-4">
+                <button type="button" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+    <div class="admin-search-results">
+        <?php foreach($listings as $listing): ?>
+            <div class="listing-search-result">
+                <div>
+                    <a href="<?=$listing->getListingID()?>"><img class="listing-search-result-image" alt="" src="https://dummyimage.com/200x200/000000/fff.jpg&text=Listing"</a>
+                </div>
+                <div class= "listing-search-result-description">
+                    <a href="<?=$listing->getListingID()?>"><h3><?= $listing->getListingName()?></h3></a>
+                    <h5>Description: <?=$listing->getDescription()?></h5>
+                    <?php if($listing->getType()=='sell'): ?>
+                        <h6>Price: £<?= $listing->getPrice() ?> </h6>
+                    <?php elseif($listing->getType()=='exchange'): ?>
+                        <h6>Exchange for: <?= $listing ->getDesiredItem() ?></h6>
+                    <?php elseif($listing->getType()=='giveaway'): ?>
+                        <h6>Giving away</h6>
+                    <?php endif; ?>
+                    <h6>Seller name: <?= $listing->getUser()->getFullName()?></h6>
+                    <h6>Location: <?= $listing->getUser()->getOffice()->getAddress()?></h6>
+                    <h2>Status: Pending </h2>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
