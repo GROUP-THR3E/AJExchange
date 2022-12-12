@@ -19,9 +19,9 @@ $title = 'index';
             <div class="view-extra-home-images home-grid-design d-flex flex-row gap-5 my-2 text-center">
                 <?php foreach($data->recentSales as $recentSale): ?>
                 <div class="home-image-containers">
-                    <a href="/listings/<?= $recentSale->getListingId()?>"> <img class="home-images" src="https://dummyimage.com/200x200/000/fff&text=Listing" alt=""></a>
+                    <a href="/listings/<?= $recentSale->getListingId() ?>"> <img class="home-images" src="https://dummyimage.com/200x200/000/fff&text=Listing" alt=""></a>
                     <div class="home-image-descriptions-container">
-                        <a href="/listings/<?= $recentSale->getListingId() ?>" class="home-image-descriptions h5 w"><?= $recentSale->getListingName() ?> </a>
+                        <a href="/listings/<?= $recentSale->getListingId() ?>" class="home-image-descriptions h5 w"><?= htmlspecialchars($recentSale->getListingName()) ?> </a>
                     </div>
                 </div>
                 <?php endforeach; ?>
@@ -32,7 +32,7 @@ $title = 'index';
                 <div class="home-image-containers">
                     <a href="/listings/<?= $recentExchange->getListingId() ?>"> <img class="home-images" src="https://dummyimage.com/200x200/000/fff&text=Listing" alt=""></a>
                     <div class="home-image-descriptions-container">
-                        <a href="/listings/<?= $recentExchange->getListingId() ?>" class="home-image-descriptions h5"><?= $recentExchange->getListingName() ?></a>
+                        <a href="/listings/<?= $recentExchange->getListingId() ?>" class="home-image-descriptions h5"><?= htmlspecialchars($recentExchange->getListingName()) ?></a>
                     </div>
                 </div>
                 <?php endforeach; ?>
@@ -41,9 +41,9 @@ $title = 'index';
             <div class="view-extra-home-images home-grid-design d-flex flex-row gap-5 my-2 text-center">
                 <?php foreach($data->recentGiveaways as $recentGiveaway): ?>
                 <div class="home-image-containers">
-                    <a href="/listings/<?=$recentGiveaway->getListingId() ?>"> <img class="home-images" src="https://dummyimage.com/200x200/000/fff&text=Listing" alt=""></a>
+                    <a href="/listings/<?= $recentGiveaway->getListingId() ?>"> <img class="home-images" src="https://dummyimage.com/200x200/000/fff&text=Listing" alt=""></a>
                     <div class="home-image-descriptions-container">
-                        <a href="/listings/<?= $recentGiveaway->getListingId() ?>" class="home-image-descriptions h5"><?= $recentGiveaway->getListingName() ?></a>
+                        <a href="/listings/<?= $recentGiveaway->getListingId() ?>" class="home-image-descriptions h5"><?= htmlspecialchars($recentGiveaway->getListingName()) ?></a>
                     </div>
                 </div>
                 <?php endforeach; ?>

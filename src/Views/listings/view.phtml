@@ -13,16 +13,16 @@ $title = 'listing';
         <img class="mainImage h-100 w-100" src="https://dummyimage.com/200x200/000/ffffff&text=Listings" alt="">
     </div>
     <div class="view-listing-header listing-grid-design">
-        <h6><?= $listing->getUser()->getFullName() ?>, <?= $listing->getUser()->getOffice()->getAddress() ?></h6>
+        <h6><?= $listing->getUser()->getFullName() . ", " . $listing->getUser()->getOffice()->getAddress() ?></h6>
         <div>
-            <h4><?= $listing->getListingName() ?></h4>
+            <h4><?= htmlspecialchars($listing->getListingName()) ?></h4>
         </div>
     </div>
     <div class="view-listing-interact listing-grid-design">
         <?php if($listing->getType()=='sell'): ?>
-        <h6>Is looking to sell for: £<?= $listing->getPrice() ?> </h6>
+        <h6>Is looking to sell for: £<?= htmlspecialchars($listing->getPrice()) ?> </h6>
         <?php elseif($listing->getType()=='exchange'): ?>
-        <h6>Is looking to exchange for: <?= $listing ->getDesiredItem() ?></h6>
+        <h6>Is looking to exchange for: <?= htmlspecialchars($listing ->getDesiredItem()) ?></h6>
         <?php elseif($listing->getType()=='giveaway'): ?>
         <h6>Is looking to give away</h6>
         <?php endif; ?>
@@ -34,5 +34,5 @@ $title = 'listing';
         <img class="view-listing-extra-image" src="https://dummyimage.com/200x200/000/ffffff&text=Extra" alt="">
         <img class="view-listing-extra-image" src="https://dummyimage.com/200x200/000/ffffff&text=Extra" alt="">
     </div>
-    <div class="view-listing-description listing-grid-design"><?=$listing->getDescription() ?></div>
+    <div class="view-listing-description listing-grid-design"><?=htmlspecialchars($listing->getDescription()) ?></div>
 </div>
