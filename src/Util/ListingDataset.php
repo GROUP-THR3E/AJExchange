@@ -131,7 +131,7 @@ class ListingDataset extends DatasetBase
     }
 
     /**
-     * Adds a new listing to the database
+     * Adds a new listing to the database and moves the attached files to the images folder.
      * @param string $name the name of the new listing
      * @param string $description the description of the listing
      * @param float|null $price the price of the item
@@ -141,12 +141,12 @@ class ListingDataset extends DatasetBase
      * @param int $userId the id of the user listing the item
      * @return bool return true of the creation was successful
      */
-    public function createListing(string $name, string $description, ?float $price, ?string $desiredItem, string $type, array $tags, int $userId): bool
+    public function createListing(string $name, string $description, ?float $price, ?string $desiredItem, string $type, array $tags, int $userId, array $images): bool
     {
         $query = 'INSERT INTO Listing (listingName, description, price, desiredItem, type, dateListed, userId)
                   VALUES (:listingName, :description, :price, :desiredItem, :type, :dateListed, :userId)';
-        $statement = $this->dbHandle->prepare($query);
-        return $statement->execute([
+        $insertListing = $this->dbHandle->prepare($query);
+        $insertListing->execute([
             'listingName' => $name,
             'description' => $description,
             'price' => $price,
@@ -155,5 +155,26 @@ class ListingDataset extends DatasetBase
             'dateListed' => (new DateTime())->format('Y-m-d H:i:s'),
             'userId' => $userId
         ]);
+
+        $listingId = $this->dbHandle->lastInsertId();
+        $insertImage = $this->dbHandle->prepare('INSERT INTO ListingImage (filename, imageIndex, listingId) VALUES (:filename, :imageIndex, :listingId)');
+        $imageIndex = 1;
+        foreach ($images as $image) {
+            // Skips if upload contains errors
+            if ($image->getError() !== 0) continue;
+
+            // Randomly generates a filename, checking if it already exists
+            $extension = pathinfo($image->getClientFilename(), PATHINFO_EXTENSION);
+            do {
+                $filename = bin2hex(random_bytes(7)) . '.' . $extension;
+                $path = 'public/images/' . $filename;
+
+            } while(file_exists($path));
+            $image->moveTo($path);
+            $insertImage->execute(['filename' => $filename, 'imageIndex' => $imageIndex, 'listingId' => $listingId]);
+            $imageIndex++;
+        }
+
+        return $imageIndex;
     }
 }

@@ -2,24 +2,25 @@
 
 use GroupThr3e\AJExchange\Models\HomepageData;
 use GroupThr3e\AJExchange\Util\Auth;
+use GroupThr3e\AJExchange\Util\View;
 
 /**
+ * @var View $this
  * @var HomepageData $data
  */
 
 $title = 'index';
 ?>
 <div class="outerDiv home-grid-design p-2 m-3 mx-auto">
-    <!--<div class="home-page-banner home-banner-design">
-        <figure class="text-over-banner white-design-text"><h2 class="banner-text">A</h2></figure>
-        home page css </div>*/-->
     <div class="home-grid-container my-4">
         <div>
             <h5 class="home-image-titles">Recent sales</h5>
             <div class="view-extra-home-images home-grid-design d-flex flex-row gap-5 my-2 text-center">
                 <?php foreach($data->recentSales as $recentSale): ?>
                 <div class="home-image-containers">
-                    <a href="/listings/<?= $recentSale->getListingId() ?>"> <img class="home-images" src="https://dummyimage.com/200x200/000/fff&text=Listing" alt=""></a>
+                    <a href="/listings/<?= $recentSale->getListingId() ?>">
+                        <img class="home-images" src="<?= $this->listingImage($recentSale->getImageUrls()[0]) ?>" alt="">
+                    </a>
                     <div class="home-image-descriptions-container">
                         <a href="/listings/<?= $recentSale->getListingId() ?>" class="home-image-descriptions h5 w"><?= htmlspecialchars($recentSale->getListingName()) ?> </a>
                     </div>
@@ -30,7 +31,9 @@ $title = 'index';
             <div class="view-extra-home-images home-grid-design d-flex flex-row gap-5 my-2 text-center">
                 <?php foreach($data->recentExchanges as $recentExchange): ?>
                 <div class="home-image-containers">
-                    <a href="/listings/<?= $recentExchange->getListingId() ?>"> <img class="home-images" src="https://dummyimage.com/200x200/000/fff&text=Listing" alt=""></a>
+                    <a href="/listings/<?= $recentExchange->getListingId() ?>">
+                        <img class="home-images" src="<?= $this->listingImage($recentExchange->getImageUrls()[0]) ?>" alt="">
+                    </a>
                     <div class="home-image-descriptions-container">
                         <a href="/listings/<?= $recentExchange->getListingId() ?>" class="home-image-descriptions h5"><?= htmlspecialchars($recentExchange->getListingName()) ?></a>
                     </div>
@@ -41,7 +44,9 @@ $title = 'index';
             <div class="view-extra-home-images home-grid-design d-flex flex-row gap-5 my-2 text-center">
                 <?php foreach($data->recentGiveaways as $recentGiveaway): ?>
                 <div class="home-image-containers">
-                    <a href="/listings/<?= $recentGiveaway->getListingId() ?>"> <img class="home-images" src="https://dummyimage.com/200x200/000/fff&text=Listing" alt=""></a>
+                    <a href="/listings/<?= $recentGiveaway->getListingId() ?>">
+                        <img class="home-images" src="<?= $this->listingImage($recentGiveaway->getImageUrls()[0]) ?>" alt="">
+                    </a>
                     <div class="home-image-descriptions-container">
                         <a href="/listings/<?= $recentGiveaway->getListingId() ?>" class="home-image-descriptions h5"><?= htmlspecialchars($recentGiveaway->getListingName()) ?></a>
                     </div>

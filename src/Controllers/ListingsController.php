@@ -42,6 +42,7 @@ return function(App $app) {
     $app->post('/listings/create', function (Request $request, Response $response) {
         $dataset = new ListingDataset();
         $params = $request->getParsedBody();
+        $images = $request->getUploadedFiles();
         $dataset->createListing(
             $params['inputTitle'],
             $params['description'],
@@ -49,7 +50,8 @@ return function(App $app) {
             $params['listingType'] === 'exchange' ? $params['inputItem'] : null,
             $params['listingType'],
             [],
-            Auth::getAuthManager()->getUser()->getUserId()
+            Auth::getAuthManager()->getUser()->getUserId(),
+            $images
         );
         $view = View::render('/listings/createSuccessful');
         $response->getBody()->write($view);
