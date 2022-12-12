@@ -2,7 +2,6 @@
 /**
  * @var Listing $listings
  *
- *
  */
 
 use GroupThr3e\AJExchange\Models\Listing;
@@ -16,14 +15,32 @@ $title = "Search page";
                 <strong>Filters:</strong>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="trade_selling" name="trade_selling" value=1>
+                <hr class="filter-seperation mt-2 mb-3"/>
+                <h6>Exchange Method</h6>
+                <input class="form-check-input" type="checkbox" id="trade_selling" name="trade[]" value="selling">
                 <label for="trade_selling">Selling</label><br>
-                <input class="form-check-input" type="checkbox" id="trade_swapping" name="trade_swapping" value=2>
-                <label for="trade_swapping">Swapping</label><br>
-                <input class="form-check-input" type="checkbox" id="price_1" name="price_1" value=3>
+                <input class="form-check-input" type="checkbox" id="trade_exchange" name="trade[]" value="exchange">
+                <label for="trade_exchange">Exchange</label><br>
+                <input class="form-check-input" type="checkbox" id="trade_giveaway" name="trade[]" value="giveaway">
+                <label for="trade_giveaway">Giveaway</label><br>
+                <hr class="filter-seperation mt-2 mb-3"/>
+                <h6>Price Range</h6>
+                <input class="form-check-input" type="checkbox" id="price_1" name="price[]" value=3>
                 <label for="price_1">£0-£50</label><br>
-                <input class="form-check-input" type="checkbox" id="price_2" name="price_2" value=4>
+                <input class="form-check-input" type="checkbox" id="price_2" name="price[]" value=4>
                 <label id = "filter-label" for="price_2">£50-£100</label><br>
+                <input class="form-check-input" type="checkbox" id="price_3" name="price[]" value=5>
+                <label id = "filter-label" for="price_3">£100+</label><br>
+                <hr class="filter-seperation mt-2 mb-3"/>
+                <h6>Categories</h6>
+                <input class="form-check-input" type="checkbox" id="category_1" name="category[]" value=3>
+                <label for="category_1">Category 1</label><br>
+                <input class="form-check-input" type="checkbox" id="category_2" name="category[]" value=4>
+                <label id = "category_2" for="price_2">Category 2</label><br>
+                <input class="form-check-input" type="checkbox" id="category_3" name="category[]" value=5>
+                <label id = "category_3" for="price_3">Category 3</label><br>
+                <hr class="filter-seperation mt-2 mb-3"/>
+
             </div>
             <form class="mt-4">
                 <button type="button" class="btn btn-primary">Submit</button>
@@ -31,7 +48,8 @@ $title = "Search page";
         </div>
     </div>
     <div class="listing-search-results">
-        <?php foreach($listings as $listing): ?>
+        <?php if(!empty($listings)):?>
+         <?php foreach($listings as $listing): ?>
             <div class="listing-search-result">
                 <div>
                     <a href="<?=$listing->getListingID()?>"><img class="listing-search-result-image" alt="" src="https://dummyimage.com/200x200/000000/fff.jpg&text=Listing"</a>
@@ -50,7 +68,12 @@ $title = "Search page";
                         <h6>Location: <?= $listing->getUser()->getOffice()->getAddress()?></h6>
                 </div>
             </div>
-        <?php endforeach; ?>
+         <?php endforeach; ?>
+        <?php else:?>
+            <div class="text-center listing-search-result">
+                <h3>No results</h3>
+            </div>
+        <?php endif;?>
     </div>
 </div>
 
