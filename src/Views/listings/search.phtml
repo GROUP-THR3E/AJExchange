@@ -1,11 +1,11 @@
 <?php
 /**
+ * @var View $this
  * @var Listing $listings
- *
- *
  */
 
 use GroupThr3e\AJExchange\Models\Listing;
+use GroupThr3e\AJExchange\Util\View;
 
 $title = "Search page";
 ?>
@@ -34,7 +34,9 @@ $title = "Search page";
         <?php foreach($listings as $listing): ?>
             <div class="listing-search-result">
                 <div>
-                    <a href="<?=$listing->getListingID()?>"><img class="listing-search-result-image" alt="" src="https://dummyimage.com/200x200/000000/fff.jpg&text=Listing"</a>
+                    <a href="<?=$listing->getListingID()?>">
+                        <img class="listing-search-result-image" alt="" src="<?= 'test' ?>">
+                    </a>
                 </div>
                 <div class= "listing-search-result-description">
                         <a href="<?=$listing->getListingID()?>"><h3><?= $listing->getListingName()?></h3></a>

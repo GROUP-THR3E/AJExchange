@@ -43,4 +43,8 @@ class View
         $view = new View($name, $data);
         return $view->renderInternal();
     }
+
+    public function listingImage(string $filename) {
+        return '/public/images/' . $filename;
+    }
 }
