@@ -34,20 +34,20 @@ $title = "Search page";
         <?php foreach($listings as $listing): ?>
             <div class="listing-search-result">
                 <div>
-                    <a href="<?=$listing->getListingID()?>"><img class="listing-search-result-image" alt="" src="https://dummyimage.com/200x200/000000/fff.jpg&text=Listing"</a>
+                    <a href="<?= $listing->getListingID() ?>"><img class="listing-search-result-image" alt="" src="https://dummyimage.com/200x200/000000/fff.jpg&text=Listing"</a>
                 </div>
                 <div class= "listing-search-result-description">
-                        <a href="<?=$listing->getListingID()?>"><h3><?= $listing->getListingName()?></h3></a>
-                        <h5>Description: <?=$listing->getDescription()?></h5>
+                        <a href="<?= $listing->getListingID() ?>"><h3><?= htmlspecialchars($listing->getListingName()) ?></h3></a>
+                        <h5>Description: <?= htmlspecialchars($listing->getListingName($listing->getDescription())) ?></h5>
                         <?php if($listing->getType()=='sell'): ?>
-                            <h6>Price: £<?= $listing->getPrice() ?> </h6>
+                            <h6>Price: £<?= htmlspecialchars($listing->getPrice()) ?> </h6>
                         <?php elseif($listing->getType()=='exchange'): ?>
-                            <h6>Exchange for: <?= $listing ->getDesiredItem() ?></h6>
+                            <h6>Exchange for: <?= htmlspecialchars($listing->getDesiredItem()) ?></h6>
                         <?php elseif($listing->getType()=='giveaway'): ?>
                             <h6>Giving away</h6>
                         <?php endif; ?>
-                        <h6>Seller name: <?= $listing->getUser()->getFullName()?></h6>
-                        <h6>Location: <?= $listing->getUser()->getOffice()->getAddress()?></h6>
+                        <h6>Seller name: <?= $listing->getUser()->getFullName() ?></h6>
+                        <h6>Location: <?= $listing->getUser()->getOffice()->getAddress() ?></h6>
                 </div>
             </div>
         <?php endforeach; ?>
