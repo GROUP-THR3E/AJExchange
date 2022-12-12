@@ -19,7 +19,7 @@ return function(App $app) {
 
     $app->get('/listings/adminControls', function (Request $request, Response $response) {
         $dataset = new ListingDataset();
-        $listings = $dataset->getListings();
+        $listings = $dataset->searchListings();
         $view = View::render('listings/adminControls', ['listings' => $listings]);
         $response->getBody()->write($view);
         return $response;

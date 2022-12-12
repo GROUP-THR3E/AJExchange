@@ -43,38 +43,6 @@ class ListingDataset extends DatasetBase
     }
 
     /**
-     * Retrieves a list of listings
-     * @param int $limit the amount to retrieve
-     * @param int $offset the offset to use
-     * @return array the list of listings
-     */
-    public function getListings(int $limit = 20, int $offset = 0): array
-    {
-        $query = '
-        SELECT listingId, listingName, description, price, desiredItem, type, dateListed, userId, email, password, 
-               fullName, role, officeId, officeName, address, GROUP_CONCAT(filename) as imageUrls
-        FROM (
-            SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, filename FROM Listing
-            INNER JOIN User ON Listing.userId = User.userId
-            INNER JOIN Office ON User.officeId = Office.officeId
-            LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId
-            ORDER BY Listing.listingId, ListingImage.imageIndex
-            LIMIT :limit OFFSET :offset
-        ) as Results
-        GROUP BY listingId;
-        ';
-
-        $statement = $this->dbHandle->prepare($query);
-        $statement->execute(['limit' => $limit, 'offset' => $offset]);
-
-        $listings = [];
-        foreach ($statement->fetchAll() as $result) {
-            $listings[] = new Listing($result, explode(',', $result['imageUrls']));
-        }
-        return $listings;
-    }
-
-    /**
      * Searches all listings with the specifies parameters
      * @param string $query the query to search listing titles with
      * @param array $tags the tags to search with (currently not implemented)
