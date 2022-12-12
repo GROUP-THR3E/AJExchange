@@ -17,6 +17,14 @@ return function(App $app) {
         return $response;
     });
 
+    $app->get('/listings/adminControls', function (Request $request, Response $response) {
+        $dataset = new ListingDataset();
+        $listings = $dataset->getListings();
+        $view = View::render('listings/adminControls', ['listings' => $listings]);
+        $response->getBody()->write($view);
+        return $response;
+    });
+
     $app->get('/listings/{listingId:[0-9]+}', function (Request $request, Response $response, array $args) {
         $dataset = new ListingDataset();
         $listing = $dataset->getListing($args['listingId']);

@@ -270,3 +270,20 @@
 .home-image-containers {
     width: 200px;
 }
+
+.admin-welcome {
+    text-align: center;
+    margin-bottom: 0px;
+    margin-top: 50px;
+}
+
+.admin-filters-grid {
+    padding: 0px;
+    font-size: 30px;
+    text-align: left;
+}
+
+.admin-search-results {
+    grid-column: 2/8;
+    padding: 0px
+}
