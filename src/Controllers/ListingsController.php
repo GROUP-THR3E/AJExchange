@@ -18,9 +18,10 @@ return function(App $app) {
     });
 
     $app->get('/listings/adminControls', function (Request $request, Response $response) {
+        $params = $request->getQueryParams();
         $dataset = new ListingDataset();
-        $listings = $dataset->searchListings();
-        $view = View::render('listings/adminControls', ['listings' => $listings]);
+        $listings = $dataset->searchListings(approvalStatus: $params['approvalStatus']);
+        $view = View::render('listings/adminControls', ['listings' => $listings, 'approvalStatus' => $params['approvalStatus']]);
         $response->getBody()->write($view);
         return $response;
     });
