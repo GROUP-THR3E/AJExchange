@@ -48,9 +48,22 @@
     max-width: 800px;
 }
 
-.create-listing-image {
+.create-listing-image-container {
     height: 125px;
-    max-width: 100%;
+    width: 125px;
+    background-image: url(/public/images/addimage.png);
+    background-position: center;
+    background-size: contain;
+}
+
+.create-listing-image-button {
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+}
+
+.create-listing-image-button:hover {
+    cursor: pointer;
 }
 
 .create-listing-options-grid {
