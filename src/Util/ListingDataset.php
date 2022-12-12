@@ -151,4 +151,17 @@ class ListingDataset extends DatasetBase
 
         return $imageIndex;
     }
+
+    /**
+     * Sets the approval status of the listing of the given id
+     * @param int $listingId the id of the listing to update
+     * @param string $approvalStatus the approval status to set the listing to
+     * @return bool
+     */
+    public function setApproval(int $listingId, string $approvalStatus)
+    {
+        $query = 'UPDATE Listing SET approvalStatus = :approvalStatus WHERE listingId = :listingId';
+        $statement = $this->dbHandle->prepare($query);
+        return $statement->execute(['approvalStatus' => $approvalStatus, 'listingId' => $listingId]);
+    }
 }
