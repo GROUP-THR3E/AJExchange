@@ -8,25 +8,38 @@ use GroupThr3e\AJExchange\Models\Listing;
 $title = 'listing';
 ?>
 
-<div class="view-listing-grid-container my-5 listing-grid-design mx-auto">
-    <div class="view-listing-main-image listing-grid-design">
+<div class="view-listing-grid-container mx-auto">
+    <div class="view-listing-main-image">
         <img class="mainImage h-100 w-100" src="https://dummyimage.com/200x200/000/ffffff&text=Listings" alt="">
     </div>
     <div class="view-listing-header listing-grid-design">
-        <h6><?= $listing->getUser()->getFullName() ?>, <?= $listing->getUser()->getOffice()->getAddress() ?></h6>
         <div>
-            <h4><?= htmlspecialchars($listing->getListingName()) ?></h4>
+            <h1> <?=htmlspecialchars($listing->getListingName()) ?></h1>
         </div>
+        <div><h6> <?= $listing->getUser()->getOffice()->getAddress() ?> Office</h6></div>
     </div>
     <div class="view-listing-interact listing-grid-design">
         <?php if($listing->getType()=='sell'): ?>
-        <h6>Is looking to sell for: £<?= htmlspecialchars($listing->getPrice()) ?> </h6>
+        <h4 class="zero-margin"><span><?= $listing->getUser()->getFullName() ?></span> is selling for: <br><span class="emphasise-item-text">£<?= htmlspecialchars($listing->getPrice()) ?></span></h4>
         <?php elseif($listing->getType()=='exchange'): ?>
-        <h6>Is looking to exchange for: <?= htmlspecialchars($listing->getDesiredItem()) ?></h6>
+        <h4>Is exchanging for:<span class="emphasise-item-text"> <?= htmlspecialchars($listing->getDesiredItem()) ?></span></h4>
         <?php elseif($listing->getType()=='giveaway'): ?>
-        <h6>Is looking to give away</h6>
+        <h4>Is giving away</h4>
         <?php endif; ?>
-        <button type="submit" class="btn btn-primary w-100 mt-4">Submit</button>
+        <button type="submit" class="btn btn-primary btn-align w-100 mt-4">Submit</button><br>
+        <h4>Tags:</h4>
+        <div class="home-welcome list-div text-center view-listing-tags">
+            <ul style="list-style-type:none; padding: 0;" class="tag-list home-list-design">
+                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 1</a></li>
+                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 2</a></li>
+                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 3</a></li>
+                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 4</a></li>
+                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 5</a></li>
+                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 6</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="listing-grid-design">
     </div>
     <div class="view-listing-extra-images listing-grid-design d-flex flex-column gap-2">
         <img class="view-listing-extra-image" src="https://dummyimage.com/200x200/000/ffffff&text=Extra" alt="">
@@ -34,5 +47,8 @@ $title = 'listing';
         <img class="view-listing-extra-image" src="https://dummyimage.com/200x200/000/ffffff&text=Extra" alt="">
         <img class="view-listing-extra-image" src="https://dummyimage.com/200x200/000/ffffff&text=Extra" alt="">
     </div>
-    <div class="view-listing-description listing-grid-design"><?=htmlspecialchars($listing->getDescription()) ?></div>
+    <div class="view-listing-description listing-grid-design view-listing-description-box text-overflow">
+        <h4 class="view-listing-description-title">Description:</h4>
+        <div><p> <?=htmlspecialchars($listing->getDescription()) ?></p></div>
+    </div>
 </div>
