@@ -12,7 +12,7 @@ return function(App $app) {
     $app->get('/listings/search', function (Request $request, Response $response) {
         $dataset = new ListingDataset();
         $params = $request->getQueryParams();
-        $listings = $dataset->searchListings($params['query'] ?? '', [], $params['type']);
+        $listings = $dataset->searchListings($params['query'] ?? '', type: $params['type'] ?? null,officeId: null,userId: null, approvalStatus: ApprovalStatus::APPROVED);
         $view = View::render('listings/search', ['listings' => $listings, 'params' => $params]);
         $response->getBody()->write($view);
         return $response;
