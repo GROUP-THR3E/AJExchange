@@ -3,6 +3,7 @@
 namespace GroupThr3e\AJExchange\Util;
 
 use GroupThr3e\AJExchange\Models\ModelBase;
+use http\Exception\InvalidArgumentException;
 use PDO;
 use ReflectionClass;
 use ReflectionException;
@@ -19,12 +20,13 @@ class DatasetBase
         $this->dbHandle = DatabaseSingleton::getHandle();
     }
 
-    /**
-     * @throws ReflectionException
-     */
     public function createModel(string $className, array $dbRow): mixed
     {
-        $this->createModelInternal(new ReflectionClass($className), $dbRow, $out);
+        try {
+            $this->createModelInternal(new ReflectionClass($className), $dbRow, $out);
+        } catch (ReflectionException $e) {
+            throw new InvalidArgumentException("A valid class name must be given");
+        }
         return $out;
     }
 
@@ -51,7 +53,12 @@ class DatasetBase
                         $pointer = $this->getStoredModel($parameterReflector, $dbRow);
                         $paramValues[] = &$pointer;
                         if ($pointer === null) $this->pendingObjects[] = new PendingObject($pointer, $parameterReflector);
+                    } else {
+                        $paramValues[] = null;
                     }
+                } else {
+                    // TODO - Add basic support for common classes like DateTime
+                    $paramValues[] = null;
                 }
             } catch (ReflectionException $e) {
                 if (isset($dbRow[$propertyName])) {
@@ -60,7 +67,7 @@ class DatasetBase
                     } else {
                         $paramValues[] = explode(',', $dbRow[$propertyName]);
                     }
-                }
+                } else $paramValues[] = null;
             }
         }
 
@@ -89,7 +96,6 @@ class DatasetBase
      * @param ReflectionClass $class
      * @param array $params
      * @return mixed|object|null
-     * @throws ReflectionException thrown when the class does not hat a public constructor
      */
     private function registerModel(ReflectionClass $class, array $params): mixed
     {
@@ -97,7 +103,12 @@ class DatasetBase
         $className = $nameParts[sizeof($nameParts) - 1];
         $primaryKey = lcfirst($className) . 'Id';
         $keyIndex = array_search($primaryKey, array_map(function(ReflectionParameter $param) { return $param->getName(); }, $class->getConstructor()->getParameters()));
-        $newModel = $class->newInstanceArgs($params);
+        try {
+            $newModel = $class->newInstanceArgs($params);
+        } catch (ReflectionException $e) {
+            throw new InvalidArgumentException();
+        }
+
         self::$createdModels["{$className}__{$params[$keyIndex]}"] = $newModel;
         return $newModel;
     }
@@ -105,7 +116,9 @@ class DatasetBase
     // Checks that all the properties that aren't an array or inherit ModelBase are set present in the dbRow
     private function checkDbRow(ReflectionClass $classReflector, array $dbRow): bool
     {
-        $primaryKey = lcfirst($classReflector->getName()) . 'Id';
+        $nameParts = explode('\\', $classReflector->getName());
+        $className = $nameParts[sizeof($nameParts) - 1];
+        $primaryKey = lcfirst($className) . 'Id';
 
         foreach ($classReflector->getProperties() as $property) {
             // Checks if the property, returning false if it is a built-in type, isn't an array and doesn't
