@@ -40,7 +40,7 @@ class ListingDataset extends DatasetBase
         $statement = $this->dbHandle->prepare($query);
         $statement->execute(['listingId' => $listingId]);
         $result = $statement->fetch();
-        return new Listing($result, explode(',', $result['imageUrls']));
+        return $this->createModel(Listing::class, $result);
     }
 
     /**
@@ -98,7 +98,7 @@ class ListingDataset extends DatasetBase
 
         $results = [];
         foreach ($statement->fetchAll() as $result) {
-            $results[] = new Listing($result, explode(',', $result['imageUrls']));
+            $results[] = $this->createModel(Listing::class, $result);
         }
         return $results;
     }
@@ -158,7 +158,7 @@ class ListingDataset extends DatasetBase
      * @param string $approvalStatus the approval status to set the listing to
      * @return bool
      */
-    public function setApproval(int $listingId, string $approvalStatus)
+    public function setApproval(int $listingId, string $approvalStatus): bool
     {
         $query = 'UPDATE Listing SET approvalStatus = :approvalStatus WHERE listingId = :listingId';
         $statement = $this->dbHandle->prepare($query);

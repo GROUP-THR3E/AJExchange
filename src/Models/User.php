@@ -10,7 +10,28 @@ class User extends ModelBase
     protected string $fullName;
     protected string $role;
     protected int $officeId;
-    protected Office $office;
+    protected ?Office $office;
+
+    /**
+     * @param int $userId
+     * @param string $email
+     * @param string $password
+     * @param string $fullName
+     * @param string $role
+     * @param int $officeId
+     * @param Office|null $office
+     */
+    public function __construct(int $userId, string $email, string $password, string $fullName, string $role,
+                                int $officeId, ?Office &$office)
+    {
+        $this->userId = $userId;
+        $this->email = $email;
+        $this->password = $password;
+        $this->fullName = $fullName;
+        $this->role = $role;
+        $this->officeId = $officeId;
+        $this->office = &$office;
+    }
 
 
     /**

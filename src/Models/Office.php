@@ -9,6 +9,18 @@ class Office extends ModelBase
     protected string $address;
 
     /**
+     * @param int $officeId
+     * @param string $officeName
+     * @param string $address
+     */
+    public function __construct(int $officeId, string $officeName, string $address)
+    {
+        $this->officeId = $officeId;
+        $this->officeName = $officeName;
+        $this->address = $address;
+    }
+
+    /**
      * @return int the id of the office
      */
     public function getOfficeId(): int

@@ -11,7 +11,7 @@ class HomeDataset extends DatasetBase
     public function getHomepage(): HomepageData
     {
         $listingQuery =
-            'SELECT * FROM Listing
+            'SELECT Listing.*, filename AS imageUrls FROM Listing
              LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId
              WHERE type = :type
              AND imageIndex = 1
@@ -22,19 +22,19 @@ class HomeDataset extends DatasetBase
         $statement->execute(['type' => ListingType::SALE]);
         $saleResults = [];
         foreach ($statement->fetchAll() as $result) {
-            $saleResults[] = new Listing($result, [$result['filename']]);
+            $saleResults[] = $this->createModel(Listing::class, $result);
         }
 
         $statement->execute(['type' => ListingType::EXCHANGE]);
         $exchangeResults = [];
         foreach ($statement->fetchAll() as $result) {
-            $exchangeResults[] = new Listing($result, [$result['filename']]);
+            $exchangeResults[] = $this->createModel(Listing::class, $result);
         }
 
         $statement->execute(['type' => ListingType::GIVEAWAY]);
         $giveawayResults = [];
         foreach ($statement->fetchAll() as $result) {
-            $giveawayResults[] = new Listing($result, [$result['filename']]);
+            $giveawayResults[] = $this->createModel(Listing::class, $result);
         }
 
         return new HomepageData($saleResults, $exchangeResults, $giveawayResults, []);

@@ -9,7 +9,7 @@ class Listing extends ModelBase
     protected string $description;
     protected ?float $price;
     protected ?string $desiredItem;
-    protected array $tags;
+    protected ?array $tags;
     public array $imageUrls;
     protected string $type;
     protected string $dateListed;
@@ -17,11 +17,39 @@ class Listing extends ModelBase
     protected int $userId;
     protected ?User $user;
 
-    public function __construct(array $dbRow, array $imageUrls = [])
+    /**
+     * @param int $listingId
+     * @param string $listingName
+     * @param string $description
+     * @param float|null $price
+     * @param string|null $desiredItem
+     * @param array|null $tags
+     * @param array $imageUrls
+     * @param string $type
+     * @param string $dateListed
+     * @param string $approvalStatus
+     * @param int $userId
+     * @param User|null $user
+     */
+    public function __construct(int     $listingId, string $listingName, string $description, ?float $price,
+                                ?string $desiredItem, ?array $tags, string $type, string $dateListed,
+                                string  $approvalStatus, int $userId, ?User &$user,
+                                array   $imageUrls)
     {
-        parent::__construct($dbRow);
+        $this->listingId = $listingId;
+        $this->listingName = $listingName;
+        $this->description = $description;
+        $this->price = $price;
+        $this->desiredItem = $desiredItem;
+        $this->tags = $tags;
         $this->imageUrls = $imageUrls;
+        $this->type = $type;
+        $this->dateListed = $dateListed;
+        $this->approvalStatus = $approvalStatus;
+        $this->userId = $userId;
+        $this->user = &$user;
     }
+
 
     /**
      * @return int the id of the listing
@@ -64,7 +92,7 @@ class Listing extends ModelBase
     }
 
     /**
-     * @return array the tags the user assigned to the listing
+     * @return array|null the tags the user assigned to the listing
      */
     public function getTags(): array
     {

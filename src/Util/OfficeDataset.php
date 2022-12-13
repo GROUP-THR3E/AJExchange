@@ -6,12 +6,12 @@ use GroupThr3e\AJExchange\Models\Office;
 
 class OfficeDataset extends DatasetBase
 {
-    public function getOffice (int $officeId): Office
+    public function getOffice(int $officeId): Office
     {
         $query = 'SELECT * FROM Office WHERE officeId = :officeId';
         $statement = $this->dbHandle->prepare($query);
         $statement->execute(['officeId' => $officeId]);
-        return new Office($statement->fetch());
+        return $this->createModel(Office::class, $statement->fetch());
     }
 
     public function getOffices(): array
@@ -21,7 +21,7 @@ class OfficeDataset extends DatasetBase
         $statement->execute([]);
         $result = [];
         foreach ($statement->fetchAll() as $item) {
-            $result[] = new Office($item);
+            $result[] = $this->createModel(Office::class, $item);
         }
         return $result;
     }
