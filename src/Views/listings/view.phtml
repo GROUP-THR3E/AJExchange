@@ -14,16 +14,16 @@ $title = 'listing';
     </div>
     <div class="view-listing-header listing-grid-design">
         <div>
-            <h1> <?=htmlspecialchars($listing->getListingName()) ?></h1>
+            <h1><?= htmlspecialchars($listing->getListingName()) ?></h1>
         </div>
-        <div><h6> <?= $listing->getUser()->getOffice()->getAddress() ?>Office</h6></div>
+        <div><h6><?= $listing->getUser()->getOffice()->getAddress() ?>Office</h6></div>
     </div>
     <div class="view-listing-interact listing-grid-design">
         <?php if($listing->getType()=='sell'): ?>
-        <h4 class="zero-margin"><span> <?= $listing->getUser()->getFullName() ?></span> is selling for: </h4>
-        <h4><span class="emphasise-item-text">£<?=htmlspecialchars($listing->getPrice()) ?></h4>
+        <h4 class="zero-margin"><span><?= $listing->getUser()->getFullName() ?></span> is selling for: </h4>
+        <h4><span class="emphasise-item-text">£<?= htmlspecialchars($listing->getPrice()) ?></h4>
         <?php elseif($listing->getType()=='exchange'): ?>
-        <h4>Is exchanging for:<span class="emphasise-item-text"> <?=htmlspecialchars($listing->getDesiredItem()) ?></span></h4>
+        <h4>Is exchanging for:<span class="emphasise-item-text"><?= htmlspecialchars($listing->getDesiredItem()) ?></span></h4>
         <?php elseif($listing->getType()=='giveaway'): ?>
         <h4>Is giving away</h4>
         <?php endif; ?>
@@ -50,6 +50,6 @@ $title = 'listing';
     </div>
     <div class="view-listing-description listing-grid-design view-listing-description-box text-overflow">
         <h4 class="view-listing-description-title">Description:</h4>
-        <div><p><?=htmlspecialchars($listing->getDescription()) ?></p></div>
+        <div><p><?= htmlspecialchars($listing->getDescription()) ?></p></div>
     </div>
 </div>
