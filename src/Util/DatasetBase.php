@@ -54,7 +54,8 @@ class DatasetBase
                         $paramValues[] = &$pointer;
                         if ($pointer === null) $this->pendingObjects[] = new PendingObject($pointer, $parameterReflector);
                     } else {
-                        $paramValues[] = null;
+                        $p = null;
+                        $paramValues[] = &$p;
                     }
                 } else {
                     // TODO - Add basic support for common classes like DateTime
