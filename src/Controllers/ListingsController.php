@@ -30,8 +30,15 @@ return function(App $app) {
     $app->get('/listings/{listingId:[0-9]+}', function (Request $request, Response $response, array $args) {
         $dataset = new ListingDataset();
         $listing = $dataset->getListing($args['listingId']);
-        $view = View::render('/listings/view', ['listing' => $listing]);
-        $response->getBody()->write($view);
+        if (strcmp('approved',$listing->getApprovalStatus()) == 0 || strcmp('admin',Auth::getAuthManager()->getUser()->getRole()) == 0)
+        {
+            $view = View::render('/listings/view', ['listing' => $listing]);
+            $response->getBody()->write($view);
+        }
+        else
+        {
+            return $response->withHeader('Location', '/')->withStatus(302);
+        }
         return $response;
     });
 
