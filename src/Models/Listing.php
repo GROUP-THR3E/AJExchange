@@ -13,6 +13,7 @@ class Listing extends ModelBase
     public array $imageUrls;
     protected string $type;
     protected string $dateListed;
+    protected string $approvalStatus;
     protected int $userId;
     protected ?User $user;
 
@@ -92,6 +93,14 @@ class Listing extends ModelBase
     public function getDateListed(): string
     {
         return $this->dateListed;
+    }
+
+    /**
+     * @return string the approval status of the listing (approved/denied/pending)
+     */
+    public function getApprovalStatus(): string
+    {
+        return $this->approvalStatus;
     }
 
     /**

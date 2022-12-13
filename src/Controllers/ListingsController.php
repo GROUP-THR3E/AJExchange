@@ -1,5 +1,6 @@
 <?php
 
+use GroupThr3e\AJExchange\Constants\ApprovalStatus;
 use GroupThr3e\AJExchange\Util\Auth;
 use GroupThr3e\AJExchange\Util\ListingDataset;
 use GroupThr3e\AJExchange\Util\View;
@@ -18,9 +19,10 @@ return function(App $app) {
     });
 
     $app->get('/listings/adminControls', function (Request $request, Response $response) {
+        $params = $request->getQueryParams();
         $dataset = new ListingDataset();
-        $listings = $dataset->getListings();
-        $view = View::render('listings/adminControls', ['listings' => $listings]);
+        $listings = $dataset->searchListings(approvalStatus: $params['approvalStatus']);
+        $view = View::render('listings/adminControls', ['listings' => $listings, 'approvalStatus' => $params['approvalStatus']]);
         $response->getBody()->write($view);
         return $response;
     });
@@ -56,5 +58,21 @@ return function(App $app) {
         $view = View::render('/listings/createSuccessful');
         $response->getBody()->write($view);
         return $response;
+    });
+    
+    $app->post('/listings/{listingId:[0-9]+}/setApproval', function (Request $request, Response $response, array $args) {
+        // Ensures the user is authorised to approve/deny listings
+        if (Auth::getAuthManager()->getUser()->getRole() != 'admin') return $response->withStatus('403');
+
+        // Ensures the given status code has a valid value
+        $params = $request->getParsedBody();
+        if ($params['approvalStatus'] !== ApprovalStatus::APPROVED && $params['approvalStatus'] !== ApprovalStatus::DENIED
+            && $params['approvalStatus'] !== ApprovalStatus::PENDING) {
+            return $response->withHeader('Location', "/listings/{$args['listingId']}")->withStatus(302);
+        }
+
+        $listingDataset = new ListingDataset();
+        $listingDataset->setApproval($args['listingId'], $params['approvalStatus']);
+        return $response->withHeader('Location', '/listings/adminControls')->withStatus(302);
     });
 };

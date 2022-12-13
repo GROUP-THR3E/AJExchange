@@ -1,44 +1,47 @@
 <?php
 /**
- * @var Listing $listings
- *
- *
+ * @var View $this
+ * @var Listing[] $listings
+ * @var string $approvalStatus
  */
 
+use GroupThr3e\AJExchange\Constants\ApprovalStatus;
 use GroupThr3e\AJExchange\Models\Listing;
 use GroupThr3e\AJExchange\Util\Auth;
+use GroupThr3e\AJExchange\Util\View;
 
 $title = "Admin Controls page";
 ?>
-<h1 class="admin-welcome">Welcome,  <?= Auth::getAuthManager()->getUser()->getFullName() ?>, please check the listings belows:</h1>>
+<h1 class="admin-welcome">Welcome,  <?= Auth::getAuthManager()->getUser()->getFullName() ?>, please check the listings belows:</h1>
 <div class="outerDiv search-grid-container mx-auto">
     <div class="admin-filters-grid">
-        <div class="listings-filters-menu ">
+        <form class="listings-filters-menu">
             <div class="mb-2">
                 <strong>Filters:</strong>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="to_approve" name="to_approve" value=1>
+                <input class="form-check-input" type="radio" id="to_approve" name="approvalStatus"
+                       value="<?= ApprovalStatus::PENDING ?>" <?= $approvalStatus === ApprovalStatus::PENDING ? 'checked': '' ?>>
                 <label for="to_approve">To be approved</label><br>
-                <input class="form-check-input" type="checkbox" id="approved" name="approved" value=2>
+                <input class="form-check-input" type="radio" id="approved" name="approvalStatus"
+                       value="<?= ApprovalStatus::APPROVED ?>" <?= $approvalStatus === ApprovalStatus::APPROVED ? 'checked': '' ?>>
                 <label for="approved">Approved</label><br>
-                <input class="form-check-input" type="checkbox" id="declined" name="declined" value=3>
+                <input class="form-check-input" type="radio" id="declined" name="approvalStatus"
+                       value="<?= ApprovalStatus::DENIED ?>" <?= $approvalStatus === ApprovalStatus::DENIED ? 'checked' : '' ?>>
                 <label for="declined">Declined</label><br>
             </div>
-            <form class="mt-4">
-                <button type="button" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
+            <button type="submit" class="btn btn-primary mt-4">Submit</button>
+        </form>
     </div>
     <div class="admin-search-results">
         <?php foreach($listings as $listing): ?>
             <div class="listing-search-result">
                 <div>
-                    <a href="<?=$listing->getListingID()?>"><img class="listing-search-result-image" alt="" src="https://dummyimage.com/200x200/000000/fff.jpg&text=Listing"</a>
+                    <a href="<?= $listing->getListingID() ?>"><img class="listing-search-result-image" alt="" src="<?= $this->listingImage($listing->getImageUrls()[0]) ?>"></a>
                 </div>
                 <div class= "listing-search-result-description">
-                    <a href="<?=$listing->getListingID()?>"><h3><?= $listing->getListingName()?></h3></a>
-                    <h5>Description: <?=$listing->getDescription()?></h5>
+                    <a href="<?= $listing->getListingID() ?>"><h3><?= $listing->getListingName() ?></h3></a>
+                    <h5>Description: <?= $listing->getDescription() ?></h5>
                     <?php if($listing->getType()=='sell'): ?>
                         <h6>Price: £<?= $listing->getPrice() ?> </h6>
                     <?php elseif($listing->getType()=='exchange'): ?>
@@ -46,9 +49,9 @@ $title = "Admin Controls page";
                     <?php elseif($listing->getType()=='giveaway'): ?>
                         <h6>Giving away</h6>
                     <?php endif; ?>
-                    <h6>Seller name: <?= $listing->getUser()->getFullName()?></h6>
-                    <h6>Location: <?= $listing->getUser()->getOffice()->getAddress()?></h6>
-                    <h2>Status: Pending </h2>
+                    <h6>Seller name: <?= $listing->getUser()->getFullName() ?></h6>
+                    <h6>Location: <?= $listing->getUser()->getOffice()->getAddress() ?></h6>
+                    <h2>Status: <?= $listing->getApprovalStatus() ?> </h2>
                 </div>
             </div>
         <?php endforeach; ?>

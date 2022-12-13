@@ -41,6 +41,7 @@
 .listing-search-result-image {
     height: 250px;
     width: 250px;
+    object-fit: cover;
 }
 
 /* Listing creation page classes */
@@ -295,17 +296,17 @@
 
 .admin-welcome {
     text-align: center;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     margin-top: 50px;
 }
 
 .admin-filters-grid {
-    padding: 0px;
+    padding: 0;
     font-size: 30px;
     text-align: left;
 }
 
 .admin-search-results {
     grid-column: 2/8;
-    padding: 0px
+    padding: 0;
 }
