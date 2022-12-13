@@ -104,7 +104,8 @@
     grid-row-end: 3;
     min-width: 0;
     overflow: hidden;
-    padding: 20px 0 0 0;
+    padding: 0;
+    height: 600px;
     outline: #eeeeee solid 1px;
 }
 
@@ -162,6 +163,7 @@
 .view-listing-main-image {
     object-fit: contain;
     height: 100%;
+    width: 100%;
     background: #f8f8f8;
 }
 
