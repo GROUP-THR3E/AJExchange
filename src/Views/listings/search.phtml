@@ -2,6 +2,7 @@
 /**
  * @var View $this
  * @var Listing[] $listings
+ * @var array $params
  */
 
 use GroupThr3e\AJExchange\Models\Listing;
@@ -16,29 +17,59 @@ $title = "Search page";
                 <strong>Filters:</strong>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="trade_selling" name="trade_selling" value=1>
-                <label for="trade_selling">Selling</label><br>
-                <input class="form-check-input" type="checkbox" id="trade_swapping" name="trade_swapping" value=2>
-                <label for="trade_swapping">Swapping</label><br>
-                <input class="form-check-input" type="checkbox" id="price_1" name="price_1" value=3>
-                <label for="price_1">£0-£50</label><br>
-                <input class="form-check-input" type="checkbox" id="price_2" name="price_2" value=4>
-                <label id = "filter-label" for="price_2">£50-£100</label><br>
+                <form action="/listings/search"  method="GET">
+                    <h6>Exchange Method</h6>
+                    <input type="hidden" value="<?=$params['query']?>" name="query">
+                    <?php if(in_array("sell", $params)):?>
+                    <input class="form-check-input" type="checkbox" id="trade_selling" name="type" value="sell" checked>
+                    <?php else:?>
+                    <input class="form-check-input" type="checkbox" id="trade_selling" name="type" value="sell">
+                    <?php endif;?>
+                    <label for="trade_selling">Selling</label><br>
+                    <?php if(in_array("exchange", $params)):?>
+                    <input class="form-check-input" type="checkbox" id="trade_exchange" name="type" value="exchange" checked>
+                    <?php else:?>
+                    <input class="form-check-input" type="checkbox" id="trade_exchange" name="type" value="exchange">
+                    <?php endif;?>
+                    <label for="trade_exchange">Exchange</label><br>
+                    <?php if(in_array("giveaway", $params)):?>
+                    <input class="form-check-input" type="checkbox" id="trade_giveaway" name="type" value="giveaway" checked>
+                    <?php else:?>
+                    <input class="form-check-input" type="checkbox" id="trade_giveaway" name="type" value="giveaway">
+                    <?php endif;?>
+                    <label for="trade_giveaway">Giveaway</label><br>
+                    <hr class="filter-separation mt-2 mb-3"/>
+                    <h6>Price Range</h6>
+                    <input class="form-check-input" type="checkbox" id="price_1" name="price" value=1>
+                    <label for="price_1">£0-£50</label><br>
+                    <input class="form-check-input" type="checkbox" id="price_2" name="price" value=2>
+                    <label id = "filter-label" for="price_2">£50-£100</label><br>
+                    <input class="form-check-input" type="checkbox" id="price_3" name="price" value=3>
+                    <label id = "filter-label" for="price_3">£100 <</label><br>
+                    <hr class="filter-separation mt-2 mb-3"/>
+                    <h6>Categories</h6>
+                    <input class="form-check-input" type="checkbox" id="category_1" name="category" value=3>
+                    <label for="category_1">Category 1</label><br>
+                    <input class="form-check-input" type="checkbox" id="category_2" name="category" value=4>
+                    <label id = "category_2" for="price_2">Category 2</label><br>
+                    <input class="form-check-input" type="checkbox" id="category_3" name="category" value=5>
+                    <label id = "category_3" for="price_3">Category 3</label><br>
+                    <hr class="filter-separation mt-2 mb-3"/>
+                    <button type="submit" class="btn btn-primary" value="Submit">Submit</button>
+                </form>
             </div>
-            <form class="mt-4">
-                <button type="button" class="btn btn-primary">Submit</button>
-            </form>
         </div>
     </div>
     <div class="listing-search-results">
-        <?php foreach($listings as $listing): ?>
-            <div class="listing-search-result">
-                <div>
-                    <a href="<?= $listing->getListingID() ?>">
+        <?php if(!empty($listings)):?>
+            <?php foreach($listings as $listing): ?>
+                <div class="listing-search-result">
+                    <div>
+                        <a href="<?= $listing->getListingID() ?>">
                         <img class="listing-search-result-image" alt="" src="<?= $this->listingImage($listing->getImageUrls()[0]) ?>">
                     </a>
-                </div>
-                <div class= "listing-search-result-description">
+                    </div>
+                    <div class= "listing-search-result-description">
                     <a href="<?= $listing->getListingID() ?>"><h3><?= htmlspecialchars($listing->getListingName()) ?></h3></a>
                     <h5>Description: <?= htmlspecialchars($listing->getListingName($listing->getDescription())) ?></h5>
                     <?php if($listing->getType()=='sell'): ?>
@@ -50,9 +81,14 @@ $title = "Search page";
                     <?php endif; ?>
                     <h6>Seller name: <?= $listing->getUser()->getFullName() ?></h6>
                     <h6>Location: <?= $listing->getUser()->getOffice()->getAddress() ?></h6>
+                    </div>
                 </div>
+            <?php endforeach; ?>
+        <?php else:?>
+            <div class="text-center listing-search-result">
+                <h3>No results for "<?= $params['query'] ?>"</h3>
             </div>
-        <?php endforeach; ?>
+        <?php endif;?>
     </div>
 </div>
 
