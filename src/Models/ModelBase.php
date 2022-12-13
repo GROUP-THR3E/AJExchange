@@ -22,13 +22,12 @@ class ModelBase
             // primitive type an exception is thrown the dbRow is checked to assign a value directly.
             try {
                 $propertyReflector = new ReflectionClass($property->getType()->getName());
-                $dbRowCheck = $propertyReflector->getMethod('checkDbRow')->getClosure();
+                $dbRowCheck = $propertyReflector->getMethod('checkDbRow');
 
                 // Checks the properties class, and only creates a new class if the dbRow contains enough data
                 if ($propertyReflector->isSubclassOf(ModelBase::class) ) {
-                    $this->$propertyName = $dbRowCheck($dbRow)
-                        ? $propertyReflector->newInstanceArgs([$dbRow])
-                        : null;
+                    if ($dbRowCheck->invoke(null, $dbRow))
+                        $this->$propertyName = $propertyReflector->newInstanceArgs([$dbRow]);
                 }
             } catch (ReflectionException $e) {
                 if ($property->getType()->getName() != 'array' && isset($dbRow[$propertyName])) {
@@ -39,17 +38,18 @@ class ModelBase
     }
 
     // Checks that all the properties that aren't an array or inherit ModelBase are set present in the dbRow
-    protected static function checkDbRow(array $dbRow): bool
+    public static function checkDbRow(array $dbRow): bool
     {
-        $classReflector = new ReflectionClass(self::class);
+        $classReflector = new ReflectionClass(static::class);
+        $primaryKey = lcfirst($classReflector->getName()) . 'Id';
+
         foreach ($classReflector->getProperties() as $property) {
-            // Checks if the property, returning false if it doesn't inherit ModelBase, isn't an array and doesn't
+            // Checks if the property, returning false if it is a built-in type, isn't an array and doesn't
             // have a matching key in $dbRow
-            $propertyReflector = new ReflectionClass($property->getType()->getName());
-            if (!$propertyReflector->isSubclassOf(ModelBase::class) && $property->getType()->getName() != 'array'
-                && !isset($dbRow[$property->getName()])) return false;
+            if ($property->getType()->isBuiltin() && $property->getType()->getName() != 'array'
+                && isset($dbRow[$property->getName()]) && $property->getName() !== $primaryKey) return true;
         }
 
-        return true;
+        return false;
     }
 }
