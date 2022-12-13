@@ -85,12 +85,11 @@
 
 /* View listing page css */
 .view-listing-grid-container {
-    max-width: 960px;
+    max-width: 1260px;
     display: grid;
-    grid-template-columns: 1fr 8fr 3fr;
-    grid-template-rows: 4fr 4fr 2fr;
+    grid-template-columns: 1fr 6fr 3fr;
+    grid-template-rows: 1fr 4fr 1fr;
     gap: 25px;
-    padding: 20px;
 }
 
 .listing-grid-design {
@@ -105,20 +104,30 @@
     grid-row-end: 3;
     min-width: 0;
     overflow: hidden;
+    padding: 20px 0 0 0;
+    outline: #eeeeee solid 1px;
 }
 
 .view-listing-header {
     grid-column-start: 3;
-    grid-column-end: 3;
+    grid-column-end: 4;
     grid-row-start: 1;
     grid-row-end: 1;
+    padding: 20px 20px 0 0;
+    margin-top: 15px;
 }
 
 .view-listing-interact {
     grid-column-start: 3;
-    grid-column-end: 3;
+    grid-column-end: 4;
     grid-row-start: 2;
     grid-row-end: 2;
+    padding: 0;
+}
+
+.view-listing-tags {
+    background-color: #f8f8f8;
+    outline: #eeeeee solid 1px;
 }
 
 .view-listing-description {
@@ -126,6 +135,16 @@
     grid-column-end: 4;
     grid-row-start: 3;
     grid-row-end: 3;
+    padding: 0 20px 20px 20px;
+}
+
+.view-listing-description-box {
+    background-color: #f8f8f8;
+    outline: #eeeeee solid 1px;
+}
+
+.view-listing-description-title {
+    background-color: transparent;
 }
 
 .view-listing-extra-images {
@@ -133,22 +152,27 @@
     grid-column-end: 1;
     grid-row-start: 1;
     grid-row-end: 4;
+    padding: 0;
+}
+
+.emphasise-item-text {
+    font-size: 200%;
 }
 
 .view-listing-main-image {
     object-fit: contain;
-    height: 400px;
+    height: 100%;
+    background: #f8f8f8;
 }
 
 .view-listing-extra-image {
-    height: 100px;
-    width: 100px;
+    width: 100%;
+    aspect-ratio: 1/1;
     object-fit: cover;
 }
 
 /* navbar css */
-.navbar-start-content,
-.navbar-end-content {
+.navbar-start-content, .navbar-end-content {
     width: 200px;
 }
 
@@ -240,6 +264,10 @@
     display: inline;
 }
 
+.zero-margin {
+    margin: 0;
+}
+
 .home-logo-misc {
     margin-top: 50px;
 }
@@ -280,6 +308,24 @@
     color: #1dc3e1;
 }
 
+.tag-list {
+    display:inline;
+    padding: 0;
+}
+
+.tag-list a {
+    color: black;
+    text-decoration: none;
+}
+
+.tag-list a:hover {
+    color: #d50032;
+}
+
+.tag-list a:visited {
+    color: #1dc3e1;
+}
+
 .bg-primary, .btn-primary {
     background-color: #d50032 !important;
 }
@@ -309,4 +355,11 @@
 .admin-search-results {
     grid-column: 2/8;
     padding: 0;
+}
+
+.text-overflow {
+    display: block;
+    word-wrap: break-word;
+    line-height: 1.5em;
+    overflow: hidden;
 }

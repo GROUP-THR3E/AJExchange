@@ -17,23 +17,24 @@ $title = 'listing';
         <img class="view-listing-main-image w-100" src="<?= $this->listingImage($listing->getImageUrls()[0]) ?>" alt="">
     </div>
     <div class="view-listing-header listing-grid-design">
-        <h6><?= $listing->getUser()->getFullName() ?>, <?= $listing->getUser()->getOffice()->getAddress() ?></h6>
         <div>
-            <h4><?= htmlspecialchars($listing->getListingName()) ?></h4>
+            <h1><?= htmlspecialchars($listing->getListingName()) ?></h1>
         </div>
+        <div><h6><?= $listing->getUser()->getOffice()->getAddress() ?>Office</h6></div>
     </div>
     <div class="view-listing-interact listing-grid-design">
         <?php if($listing->getType()=='sell'): ?>
-        <h6>Is looking to sell for: £<?= htmlspecialchars($listing->getPrice()) ?> </h6>
+        <h4 class="zero-margin"><span><?= $listing->getUser()->getFullName() ?></span> is selling for: </h4>
+        <h4><span class="emphasise-item-text">£<?= htmlspecialchars($listing->getPrice()) ?></h4>
         <?php elseif($listing->getType()=='exchange'): ?>
-        <h6>Is looking to exchange for: <?= htmlspecialchars($listing->getDesiredItem()) ?></h6>
+        <h4>Is exchanging for:<span class="emphasise-item-text"><?= htmlspecialchars($listing->getDesiredItem()) ?></span></h4>
         <?php elseif($listing->getType()=='giveaway'): ?>
-        <h6>Is looking to give away</h6>
+        <h4>Is giving away</h4>
         <?php endif; ?>
         <?php if ($listing->getApprovalStatus() === ApprovalStatus::APPROVED): ?>
         <button type="submit" class="btn btn-primary w-100 mt-4">Submit</button>
         <?php elseif ($listing->getApprovalStatus() === ApprovalStatus::PENDING && Auth::getAuthManager()->getUser()->getRole() === 'admin'): ?>
-        <div class="d-flex justify-content-between mt-4">
+        <div class="d-flex gap-2 mt-4">
             <form class="m-0" action="/listings/<?= $listing->getListingId() ?>/setApproval" method="post">
                 <input type="hidden" name="approvalStatus" value="<?= ApprovalStatus::APPROVED ?>">
                 <button type="submit" class="btn btn-primary">Approve</button>
@@ -44,11 +45,27 @@ $title = 'listing';
             </form>
         </div>
         <?php endif; ?>
+        <h4 class="mt-3">Tags:</h4>
+        <div class="home-welcome list-div text-center view-listing-tags">
+            <ul class="tag-list home-list-design list-unstyled">
+                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 1</a></li>
+                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 2</a></li>
+                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 3</a></li>
+                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 4</a></li>
+                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 5</a></li>
+                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 6</a></li>
+            </ul>
+        </div>
+        <div class="listing-grid-design">
+        </div>
     </div>
     <div class="view-listing-extra-images listing-grid-design d-flex flex-column gap-2">
         <?php foreach ($listing->getImageUrls()  as $image): ?>
         <img class="view-listing-extra-image" src="<?= $this->listingImage($image) ?>" alt="">
         <?php endforeach; ?>
     </div>
-    <div class="view-listing-description listing-grid-design"><?=htmlspecialchars($listing->getDescription()) ?></div>
+    <div class="view-listing-description listing-grid-design view-listing-description-box text-overflow">
+        <h4 class="view-listing-description-title">Description:</h4>
+        <div><p><?= htmlspecialchars($listing->getDescription()) ?></p></div>
+    </div>
 </div>
