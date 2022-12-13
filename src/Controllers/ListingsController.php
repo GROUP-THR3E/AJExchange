@@ -11,8 +11,8 @@ return function(App $app) {
     $app->get('/listings/search', function (Request $request, Response $response) {
         $dataset = new ListingDataset();
         $params = $request->getQueryParams();
-        $listings = $dataset->searchListings($params['query'] ?? '');
-        $view = View::render('listings/search', ['listings' => $listings]);
+        $listings = $dataset->searchListings($params['query'] ?? '', [], $params['type']);
+        $view = View::render('listings/search', ['listings' => $listings, 'params' => $params]);
         $response->getBody()->write($view);
         return $response;
     });
