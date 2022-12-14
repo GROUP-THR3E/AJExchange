@@ -16,6 +16,7 @@ class Listing extends ModelBase
     protected string $approvalStatus;
     protected int $userId;
     protected ?User $user;
+    protected ?int $purchaseId;
 
     public function __construct(array $dbRow, array $imageUrls = [])
     {
@@ -117,5 +118,13 @@ class Listing extends ModelBase
     public function getUser(): ?User
     {
         return $this->user;
+    }
+
+    /**
+     * @return int|null the id of the purchase of this listing, null if not yet purchased
+     */
+    public function getPurchaseId(): ?int
+    {
+        return $this->purchaseId;
     }
 }
