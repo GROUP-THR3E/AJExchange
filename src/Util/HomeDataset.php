@@ -15,9 +15,11 @@ class HomeDataset extends DatasetBase
         $ownId = Auth::getAuthManager()->getUser()->getUserId();
 
         $listingQuery =
-            "SELECT * FROM Listing
+            "SELECT Listing.*, filename as imageUrls FROM Listing
              LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId
-             WHERE type = :type AND approvalStatus = '$approved'
+             WHERE type = :type 
+             AND approvalStatus = '$approved'
+             AND orderId IS NULL
              AND imageIndex = 1
              AND userId != $ownId
              LIMIT 4";
@@ -27,19 +29,19 @@ class HomeDataset extends DatasetBase
         $statement->execute(['type' => ListingType::SALE]);
         $saleResults = [];
         foreach ($statement->fetchAll() as $result) {
-            $saleResults[] = new Listing($result, [$result['filename']]);
+            $saleResults[] = new Listing($result);
         }
 
         $statement->execute(['type' => ListingType::EXCHANGE]);
         $exchangeResults = [];
         foreach ($statement->fetchAll() as $result) {
-            $exchangeResults[] = new Listing($result, [$result['filename']]);
+            $exchangeResults[] = new Listing($result);
         }
 
         $statement->execute(['type' => ListingType::GIVEAWAY]);
         $giveawayResults = [];
         foreach ($statement->fetchAll() as $result) {
-            $giveawayResults[] = new Listing($result, [$result['filename']]);
+            $giveawayResults[] = new Listing($result);
         }
 
         return new HomepageData($saleResults, $exchangeResults, $giveawayResults, []);

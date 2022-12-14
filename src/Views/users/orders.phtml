@@ -1,0 +1,33 @@
+<?php
+/**
+ * @var Order[] $orders;
+ */
+
+use GroupThr3e\AJExchange\Models\Order;
+
+$title = 'My orders'
+?>
+
+<div class="outerDiv mt-5 mx-auto">
+    <?php foreach($orders as $order): ?>
+        <div class="listing-search-result">
+            <div>
+                <a href="/listings/<?= $order->getListing()->getListingID() ?>"><img class="listing-search-result-image" alt="" src="<?= $this->listingImage($order->getListing()->getImageUrls()[0]) ?>"></a>
+            </div>
+            <div class= "listing-search-result-description">
+                <a href="/listings/<?= $order->getListing()->getListingID() ?>"><h3><?= $order->getListing()->getListingName() ?></h3></a>
+                <h5>Description: <?= $order->getListing()->getDescription() ?></h5>
+                <?php if($order->getListing()->getType()=='sell'): ?>
+                    <h6>Price: £<?= $order->getListing()->getPrice() ?> </h6>
+                <?php elseif($order->getListing()->getType()=='exchange'): ?>
+                    <h6>Exchange for: <?= $order->getListing()->getDesiredItem() ?></h6>
+                <?php elseif($order->getListing()->getType()=='giveaway'): ?>
+                    <h6>Giving away</h6>
+                <?php endif; ?>
+                <h6>Seller name: <?= $order->getListing()->getUser()->getFullName() ?></h6>
+                <h6>Location: <?= $order->getListing()->getUser()->getOffice()->getAddress() ?></h6>
+                <h4>Ordered on: <?= $order->getOrderDate() ?></h4>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>

@@ -3,6 +3,7 @@
 use GroupThr3e\AJExchange\Constants\ApprovalStatus;
 use GroupThr3e\AJExchange\Util\Auth;
 use GroupThr3e\AJExchange\Util\ListingDataset;
+use GroupThr3e\AJExchange\Util\OrderDataset;
 use GroupThr3e\AJExchange\Util\View;
 use Slim\App;
 use Slim\Psr7\Request;
@@ -12,7 +13,8 @@ return function(App $app) {
     $app->get('/listings/search', function (Request $request, Response $response) {
         $dataset = new ListingDataset();
         $params = $request->getQueryParams();
-        $listings = $dataset->searchListings(query: $params['query'] ?? '', type: $params['type'] ?? null, approvalStatus: ApprovalStatus::APPROVED, hideOwnListings: true);
+        $listings = $dataset->searchListings(query: $params['query'] ?? '', type: $params['type'] ?? null,
+            approvalStatus: ApprovalStatus::APPROVED, hideOwnListings: true, showOrdered: false);
         $view = View::render('listings/search', ['listings' => $listings, 'params' => $params]);
         $response->getBody()->write($view);
         return $response;
@@ -34,12 +36,23 @@ return function(App $app) {
     $app->get('/listings/{listingId:[0-9]+}', function (Request $request, Response $response, array $args) {
         $dataset = new ListingDataset();
         $listing = $dataset->getListing($args['listingId']);
-        if (strcmp('approved',$listing->getApprovalStatus()) === 0 || strcmp('admin',Auth::getAuthManager()->getUser()->getRole()) === 0) {
-            $view = View::render('/listings/view', ['listing' => $listing]);
-            $response->getBody()->write($view);
-        } else {
+        $currentUser = Auth::getAuthManager()->getUser();
+        if ($listing->getOrderId() !== null && ($listing->getUserId() !== $currentUser->getUserId()
+                || $currentUser->getRole() === 'admin')) {
+            $view = View::render('messageLink', [
+                'pageTitle' => 'Listing error',
+                'message' => 'This listing has been ordered',
+                'linkMessage' => 'Click here to return to home',
+                'linkhref' => '/'
+            ]);
+        } else if ($listing->getApprovalStatus() === ApprovalStatus::APPROVED
+                && ($currentUser->getUserId() === $listing->getListingId() || $currentUser->getRole() === 'admin')) {
             return $response->withHeader('Location', '/')->withStatus(302);
+        } else {
+            $view = View::render('/listings/view', ['listing' => $listing]);
         }
+
+        $response->getBody()->write($view);
         return $response;
     });
 
@@ -133,5 +146,16 @@ return function(App $app) {
         $listingDataset = new ListingDataset();
         $listingDataset->setApproval($args['listingId'], $params['approvalStatus']);
         return $response->withHeader('Location', '/listings/adminControls')->withStatus(302);
+    });
+
+    $app->post('/listings/{listingId:[0-9]+}/order', function (Request $request, Response $response, array $args) {
+        $orderDataset = new OrderDataset();
+        $result = $orderDataset->makeOrder($args['listingId']);
+        if (is_string($result))
+            return $response->withHeader('Location', "/listings/{$args['listingId']}")->withStatus(302);
+
+        $view = View::render('listings/orderSuccess');
+        $response->getBody()->write($view);
+        return $response;
     });
 };
