@@ -427,10 +427,9 @@
 }
 
 .search-title-div {
-    vertical-align: center;
     margin-top: 10px;
-    margin-left: 470px;
-    width: 964px;
+    padding-left: 256px;
+    width: 1280px;
 }
 
 .search-padding {
