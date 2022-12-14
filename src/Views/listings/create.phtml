@@ -43,27 +43,16 @@ $title = 'Create Listing';
             <table class="table table-borderless">
                 <tbody>
                 <tr>
-                    <?php if(!isset($params['listingType']) || $params['listingType'] !== 'sell'): ?>
-                        <td><input class="form-check-input me-1" type="radio" name="listingType" value="sell">Sell</td>
-                    <?php else: ?>
-                        <td><input class="form-check-input me-1" type="radio" name="listingType" value="sell" checked>Sell</td>
-                    <?php endif; ?>
+                    <td><input class="form-check-input me-1" type="radio" name="listingType" value="sell" <?= isset($params['listingType']) && $params['listingType'] === 'sell' ? 'checked' : '' ?>>Sell</td>
                     <td><input type="text" class="form-control" name="inputPrice" id="inputPrice" placeholder="£ Price" pattern="^(|[1-9][0-9]*)$" maxlength="6"></td>
                 </tr>
                 <tr>
-                    <?php if(!isset($params['listingType']) || $params['listingType'] !== 'exchange'): ?>
-                        <td><input class="form-check-input me-1" type="radio" name="listingType" value="exchange">Exchange for</td>
-                    <?php else: ?>
-                        <td><input class="form-check-input me-1" type="radio" name="listingType" value="exchange" checked>Exchange for</td>
-                    <?php endif; ?>
+                    <td><input class="form-check-input me-1" type="radio" name="listingType" value="exchange" <?= isset($params['listingType']) && $params['listingType'] === 'exchange' ? 'checked' : '' ?>>Exchange for</td>
                     <td><input type="text" class="form-control" name="inputItem" id="inputItem" minlength="3" maxlength="50" placeholder="Item"></td>
                 </tr>
                 <tr>
-                    <?php if(!isset($params['listingType']) || $params['listingType'] !== 'giveaway'): ?>
-                        <td><input class="form-check-input me-1" type="radio" name="listingType" value="giveaway">Giveaway</td>
-                    <?php else: ?>
-                        <td><input class="form-check-input me-1" type="radio" name="listingType" value="giveaway" checked>Giveaway</td>
-                    <?php endif; ?>
+
+                    <td><input class="form-check-input me-1" type="radio" name="listingType" value="giveaway" <?= isset($params['listingType']) && $params['listingType'] === 'giveaway' ? 'checked' : '' ?>>Giveaway</td>
                     <td><input class="form-check-input" type="checkbox" name="checkConf" id="checkConf">
                         <label class="form-check-label" for="checkConf">Please Confirm</label></td>
                 </tr>
