@@ -18,34 +18,22 @@ $title = "Search page";
             </div>
             <div class="form-check">
                 <form action="/listings/search"  method="GET">
-                    <h6>Exchange Method</h6>
+                    <h6>Trade Method</h6>
                     <input type="hidden" value="<?=$params['query']?>" name="query">
-                    <?php if(in_array("sell", $params)):?>
-                    <input class="form-check-input" type="checkbox" id="trade_selling" name="type" value="sell" checked>
-                    <?php else:?>
-                    <input class="form-check-input" type="checkbox" id="trade_selling" name="type" value="sell">
-                    <?php endif;?>
+                    <input class="form-check-input" type="radio" id="trade_selling" name="type" value="sell" <?= isset($params['type']) && $params['type'] === 'sell' ? 'checked': '' ?>>
                     <label for="trade_selling">Selling</label><br>
-                    <?php if(in_array("exchange", $params)):?>
-                    <input class="form-check-input" type="checkbox" id="trade_exchange" name="type" value="exchange" checked>
-                    <?php else:?>
-                    <input class="form-check-input" type="checkbox" id="trade_exchange" name="type" value="exchange">
-                    <?php endif;?>
+                    <input class="form-check-input" type="radio" id="trade_exchange" name="type" value="exchange" <?= isset($params['type']) && $params['type'] === 'exchange' ? 'checked': '' ?>>
                     <label for="trade_exchange">Exchange</label><br>
-                    <?php if(in_array("giveaway", $params)):?>
-                    <input class="form-check-input" type="checkbox" id="trade_giveaway" name="type" value="giveaway" checked>
-                    <?php else:?>
-                    <input class="form-check-input" type="checkbox" id="trade_giveaway" name="type" value="giveaway">
-                    <?php endif;?>
+                    <input class="form-check-input" type="radio" id="trade_giveaway" name="type" value="giveaway" <?= isset($params['type']) && $params['type'] === 'giveaway' ? 'checked': '' ?>>
                     <label for="trade_giveaway">Giveaway</label><br>
                     <hr class="filter-separation mt-2 mb-3"/>
                     <h6>Price Range</h6>
                     <input class="form-check-input" type="checkbox" id="price_1" name="price" value=1>
-                    <label for="price_1">£0-£50</label><br>
+                    <label for="price_1">Up to £50</label><br>
                     <input class="form-check-input" type="checkbox" id="price_2" name="price" value=2>
-                    <label id = "filter-label" for="price_2">£50-£100</label><br>
+                    <label id = "filter-label" for="price_2">£50 to £100</label><br>
                     <input class="form-check-input" type="checkbox" id="price_3" name="price" value=3>
-                    <label id = "filter-label" for="price_3">£100 <</label><br>
+                    <label id = "filter-label" for="price_3">£100 & above</label><br>
                     <hr class="filter-separation mt-2 mb-3"/>
                     <h6>Categories</h6>
                     <input class="form-check-input" type="checkbox" id="category_1" name="category" value=3>
@@ -86,7 +74,7 @@ $title = "Search page";
             <?php endforeach; ?>
         <?php else:?>
             <div class="text-center listing-search-result">
-                <h3>No results for "<?= $params['query'] ?>"</h3>
+                <h3>No results for "<?= $params['query']?>"<h3>
             </div>
         <?php endif;?>
     </div>
