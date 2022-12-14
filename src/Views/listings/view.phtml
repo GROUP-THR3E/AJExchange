@@ -53,6 +53,8 @@ $user = Auth::getAuthManager()->getUser();
                 <button type="submit" class="btn btn-primary">Deny</button>
             </form>
         </div>
+        <?php elseif ($listing->getApprovalStatus() !== ApprovalStatus::APPROVED && $listing->getUserId() === $user->getUserId()): ?>
+        <h3 class="mt-4">Approval Status: <?= $listing->getApprovalStatus() ?></h3>
         <?php endif; ?>
         <h4 class="mt-3">Tags:</h4>
         <div class="home-welcome list-div text-center view-listing-tags">

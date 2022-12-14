@@ -45,8 +45,8 @@ return function(App $app) {
                 'linkMessage' => 'Click here to return to home',
                 'linkhref' => '/'
             ]);
-        } else if ($listing->getApprovalStatus() === ApprovalStatus::APPROVED
-                && ($currentUser->getUserId() === $listing->getListingId() || $currentUser->getRole() === 'admin')) {
+        } else if ($listing->getApprovalStatus() !== ApprovalStatus::APPROVED
+                && ($currentUser->getUserId() !== $listing->getUserId() && $currentUser->getRole() !== 'admin')) {
             return $response->withHeader('Location', '/')->withStatus(302);
         } else {
             $view = View::render('/listings/view', ['listing' => $listing]);
