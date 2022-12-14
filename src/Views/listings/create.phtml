@@ -18,7 +18,7 @@ $title = 'Create Listing';
         <?php if(!empty($errors)): ?>
             <?php foreach($errors as $error): ?>
                 <div class="alert alert-warning d-flex align-items-center" role="alert">
-                    <div class="sampleText text-center">
+                    <div class="sampleText">
                         <?= $error ?>
                     </div>
                 </div>
@@ -55,6 +55,20 @@ $title = 'Create Listing';
                 <tr>
                     <td><input class="form-check-input me-1" type="radio" name="listingType" value="sell" <?= isset($params['listingType']) && $params['listingType'] === 'sell' ? 'checked' : '' ?>>Sell</td>
                     <td><input type="text" class="form-control" name="inputPrice" id="inputPrice" placeholder="£ Price" pattern="^(|[1-9][0-9]*)$" maxlength="6"></td>
+                </tr>
+                <tr>
+                    <td>
+                    <td><input class="form-check-input" type="checkbox" name="checkCharity" id="checkCharity" <?= isset($params['checkCharity']) ? 'checked' : '' ?>>
+                        <label class="form-check-label" for="checkCharity"><span title="Choose your charity from the dropdown menu"> Donate to charity</label></td>
+                </tr>
+                <tr>
+                    <td>
+                    <td><select class="form-select" name="charity" aria-label="charityHelp">
+                            <option selected>Select Charity</option>
+                            <option value="charityOne">Charity 1</option>
+                            <option value="charityTwo">Charity 2</option>
+                            <option value="charityThree">Charity 3</option>
+                        </select></td>
                 </tr>
                 <tr>
                     <td><input class="form-check-input me-1" type="radio" name="listingType" value="exchange" <?= isset($params['listingType']) && $params['listingType'] === 'exchange' ? 'checked' : '' ?>>Exchange for</td>
