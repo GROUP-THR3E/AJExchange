@@ -22,11 +22,11 @@ class ModelBase
             // primitive type an exception is thrown the dbRow is checked to assign a value directly.
             try {
                 $propertyReflector = new ReflectionClass($property->getType()->getName());
-                $dbRowCheck = $propertyReflector->getMethod('checkDbRow')->getClosure();
+                $dbRowCheck = $propertyReflector->getMethod('checkDbRow');
 
                 // Checks the properties class, and only creates a new class if the dbRow contains enough data
                 if ($propertyReflector->isSubclassOf(ModelBase::class) ) {
-                    $this->$propertyName = $dbRowCheck($dbRow)
+                    $this->$propertyName = $dbRowCheck->invoke(null, $dbRow)
                         ? $propertyReflector->newInstanceArgs([$dbRow])
                         : null;
                 }
@@ -41,15 +41,13 @@ class ModelBase
     // Checks that all the properties that aren't an array or inherit ModelBase are set present in the dbRow
     protected static function checkDbRow(array $dbRow): bool
     {
-        $classReflector = new ReflectionClass(self::class);
+        $classReflector = new ReflectionClass(static::class);
+        $primaryKey = lcfirst($classReflector->getShortName()) . 'Id';
         foreach ($classReflector->getProperties() as $property) {
-            // Checks if the property, returning false if it doesn't inherit ModelBase, isn't an array and doesn't
-            // have a matching key in $dbRow
-            $propertyReflector = new ReflectionClass($property->getType()->getName());
-            if (!$propertyReflector->isSubclassOf(ModelBase::class) && $property->getType()->getName() != 'array'
-                && !isset($dbRow[$property->getName()])) return false;
+            if ($property->getType()->isBuiltin() && $property->getName() !== $primaryKey
+                && $property->getType()->getName() != 'array' && isset($dbRow[$property->getName()])) return true;
         }
 
-        return true;
+        return false;
     }
 }
