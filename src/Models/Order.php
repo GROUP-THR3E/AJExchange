@@ -2,7 +2,7 @@
 
 namespace GroupThr3e\AJExchange\Models;
 
-class Purchase
+class Order
 {
     protected int $purchaseId;
     protected int $userId;
