@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @var string $error
+ * @var array $errors
+ * @var array $params
+ */
 use GroupThr3e\AJExchange\Util\Auth;
 
 $title = 'Create Listing';
@@ -11,8 +15,17 @@ $title = 'Create Listing';
         <h3>Please list an item</h3>
     </div>
     <div class="my-4 mb-3">
+        <?php if(!empty($errors)): ?>
+            <?php foreach($errors as $error): ?>
+                <div class="alert alert-warning d-flex align-items-center" role="alert">
+                    <div class="sampleText text-center">
+                        <?= $error ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
         <label for="inputTitle">Title</label>
-        <input type="text" class="form-control" name="inputTitle" id="inputTitle" placeholder="Type here...">
+        <input type="text" class="form-control" name="inputTitle" id="inputTitle" minlength="3" maxlength="50" placeholder="Type here..." value="<?= $params['inputTitle'] ?? '' ?>">
     </div>
     <div class="my-4 mb-3 text-center d-flex justify-content-between">
         <div class="create-listing-image-container">
@@ -33,25 +46,25 @@ $title = 'Create Listing';
     </div>
     <div class="my-4 mb-3">
         <label for="description">Description</label>
-        <textarea class="form-control" name="description" id="description" rows="4" placeholder="Type here..."></textarea>
+        <textarea type="text" class="form-control" name="description" id="description" rows="4" minlength="5" maxlength="300" placeholder="Type here..."><?= $params['description'] ?? '' ?></textarea>
     </div>
     <div class="create-listing-options-grid my-3 mb-3  d-flex justify-content-between">
         <div class="exchange-method-option">
             <table class="table table-borderless">
                 <tbody>
-                    <tr>
-                        <td><input class="form-check-input me-1" type="radio" name="listingType" value="sell">Sell</td>
-                        <td><input type="text" class="form-control" name="inputPrice" id="inputPrice" placeholder="£ Price"></td>
-                    </tr>
-                    <tr>
-                        <td><input class="form-check-input me-1" type="radio" name="listingType" value="exchange">Exchange for</td>
-                        <td><input type="text" class="form-control" name="inputItem" id="inputItem" placeholder="Item"></td>
-                    </tr>
-                    <tr>
-                        <td><input class="form-check-input me-1" type="radio" name="listingType" value="giveaway">Giveaway</td>
-                        <td><input class="form-check-input" type="checkbox" name="checkConf" id="checkConf">
+                <tr>
+                    <td><input class="form-check-input me-1" type="radio" name="listingType" value="sell" <?= isset($params['listingType']) && $params['listingType'] === 'sell' ? 'checked' : '' ?>>Sell</td>
+                    <td><input type="text" class="form-control" name="inputPrice" id="inputPrice" placeholder="£ Price" pattern="^(|[1-9][0-9]*)$" maxlength="6"></td>
+                </tr>
+                <tr>
+                    <td><input class="form-check-input me-1" type="radio" name="listingType" value="exchange" <?= isset($params['listingType']) && $params['listingType'] === 'exchange' ? 'checked' : '' ?>>Exchange for</td>
+                    <td><input type="text" class="form-control" name="inputItem" id="inputItem" minlength="3" maxlength="50" placeholder="Item"></td>
+                </tr>
+                <tr>
+                    <td><input class="form-check-input me-1" type="radio" name="listingType" value="giveaway" <?= isset($params['listingType']) && $params['listingType'] === 'giveaway' ? 'checked' : '' ?>>Giveaway</td>
+                    <td><input class="form-check-input" type="checkbox" name="checkConf" id="checkConf">
                         <label class="form-check-label" for="checkConf">Please Confirm</label></td>
-                    </tr>
+                </tr>
                 </tbody>
             </table>
         </div>

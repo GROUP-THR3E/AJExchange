@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var array $error
+ */
+
 $title = 'login';
 ?>
 
@@ -6,6 +10,13 @@ $title = 'login';
     <form action="/users/login" method="post">
             <div class="mb-3">
                 <div id="loginIntro" class="form-text">Log into the marketplace</div>
+                <?php if(!empty($error)): ?>
+                    <div class="alert alert-warning d-flex align-items-center" role="alert">
+                        <div class="sampleText text-center">
+                            <?= $error ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
                 <label for="inputEmail" class="form-label"> Email Address:</label>
                 <input type="email" class="form-control" name="inputEmail" id="inputEmail" aria-describedby="emailHelp">
             </div>
