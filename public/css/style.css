@@ -367,3 +367,28 @@
     line-height: 1.5em;
     overflow: hidden;
 }
+
+.home-image-background {
+    background-color: #ffffff;
+    outline: #f7f7f7 solid 2px;
+    border-radius: 5px;
+}
+
+.home-image-design a {
+    color: black;
+    text-decoration: none;
+}
+
+.home-image-design a:hover {
+    color: red;
+    text-decoration: none;
+}
+
+.home-welcome-design a {
+    color: white;
+    text-decoration: none;
+}
+
+.home-welcome-design a:hover {
+    color: black;
+}
