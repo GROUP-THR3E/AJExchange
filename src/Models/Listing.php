@@ -125,6 +125,6 @@ class Listing extends ModelBase
      */
     public function getPurchaseId(): ?int
     {
-        return $this->purchaseId;
+        return $this->purchaseId ?? null;
     }
 }
