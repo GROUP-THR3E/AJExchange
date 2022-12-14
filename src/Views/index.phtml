@@ -67,9 +67,11 @@ $title = 'index';
                 <div class="home-logo-container">
                     <h5 class="home-logo-descriptions white-design-text"><a class="text-light" href="/listings/create">List Item</a></h5>
                 </div>
+                <?php if(Auth::getAuthManager()->getUser()->getRole() == 'admin'): ?>
                 <div class="home-logo-container">
-                    <h5 class="home-logo-descriptions white-design-text">Log out</h5>
+                    <h5 class="home-logo-descriptions white-design-text"><a class="text-light" href="/listings/adminControls">Admin Controls</a></h5>
                 </div>
+                <?php endif; ?>
             </div>
             <div class="py-2 home-grid-design home-image-misc categories-color">
                 <h2 style="color: white" class="home-welcome">Categories</h2>
