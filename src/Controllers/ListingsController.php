@@ -13,7 +13,8 @@ return function(App $app) {
     $app->get('/listings/search', function (Request $request, Response $response) {
         $dataset = new ListingDataset();
         $params = $request->getQueryParams();
-        $listings = $dataset->searchListings(query: $params['query'] ?? '', type: $params['type'] ?? null, approvalStatus: ApprovalStatus::APPROVED, hideOwnListings: true);
+        $listings = $dataset->searchListings(query: $params['query'] ?? '', type: $params['type'] ?? null,
+            approvalStatus: ApprovalStatus::APPROVED, hideOwnListings: true, showOrdered: false);
         $view = View::render('listings/search', ['listings' => $listings, 'params' => $params]);
         $response->getBody()->write($view);
         return $response;
@@ -31,7 +32,19 @@ return function(App $app) {
     $app->get('/listings/{listingId:[0-9]+}', function (Request $request, Response $response, array $args) {
         $dataset = new ListingDataset();
         $listing = $dataset->getListing($args['listingId']);
-        $view = View::render('/listings/view', ['listing' => $listing]);
+        $currentUser = Auth::getAuthManager()->getUser();
+        if ($listing->getOrderId() !== null && ($listing->getUserId() !== $currentUser->getUserId()
+                || $currentUser->getRole() === 'admin')) {
+            $view = View::render('messageLink', [
+                'pageTitle' => 'Listing error',
+                'message' => 'This listing has been ordered',
+                'linkMessage' => 'Click here to return to home',
+                'linkhref' => '/'
+            ]);
+        } else {
+            $view = View::render('/listings/view', ['listing' => $listing]);
+        }
+
         $response->getBody()->write($view);
         return $response;
     });

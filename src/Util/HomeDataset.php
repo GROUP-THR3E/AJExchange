@@ -17,7 +17,9 @@ class HomeDataset extends DatasetBase
         $listingQuery =
             "SELECT * FROM Listing
              LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId
-             WHERE type = :type AND approvalStatus = '$approved'
+             WHERE type = :type 
+             AND approvalStatus = '$approved'
+             AND orderId IS NULL
              AND imageIndex = 1
              AND userId != $ownId
              LIMIT 4";

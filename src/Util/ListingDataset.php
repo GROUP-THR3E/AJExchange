@@ -24,7 +24,7 @@ class ListingDataset extends DatasetBase
             GROUP BY Listing.listingId';
 
         $query = '
-        SELECT listingId, listingName, description, price, desiredItem, type, dateListed, approvalStatus, userId, email, 
+        SELECT listingId, listingName, description, price, desiredItem, type, dateListed, approvalStatus, orderId, userId, email, 
                password, fullName, role, officeId, officeName, address, GROUP_CONCAT(filename) as imageUrls
         FROM (
             SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, filename FROM Listing
@@ -56,11 +56,11 @@ class ListingDataset extends DatasetBase
      */
     public function searchListings(string $query = '', array $tags = [], ?string $type = null, ?int $officeId = null,
                                    ?int $userId = null, ?string $approvalStatus = null, bool $hideOwnListings = false,
-                                   int $limit = 20, int $offset = 0): array
+                                   bool $showOrdered = true, int $limit = 20, int $offset = 0): array
     {
         $sqlQuery = sprintf(
             'SELECT listingId, listingName, description, price, desiredItem, type, dateListed, approvalStatus, 
-                    userId, email, password, fullName, role, officeId, officeName, address, GROUP_CONCAT(filename) as imageUrls
+                    orderId, userId, email, password, fullName, role, officeId, officeName, address, GROUP_CONCAT(filename) as imageUrls
             FROM (
                 SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, filename FROM Listing
                 INNER JOIN User ON Listing.userId = User.userId
@@ -68,7 +68,7 @@ class ListingDataset extends DatasetBase
                 LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId
                 WHERE listingName LIKE :query
                 AND imageIndex = 1
-                %s %s %s %s %s
+                %s %s %s %s %s %s
                 ORDER BY Listing.listingId, ListingImage.imageIndex
             ) as Results
             GROUP BY listingId
@@ -78,7 +78,8 @@ class ListingDataset extends DatasetBase
             $type === null ? '' : 'AND type = :type',
             $officeId === null ? '' : 'AND User.officeId = :officeId',
             $userId === null ? '' : 'AND Listing.userId = :userId',
-            $approvalStatus === null ? '' : 'AND approvalStatus = :approvalStatus'
+            $approvalStatus === null ? '' : 'AND approvalStatus = :approvalStatus',
+            $showOrdered ? '' : 'AND orderId IS NULL'
         );
 
         $sqlParams = ['query' => "%$query%"];
@@ -120,8 +121,8 @@ class ListingDataset extends DatasetBase
      */
     public function createListing(string $name, string $description, ?float $price, ?string $desiredItem, string $type, array $tags, int $userId, array $images): bool
     {
-        $query = 'INSERT INTO Listing (listingName, description, price, desiredItem, type, dateListed, approvalStatus, userId)
-                  VALUES (:listingName, :description, :price, :desiredItem, :type, :dateListed, :approvalStatus, :userId)';
+        $query = 'INSERT INTO Listing (listingName, description, price, desiredItem, type, dateListed, approvalStatus, userId, orderId)
+                  VALUES (:listingName, :description, :price, :desiredItem, :type, :dateListed, :approvalStatus, :userId, NULL)';
         $insertListing = $this->dbHandle->prepare($query);
         $insertListing->execute([
             'listingName' => $name,
