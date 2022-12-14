@@ -2,20 +2,30 @@
 
 namespace GroupThr3e\AJExchange\Models;
 
-class Order
+class Order extends ModelBase
 {
-    protected int $purchaseId;
+    protected int $orderId;
+    protected string $orderDate;
     protected int $userId;
-    protected ?User $user;
+    // TODO - Currently there is no navigation property for User, this is because the current mapping system cannot
+    // distinguish different properties inheriting ModelBase of the same type
     protected int $listingId;
     protected ?Listing $listing;
 
     /**
      * @return int the id of the purchase
      */
-    public function getPurchaseId(): int
+    public function getOrderId(): int
     {
-        return $this->purchaseId;
+        return $this->orderId;
+    }
+
+    /**
+     * @return string the date the order was made
+     */
+    public function getOrderDate(): string
+    {
+        return $this->orderDate;
     }
 
     /**
@@ -24,14 +34,6 @@ class Order
     public function getUserId(): int
     {
         return $this->userId;
-    }
-
-    /**
-     * @return User|null the id user who purchased the item, null if the table wasn't joined when retrieved
-     */
-    public function getUser(): ?User
-    {
-        return $this->user;
     }
 
     /**

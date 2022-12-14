@@ -2,6 +2,7 @@
 
 use GroupThr3e\AJExchange\Util\Auth;
 use GroupThr3e\AJExchange\Util\ListingDataset;
+use GroupThr3e\AJExchange\Util\OrderDataset;
 use GroupThr3e\AJExchange\Util\View;
 use Slim\App;
 use Slim\Psr7\Request;
@@ -41,6 +42,14 @@ return function(App $app) {
         $listingDataset = new ListingDataset();
         $listings = $listingDataset->searchListings(userId: Auth::getAuthManager()->getUser()->getUserId(), approvalStatus: $params['approvalStatus']);
         $view = View::render('users/listings', ['listings' => $listings, 'approvalStatus' => $params['approvalStatus']]);
+        $response->getBody()->write($view);
+        return $response;
+    });
+
+    $app->get('/users/my/orders', function (Request $request, Response $response) {
+        $orderDataset = new OrderDataset();
+        $orders = $orderDataset->getUserOrders(Auth::getAuthManager()->getUser()->getUserId());
+        $view = View::render('users/orders', ['orders' => $orders]);
         $response->getBody()->write($view);
         return $response;
     });
