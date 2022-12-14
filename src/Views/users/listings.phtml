@@ -1,0 +1,59 @@
+<?php
+/**
+ * @var View $this
+ * @var Listing[] $listings
+ * @var string $approvalStatus
+ */
+
+use GroupThr3e\AJExchange\Constants\ApprovalStatus;
+use GroupThr3e\AJExchange\Models\Listing;
+use GroupThr3e\AJExchange\Util\Auth;
+use GroupThr3e\AJExchange\Util\View;
+
+$title = "My listings";
+?>
+
+<h1 class="admin-welcome">Welcome,  <?= Auth::getAuthManager()->getUser()->getFullName() ?>, please check the listings belows:</h1>
+<div class="outerDiv search-grid-container mx-auto">
+    <div class="admin-filters-grid">
+        <form class="listings-filters-menu">
+            <div class="mb-2">
+                <strong>Filters:</strong>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="to_approve" name="approvalStatus"
+                       value="<?= ApprovalStatus::PENDING ?>" <?= $approvalStatus === ApprovalStatus::PENDING ? 'checked': '' ?>>
+                <label for="to_approve">To be approved</label><br>
+                <input class="form-check-input" type="radio" id="approved" name="approvalStatus"
+                       value="<?= ApprovalStatus::APPROVED ?>" <?= $approvalStatus === ApprovalStatus::APPROVED ? 'checked': '' ?>>
+                <label for="approved">Approved</label><br>
+                <input class="form-check-input" type="radio" id="declined" name="approvalStatus"
+                       value="<?= ApprovalStatus::DENIED ?>" <?= $approvalStatus === ApprovalStatus::DENIED ? 'checked' : '' ?>>
+                <label for="declined">Declined</label><br>
+            </div>
+            <button type="submit" class="btn btn-primary mt-4">Submit</button>
+        </form>
+    </div>
+    <div class="admin-search-results">
+        <?php foreach($listings as $listing): ?>
+            <div class="listing-search-result">
+                <div>
+                    <a href="/listings/<?= $listing->getListingID() ?>"><img class="listing-search-result-image" alt="" src="<?= $this->listingImage($listing->getImageUrls()[0]) ?>"></a>
+                </div>
+                <div class= "listing-search-result-description">
+                    <a href="/listings/<?= $listing->getListingID() ?>"><h3><?= $listing->getListingName() ?></h3></a>
+                    <h5>Description: <?= $listing->getDescription() ?></h5>
+                    <?php if($listing->getType()=='sell'): ?>
+                        <h6>Price: £<?= $listing->getPrice() ?> </h6>
+                    <?php elseif($listing->getType()=='exchange'): ?>
+                        <h6>Exchange for: <?= $listing ->getDesiredItem() ?></h6>
+                    <?php elseif($listing->getType()=='giveaway'): ?>
+                        <h6>Giving away</h6>
+                    <?php endif; ?>
+                    <h6>Seller name: <?= $listing->getUser()->getFullName() ?></h6>
+                    <h6>Location: <?= $listing->getUser()->getOffice()->getAddress() ?></h6>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>

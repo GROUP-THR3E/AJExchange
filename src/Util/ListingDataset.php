@@ -55,7 +55,8 @@ class ListingDataset extends DatasetBase
      * @return array the search results
      */
     public function searchListings(string $query = '', array $tags = [], ?string $type = null, ?int $officeId = null,
-                                   ?int $userId = null, ?string $approvalStatus = null, int $limit = 20, int $offset = 0): array
+                                   ?int $userId = null, ?string $approvalStatus = null, bool $hideOwnListings = false,
+                                   int $limit = 20, int $offset = 0): array
     {
         $sqlQuery = sprintf(
             'SELECT listingId, listingName, description, price, desiredItem, type, dateListed, approvalStatus, 
@@ -67,20 +68,23 @@ class ListingDataset extends DatasetBase
                 LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId
                 WHERE listingName LIKE :query
                 AND imageIndex = 1
-                %s %s %s %s
+                %s %s %s %s %s
                 ORDER BY Listing.listingId, ListingImage.imageIndex
-                LIMIT :limit OFFSET :offset
             ) as Results
-            GROUP BY listingId;
+            GROUP BY listingId
+            LIMIT :limit OFFSET :offset;
             ',
+            $hideOwnListings ? 'AND Listing.userId <> :ownUserId' : '',
             $type === null ? '' : 'AND type = :type',
-            $officeId === null ? '' : 'AND officeId = :officeId',
-            $userId === null ? '' : 'AND userId = :userId',
+            $officeId === null ? '' : 'AND User.officeId = :officeId',
+            $userId === null ? '' : 'AND Listing.userId = :userId',
             $approvalStatus === null ? '' : 'AND approvalStatus = :approvalStatus'
         );
 
         $sqlParams = ['query' => "%$query%"];
-        if ($type !== null) {
+        if ($hideOwnListings) {
+            $sqlParams['ownUserId'] = Auth::getAuthManager()->getUser()->getUserId();
+        } if ($type !== null) {
             $sqlParams['type'] = $type;
         } if ($officeId !== null) {
             $sqlParams['officeId'] = $officeId;

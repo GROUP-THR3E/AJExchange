@@ -1,6 +1,7 @@
 <?php
 
 use GroupThr3e\AJExchange\Util\Auth;
+use GroupThr3e\AJExchange\Util\ListingDataset;
 use GroupThr3e\AJExchange\Util\View;
 use Slim\App;
 use Slim\Psr7\Request;
@@ -33,5 +34,14 @@ return function(App $app) {
         $auth = Auth::getAuthManager();
         $auth->logout();
         return $response->withHeader('Location', '/')->withStatus(302);
+    });
+
+    $app->get('/users/my/listings', function (Request $request, Response $response) {
+        $params = $request->getQueryParams();
+        $listingDataset = new ListingDataset();
+        $listings = $listingDataset->searchListings(userId: Auth::getAuthManager()->getUser()->getUserId(), approvalStatus: $params['approvalStatus']);
+        $view = View::render('users/listings', ['listings' => $listings, 'approvalStatus' => $params['approvalStatus']]);
+        $response->getBody()->write($view);
+        return $response;
     });
 };
