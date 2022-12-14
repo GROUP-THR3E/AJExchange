@@ -364,6 +364,8 @@
 }
 
 .home-image-containers {
+    margin-top: 20px;
+    margin-left: 10px;
     width: 200px;
 }
 
@@ -465,4 +467,10 @@
 
 .search-margin {
     margin: 0 auto 48px auto;
+}
+
+.home-welcome-images {
+    background-color: #ffffff;
+    outline: #f7f7f7 solid 2px;
+    border-radius: 5px;
 }
