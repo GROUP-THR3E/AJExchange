@@ -10,7 +10,7 @@ class User extends ModelBase
     protected string $fullName;
     protected string $role;
     protected int $officeId;
-    protected Office $office;
+    protected ?Office $office;
 
 
     /**
