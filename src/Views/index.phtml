@@ -59,21 +59,19 @@ $title = 'index';
                 <h2 class="home-welcome white-design-text">Welcome, <?= Auth::getAuthManager()->getUser()->getFullName() ?></h2>
                 <h4 class="home-welcome white-design-text"><?= Auth::getAuthManager()->getUser()->getOffice()->getOfficeName() ?></h4>
                 <div class="home-logo-container">
-                    <a href="/listings/search"><img class="home-logos my-2" src="https://dummyimage.com/50x50/000/fff" alt="View all listings"></a>
                     <h5 class="home-logo-descriptions white-design-text"><a class="text-light" href="/listings/search">View all listings</a></h5>
                 </div>
                 <div class="home-logo-container">
-                    <a href="/users/my/listings"><img class="home-logos my-2" src="https://dummyimage.com/50x50/000/fff" alt="View your listings"></a>
                     <h5 class="home-logo-descriptions white-design-text"><a class="text-light" href="/users/my/listings">View your listings</a></h5>
                 </div>
                 <div class="home-logo-container">
-                    <a href="/listings/create"><img class="home-logos my-2" src="https://dummyimage.com/50x50/000/fff" alt=""></a>
                     <h5 class="home-logo-descriptions white-design-text"><a class="text-light" href="/listings/create">List Item</a></h5>
                 </div>
+                <?php if(Auth::getAuthManager()->getUser()->getRole() == 'admin'): ?>
                 <div class="home-logo-container">
-                    <img class="home-logos my-2" src="https://dummyimage.com/50x50/000/fff" alt="">
-                    <h5 class="home-logo-descriptions white-design-text">Log out</h5>
+                    <h5 class="home-logo-descriptions white-design-text"><a class="text-light" href="/listings/adminControls">Admin Controls</a></h5>
                 </div>
+                <?php endif; ?>
             </div>
             <div class="py-2 home-grid-design home-image-misc categories-color">
                 <h2 style="color: white" class="home-welcome">Categories</h2>

@@ -250,6 +250,7 @@
 
 .home-logo-container {
     margin-left: 40px;
+    padding: 15px;
 }
 
 .home-logos {
@@ -272,6 +273,7 @@
 
 .home-logo-misc {
     margin-top: 50px;
+    vertical-align: top;
 }
 
 .home-welcome {
