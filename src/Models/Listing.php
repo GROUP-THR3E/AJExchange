@@ -16,7 +16,7 @@ class Listing extends ModelBase
     protected string $approvalStatus;
     protected int $userId;
     protected ?User $user;
-    protected ?int $purchaseId;
+    protected ?int $orderId;
 
     public function __construct(array $dbRow, array $imageUrls = [])
     {
@@ -121,10 +121,10 @@ class Listing extends ModelBase
     }
 
     /**
-     * @return int|null the id of the purchase of this listing, null if not yet purchased
+     * @return int|null the id of the order of this listing, null if not yet purchased
      */
-    public function getPurchaseId(): ?int
+    public function getOrderId(): ?int
     {
-        return $this->purchaseId ?? null;
+        return $this->orderId ?? null;
     }
 }

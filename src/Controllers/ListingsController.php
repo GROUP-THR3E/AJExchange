@@ -3,7 +3,7 @@
 use GroupThr3e\AJExchange\Constants\ApprovalStatus;
 use GroupThr3e\AJExchange\Util\Auth;
 use GroupThr3e\AJExchange\Util\ListingDataset;
-use GroupThr3e\AJExchange\Util\PurchaseDataset;
+use GroupThr3e\AJExchange\Util\OrderDataset;
 use GroupThr3e\AJExchange\Util\View;
 use Slim\App;
 use Slim\Psr7\Request;
@@ -78,8 +78,8 @@ return function(App $app) {
     });
 
     $app->post('/listings/{listingId:[0-9]+}/order', function (Request $request, Response $response, array $args) {
-        $purchaseDataset = new PurchaseDataset();
-        $result = $purchaseDataset->makePurchase($args['listingId']);
+        $orderDataset = new OrderDataset();
+        $result = $orderDataset->makeOrder($args['listingId']);
         if (is_string($result))
             return $response->withHeader('Location', "/listings/{$args['listingId']}")->withStatus(302);
 
