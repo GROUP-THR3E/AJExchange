@@ -50,6 +50,7 @@ return function(App $app) {
         $images = $request->getUploadedFiles();
         $dataset = new ListingDataset();
         $arrayError = [];
+        $charities = ['charityOne', 'charityTwo', 'charityThree'];
 
         if (trim($params['inputTitle'] == '')) {
             $arrayError[] = 'Your title is empty!';
@@ -68,19 +69,23 @@ return function(App $app) {
         if(!isset($params['listingType'])) {
             $arrayError[] ='You need to select one of the 3 exchange options!';
         }
-        elseif(($params['listingType'] === 'sell')) {
+        elseif((isset($params['checkCharity']) && ($params['listingType'] !== 'sell' || !in_array($params['charity'], $charities)))
+            || (in_array($params['charity'],$charities) && ($params['listingType'] !== 'sell' || !isset($params['checkCharity']))))
+        {
+            $arrayError[] = "Only the proceeds from sales can be donated to charity, make sure the confirmation & charity are selected!";
+        }
+        elseif($params['listingType'] === 'sell') {
             if(trim($params['inputPrice'] == '')) {
                 $arrayError[] = 'Your sell amount is empty!';
             }
-            elseif(!is_numeric(trim($params['inputPrice'])))
-            {
+            elseif(!is_numeric(trim($params['inputPrice']))) {
                 $arrayError[] = 'This is not a valid sell number!';
             }
             elseif(trim($params['inputPrice']) > 100000 || trim($params['inputPrice'] < 1)) {
                 $arrayError[] = 'Your item is either too expensive or a negative value! (Min: £1 | Max: £100,000)';
             }
         }
-        elseif(($params['listingType'] === 'exchange')) {
+        elseif($params['listingType'] === 'exchange') {
             if(trim($params['inputItem'] == '')) {
                 $arrayError[] = 'Your exchange item is empty!';
             }
@@ -88,7 +93,7 @@ return function(App $app) {
                 $arrayError[] = 'Your item name is too long! (Max characters: 50)';
             }
         }
-        elseif(($params['listingType'] === 'giveaway')) {
+        elseif($params['listingType'] === 'giveaway') {
             if (!isset($params['checkConf'])) {
                 $arrayError[] ='You need to confirm your giveaway!';
             }
