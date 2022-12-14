@@ -12,12 +12,14 @@ class HomeDataset extends DatasetBase
     public function getHomepage(): HomepageData
     {
         $approved = ApprovalStatus::APPROVED;
+        $ownId = Auth::getAuthManager()->getUser()->getUserId();
 
         $listingQuery =
             "SELECT * FROM Listing
              LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId
              WHERE type = :type AND approvalStatus = '$approved'
              AND imageIndex = 1
+             AND userId != $ownId
              LIMIT 4";
 
         $statement = $this->dbHandle->prepare($listingQuery);
