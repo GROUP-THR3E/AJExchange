@@ -19,7 +19,7 @@ $title = "Search page";
             <div class="form-check">
                 <form action="/listings/search"  method="GET">
                     <h6>Trade Method</h6>
-                    <input type="hidden" value="<?=$params['query']?>" name="query">
+                    <input type="hidden" value="<?=isset($params['query']) ?? $params['query'] ?>" name="query">
                     <input class="form-check-input" type="radio" id="trade_selling" name="type" value="sell" <?= isset($params['type']) && $params['type'] === 'sell' ? 'checked': '' ?>>
                     <label for="trade_selling">Selling</label><br>
                     <input class="form-check-input" type="radio" id="trade_exchange" name="type" value="exchange" <?= isset($params['type']) && $params['type'] === 'exchange' ? 'checked': '' ?>>
