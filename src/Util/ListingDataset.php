@@ -40,7 +40,7 @@ class ListingDataset extends DatasetBase
         $statement = $this->dbHandle->prepare($query);
         $statement->execute(['listingId' => $listingId]);
         $result = $statement->fetch();
-        return new Listing($result, explode(',', $result['imageUrls']));
+        return new Listing($result);
     }
 
     /**
@@ -103,7 +103,7 @@ class ListingDataset extends DatasetBase
 
         $results = [];
         foreach ($statement->fetchAll() as $result) {
-            $results[] = new Listing($result, explode(',', $result['imageUrls']));
+            $results[] = new Listing($result);
         }
         return $results;
     }

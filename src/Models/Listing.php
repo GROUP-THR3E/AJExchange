@@ -18,10 +18,10 @@ class Listing extends ModelBase
     protected ?User $user;
     protected ?int $orderId;
 
-    public function __construct(array $dbRow, array $imageUrls = [])
+    public function __construct(array $dbRow)
     {
         parent::__construct($dbRow);
-        $this->imageUrls = $imageUrls;
+        $this->imageUrls = explode(',', $dbRow['imageUrls']);
     }
 
     /**
@@ -118,7 +118,7 @@ class Listing extends ModelBase
     public function getUser(): ?User
     {
         return $this->user;
-    }
+       }
 
     /**
      * @return int|null the id of the order of this listing, null if not yet purchased
