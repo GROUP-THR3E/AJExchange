@@ -15,7 +15,7 @@ $title = 'index';
     <div class="home-grid-container my-4">
         <div>
             <h5 class="home-image-titles">Recent sales</h5>
-            <div class="view-extra-home-images home-grid-design d-flex flex-row gap-5 my-2 text-center home-image-design">
+            <div class="home-welcome-images view-extra-home-images home-grid-design d-flex flex-row gap-5 my-2 text-center home-image-design">
                 <?php foreach($data->recentSales as $recentSale): ?>
                 <div class="home-image-containers">
                     <a href="/listings/<?= $recentSale->getListingId() ?>">
@@ -28,7 +28,7 @@ $title = 'index';
                 <?php endforeach; ?>
             </div>
             <h5  class="home-image-titles">Recent exchanges</h5>
-            <div class="view-extra-home-images home-grid-design d-flex flex-row gap-5 my-2 text-center home-image-design">
+            <div class="home-welcome-images view-extra-home-images home-grid-design d-flex flex-row gap-5 my-2 text-center home-image-design">
                 <?php foreach($data->recentExchanges as $recentExchange): ?>
                 <div class="home-image-containers">
                     <a href="/listings/<?= $recentExchange->getListingId() ?>">
@@ -41,7 +41,7 @@ $title = 'index';
                 <?php endforeach; ?>
             </div>
             <h5  class="home-image-titles">Recent giveaways</h5>
-            <div class="view-extra-home-images home-grid-design d-flex flex-row gap-5 my-2 text-center home-image-design">
+            <div class="home-welcome-images view-extra-home-images home-grid-design d-flex flex-row gap-5 my-2 text-center home-image-design">
                 <?php foreach($data->recentGiveaways as $recentGiveaway): ?>
                 <div class="home-image-containers">
                     <a href="/listings/<?= $recentGiveaway->getListingId() ?>">
