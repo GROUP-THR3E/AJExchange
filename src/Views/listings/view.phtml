@@ -32,7 +32,9 @@ $title = 'listing';
         <h4>Is giving away</h4>
         <?php endif; ?>
         <?php if ($listing->getApprovalStatus() === ApprovalStatus::APPROVED): ?>
-        <button type="submit" class="btn btn-primary w-100 mt-4">Submit</button>
+        <form class="m-4" action="/listings/<?= $listing->getListingId() ?>/order" method="post">
+            <button type="submit" class="btn btn-primary w-100 mt-4">Submit</button>
+        </form>
         <?php elseif ($listing->getApprovalStatus() === ApprovalStatus::PENDING && Auth::getAuthManager()->getUser()->getRole() === 'admin'): ?>
         <div class="d-flex gap-2 mt-4">
             <form class="m-0" action="/listings/<?= $listing->getListingId() ?>/setApproval" method="post">
