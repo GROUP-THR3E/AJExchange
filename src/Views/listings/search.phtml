@@ -10,22 +10,20 @@ use GroupThr3e\AJExchange\Util\View;
 
 $title = "Search page";
 ?>
-<div class="outerDiv search-grid-container mx-auto p-3 m-5">
+<div class="search-title-div"><h4 class="search-title">Displaying search results for "<?= $params['query'] ?>"</h4></div>
+<div class="outerDiv search-grid-container mx-auto search-margin search-padding">
     <div class="listing-filters-grid">
-        <div class="listings-filters-menu ">
-            <div class="mb-2">
-                <strong>Filters:</strong>
-            </div>
+        <div class="listings-filters-menu search-padding">
             <div class="form-check">
                 <form action="/listings/search"  method="GET">
-                    <h6>Exchange Method</h6>
+                    <h6 class="filter-title">Exchange Method</h6>
                     <input type="hidden" value="<?=$params['query']?>" name="query">
                     <?php if(in_array("sell", $params)):?>
                     <input class="form-check-input" type="checkbox" id="trade_selling" name="type" value="sell" checked>
                     <?php else:?>
                     <input class="form-check-input" type="checkbox" id="trade_selling" name="type" value="sell">
                     <?php endif;?>
-                    <label for="trade_selling">Selling</label><br>
+                    <label for="trade_selling">Sell</label><br>
                     <?php if(in_array("exchange", $params)):?>
                     <input class="form-check-input" type="checkbox" id="trade_exchange" name="type" value="exchange" checked>
                     <?php else:?>
@@ -39,48 +37,47 @@ $title = "Search page";
                     <?php endif;?>
                     <label for="trade_giveaway">Giveaway</label><br>
                     <hr class="filter-separation mt-2 mb-3"/>
-                    <h6>Price Range</h6>
+                    <h6 class="filter-title">Price Range</h6>
                     <input class="form-check-input" type="checkbox" id="price_1" name="price" value=1>
-                    <label for="price_1">£0-£50</label><br>
+                    <label for="price_1">Under £50</label><br>
                     <input class="form-check-input" type="checkbox" id="price_2" name="price" value=2>
-                    <label id = "filter-label" for="price_2">£50-£100</label><br>
+                    <label id="filter-label" for="price_2">£50 to £100</label><br>
                     <input class="form-check-input" type="checkbox" id="price_3" name="price" value=3>
-                    <label id = "filter-label" for="price_3">£100 <</label><br>
+                    <label id="filter-label" for="price_3">Over £100</label><br>
                     <hr class="filter-separation mt-2 mb-3"/>
-                    <h6>Categories</h6>
+                    <h6 class="filter-title">Categories</h6>
                     <input class="form-check-input" type="checkbox" id="category_1" name="category" value=3>
                     <label for="category_1">Category 1</label><br>
                     <input class="form-check-input" type="checkbox" id="category_2" name="category" value=4>
-                    <label id = "category_2" for="price_2">Category 2</label><br>
+                    <label for="category_2">Category 2</label><br>
                     <input class="form-check-input" type="checkbox" id="category_3" name="category" value=5>
-                    <label id = "category_3" for="price_3">Category 3</label><br>
+                    <label for="category_3">Category 3</label><br>
                     <hr class="filter-separation mt-2 mb-3"/>
-                    <button type="submit" class="btn btn-primary" value="Submit">Submit</button>
+                    <button type="submit" class="btn btn-primary btn-filters" value="Submit">Apply</button>
                 </form>
             </div>
         </div>
     </div>
-    <div class="listing-search-results">
+    <div class="listing-search-results search-padding">
         <?php if(!empty($listings)):?>
             <?php foreach($listings as $listing): ?>
-                <div class="listing-search-result">
-                    <div>
+                <div class="listing-search-result search-description-background">
+                    <div class="search-description-image">
                         <a href="<?= $listing->getListingID() ?>">
                         <img class="listing-search-result-image" alt="" src="<?= $this->listingImage($listing->getImageUrls()[0]) ?>">
                     </a>
                     </div>
-                    <div class= "listing-search-result-description">
-                    <a href="<?= $listing->getListingID() ?>"><h3><?= htmlspecialchars($listing->getListingName()) ?></h3></a>
-                    <h5>Description: <?= htmlspecialchars($listing->getListingName($listing->getDescription())) ?></h5>
+                    <div class= "listing-search-result-description search-link-style text-overflow">
+                    <a class="search-link-style" href="<?= $listing->getListingID() ?>"><h4><?= htmlspecialchars($listing->getListingName()) ?></h4></a>
+                    <h6 class="search-description-style"><?= $listing->getUser()->getFullName() ?>, <?= $listing->getUser()->getOffice()->getOfficeName() ?></h6>
                     <?php if($listing->getType()=='sell'): ?>
-                        <h6>Price: £<?= htmlspecialchars($listing->getPrice()) ?> </h6>
+                        <h6><span class="search-description-style">Selling for: </span></h6><h3>£<?= htmlspecialchars($listing->getPrice()) ?></h3>
                     <?php elseif($listing->getType()=='exchange'): ?>
-                        <h6>Exchange for: <?= htmlspecialchars($listing->getDesiredItem()) ?></h6>
+                        <h6><span class="search-description-style">Exchanging for: </span></h6><h3><?= htmlspecialchars($listing->getDesiredItem()) ?></h3>
                     <?php elseif($listing->getType()=='giveaway'): ?>
-                        <h6>Giving away</h6>
+                        <h3>Giving away</span></h3>
                     <?php endif; ?>
-                    <h6>Seller name: <?= $listing->getUser()->getFullName() ?></h6>
-                    <h6>Location: <?= $listing->getUser()->getOffice()->getAddress() ?></h6>
+                    <h6><?= htmlspecialchars($listing->getDescription($listing->getDescription())) ?></h6>
                     </div>
                 </div>
             <?php endforeach; ?>

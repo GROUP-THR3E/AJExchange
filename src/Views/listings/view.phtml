@@ -20,28 +20,35 @@ $title = 'listing';
         <div>
             <h1><?= htmlspecialchars($listing->getListingName()) ?></h1>
         </div>
-        <div><h6><?= $listing->getUser()->getOffice()->getAddress() ?>Office</h6></div>
+        <div><h6><?= $listing->getUser()->getOffice()->getAddress() ?> Office</h6></div>
     </div>
     <div class="view-listing-interact listing-grid-design">
         <?php if($listing->getType()=='sell'): ?>
-        <h4 class="zero-margin"><span><?= $listing->getUser()->getFullName() ?></span> is selling for: </h4>
+        <h4 class="zero-margin"><?= $listing->getUser()->getFullName() ?> is selling for:</h4>
         <h4><span class="emphasise-item-text">£<?= htmlspecialchars($listing->getPrice()) ?></h4>
         <?php elseif($listing->getType()=='exchange'): ?>
-        <h4>Is exchanging for:<span class="emphasise-item-text"><?= htmlspecialchars($listing->getDesiredItem()) ?></span></h4>
+        <h4 class="zero-margin"><?= $listing->getUser()->getFullName() ?> Is exchanging for:</h4>
+        <h4><span class="emphasise-item-text"><?= htmlspecialchars($listing->getDesiredItem()) ?></span></h4>
         <?php elseif($listing->getType()=='giveaway'): ?>
-        <h4>Is giving away</h4>
+        <h4 class="zero-margin"><?= $listing->getUser()->getFullName() ?> would like to give this item away:</h4>
         <?php endif; ?>
         <?php if ($listing->getApprovalStatus() === ApprovalStatus::APPROVED): ?>
-        <button type="submit" class="btn btn-primary w-100 mt-4">Submit</button>
+            <?php if($listing->getType()=='sell'): ?>
+                <button type="submit" class="btn btn-primary btn-secondary w-100">Purchase</button>
+            <?php elseif($listing->getType()=='exchange'): ?>
+                <button type="submit" class="btn btn-primary btn-secondary w-100">Exchange</button>
+            <?php elseif($listing->getType()=='giveaway'): ?>
+                <button type="submit" class="btn btn-primary btn-secondary w-100">Accept</button>
+            <?php endif; ?>
         <?php elseif ($listing->getApprovalStatus() === ApprovalStatus::PENDING && Auth::getAuthManager()->getUser()->getRole() === 'admin'): ?>
         <div class="d-flex gap-2 mt-4">
             <form class="m-0" action="/listings/<?= $listing->getListingId() ?>/setApproval" method="post">
                 <input type="hidden" name="approvalStatus" value="<?= ApprovalStatus::APPROVED ?>">
-                <button type="submit" class="btn btn-primary">Approve</button>
+                <button type="submit" class="btn btn-primary btn-secondary ">Approve</button>
             </form>
             <form class="m-0" action="/listings/<?= $listing->getListingId() ?>/setApproval" method="post">
                 <input type="hidden" name="approvalStatus" value="<?= ApprovalStatus::DENIED ?>">
-                <button type="submit" class="btn btn-primary">Deny</button>
+                <button type="submit" class="btn btn-primary btn-secondary ">Deny</button>
             </form>
         </div>
         <?php endif; ?>
@@ -54,9 +61,8 @@ $title = 'listing';
                 <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 4</a></li>
                 <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 5</a></li>
                 <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 6</a></li>
+                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 7</a></li>
             </ul>
-        </div>
-        <div class="listing-grid-design">
         </div>
     </div>
     <div class="view-listing-extra-images listing-grid-design d-flex flex-column gap-2">
