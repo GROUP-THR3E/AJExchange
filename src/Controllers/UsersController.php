@@ -20,7 +20,7 @@ return function(App $app) {
 
         // Returns login form with an error if unsuccessful, redirects if successful
         if (is_string($loginResult)) {
-            $view = View::render('users/login', ['error' => $loginResult]);
+            $view = View::render('users/login', ['error' => 'Incorrect Email or Password... try again!']);
             $response->getBody()->write($view);
         } else {
             $response = $response->withHeader('Location', '/')->withStatus(302);
