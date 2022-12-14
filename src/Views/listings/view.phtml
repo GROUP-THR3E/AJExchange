@@ -10,6 +10,7 @@ use GroupThr3e\AJExchange\Util\Auth;
 use GroupThr3e\AJExchange\Util\View;
 
 $title = 'listing';
+$user = Auth::getAuthManager()->getUser();
 ?>
 
 <div class="view-listing-grid-container my-5 listing-grid-design mx-auto">
@@ -23,19 +24,25 @@ $title = 'listing';
         <div><h6><?= $listing->getUser()->getOffice()->getAddress() ?>Office</h6></div>
     </div>
     <div class="view-listing-interact listing-grid-design">
+        <h4><?= $listing->getUser()->getFullName() ?></h4>
         <?php if($listing->getType()=='sell'): ?>
-        <h4 class="zero-margin"><span><?= $listing->getUser()->getFullName() ?></span> is selling for: </h4>
+        <h4 class="zero-margin">
+            <?= $listing->getOrderId() === null ? 'is selling' : 'had sold' ?> for:
+        </h4>
         <h4><span class="emphasise-item-text">£<?= htmlspecialchars($listing->getPrice()) ?></h4>
         <?php elseif($listing->getType()=='exchange'): ?>
-        <h4>Is exchanging for:<span class="emphasise-item-text"><?= htmlspecialchars($listing->getDesiredItem()) ?></span></h4>
+        <h4>
+            <?= $listing->getOrderId() === null ? 'Is exchanging' : 'Was exchanged' ?> for:
+            <span class="emphasise-item-text"><?= htmlspecialchars($listing->getDesiredItem()) ?></span>
+        </h4>
         <?php elseif($listing->getType()=='giveaway'): ?>
-        <h4>Is giving away</h4>
+        <h4><?= $listing->getOrderId() === null ? 'Is giving' : 'Has given' ?> away</h4>
         <?php endif; ?>
-        <?php if ($listing->getApprovalStatus() === ApprovalStatus::APPROVED): ?>
+        <?php if ($listing->getApprovalStatus() === ApprovalStatus::APPROVED && $listing->getUserId() !== $user->getUserId() && $listing->getOrderId() === null): ?>
         <form class="m-4" action="/listings/<?= $listing->getListingId() ?>/order" method="post">
             <button type="submit" class="btn btn-primary w-100 mt-4">Order</button>
         </form>
-        <?php elseif ($listing->getApprovalStatus() === ApprovalStatus::PENDING && Auth::getAuthManager()->getUser()->getRole() === 'admin'): ?>
+        <?php elseif ($listing->getApprovalStatus() === ApprovalStatus::PENDING && $user->getRole() === 'admin' && $listing->getOrderId() === null): ?>
         <div class="d-flex gap-2 mt-4">
             <form class="m-0" action="/listings/<?= $listing->getListingId() ?>/setApproval" method="post">
                 <input type="hidden" name="approvalStatus" value="<?= ApprovalStatus::APPROVED ?>">
