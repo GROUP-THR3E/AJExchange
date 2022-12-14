@@ -51,6 +51,7 @@ $title = 'Create Listing';
                     <td><input type="text" class="form-control" name="inputItem" id="inputItem" minlength="3" maxlength="50" placeholder="Item"></td>
                 </tr>
                 <tr>
+
                     <td><input class="form-check-input me-1" type="radio" name="listingType" value="giveaway" <?= isset($params['listingType']) && $params['listingType'] === 'giveaway' ? 'checked' : '' ?>>Giveaway</td>
                     <td><input class="form-check-input" type="checkbox" name="checkConf" id="checkConf">
                         <label class="form-check-label" for="checkConf">Please Confirm</label></td>
