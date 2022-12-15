@@ -473,4 +473,45 @@
     background-color: #ffffff;
     outline: #f7f7f7 solid 2px;
     border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+}
+
+@media only screen and (min-width:0px) and (max-width: 768px) {
+    .home-grid-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .home-welcome-images {
+        background-color: #ffffff;
+        outline: #f7f7f7 solid 2px;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .home-image-titles {
+        font-size: 25px;
+        padding-right: 10px;
+    }
+
+    .home-image-containers {
+        margin-top: 20px;
+        margin-left: 10px;
+        width: 98%;
+    }
+
+    .home-images {
+        width: 100%;
+    }
+
+    .home-image-titles {
+        font-size: 50px;
+        padding-right: 10px;
+        text-align: center;
+    }
+
 }
