@@ -15,7 +15,7 @@ $title = 'index';
     <div class="home-grid-container my-4">
         <div>
             <h5 class="home-image-titles">Recent sales</h5>
-            <div class="home-welcome-images view-extra-home-images home-grid-design d-flex flex-row gap-5 my-2 text-center home-image-design">
+            <div class="home-welcome-images view-extra-home-images home-grid-design d-flex flex-row gap-5 my-2 text-center search-link-style">
                 <?php foreach($data->recentSales as $recentSale): ?>
                 <div class="home-image-containers">
                     <a href="/listings/<?= $recentSale->getListingId() ?>">
