@@ -514,4 +514,37 @@
         text-align: center;
     }
 
+    .listings-filters-menu {
+        padding: 20px 0;
+        font-size: 12px;
+        text-align: left;
+    }
+
+    .search-title-div {
+        margin-top: 10px;
+        padding-left: 2px;
+        width: 100%;
+    }
+
+    .search-grid-container {
+        column-gap: 5px;
+        row-gap: 5px;
+        display:flex;
+        padding: 2px;
+        text-align: center;
+    }
+
+    .listing-search-result {
+        display: flex;
+        margin: 5px;
+        padding: 2px;
+        font-size: 5px;
+        column-gap: 10px;
+        flex-direction: column;
+    }
+
+    .listing-search-result-image {
+        width: 100%;
+    }
+
 }
