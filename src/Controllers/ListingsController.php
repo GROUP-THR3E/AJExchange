@@ -25,9 +25,9 @@ return function(App $app) {
     $app->get('/listings/adminControls', function (Request $request, Response $response) {
         $params = $request->getQueryParams();
         $dataset = new ListingDataset();
-        $listings = $dataset->searchListings(approvalStatus: $params['approvalStatus']);
+        $listings = $dataset->searchListings(approvalStatus: $params['approvalStatus'] ?? null);
         if (strcmp('admin',Auth::getAuthManager()->getUser()->getRole()) === 0) {
-            $view = View::render('listings/adminControls', ['listings' => $listings, 'approvalStatus' => $params['approvalStatus']]);
+            $view = View::render('listings/adminControls', ['listings' => $listings, 'approvalStatus' => $params['approvalStatus'] ?? '']);
             $response->getBody()->write($view);
         } else {
             return $response->withHeader('Location', '/')->withStatus(302);

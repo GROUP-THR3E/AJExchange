@@ -20,7 +20,7 @@ $title = "Search page";
                 <form action="/listings/search"  method="GET">
                     <h6 class="filter-title">Trade Method</h6>
                     <?php if(!empty($params['query'])): ?>
-                        <input type="hidden" value="<?=$params['query']?>" name="query">
+                        <input type="hidden" value="<?= $params['query'] ?? '' ?>" name="query">
                     <?php else: ?>
                         <input type="hidden" value="" name="query">
                     <?php endif;?>
