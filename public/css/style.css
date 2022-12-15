@@ -547,4 +547,29 @@
         width: 100%;
     }
 
+    .create-listing-options-grid {
+        display: flex;
+        gap: 25px;
+        padding: 10px;
+        flex-wrap: wrap;
+    }
+
+    .create-listing-categories {
+        display: flex;
+        padding-top: 6px;
+        flex-direction: column;
+    }
+
+    .exchange-method-option {
+        display: flex;
+    }
+
+    .create-listing-image-container {
+        height: 100px;
+        width: 100px;
+        background-image: url(/public/images/addimage.png);
+        background-position: center;
+        background-size: contain;
+    }
+
 }
