@@ -69,6 +69,9 @@ return function(App $app) {
         $arrayError = [];
         $charities = ['charityOne', 'charityTwo', 'charityThree'];
         $imageError = true;
+        $tagsString = trim($params['inputTags'],", \n\r\t\v\x00");
+        $tagsString = preg_replace("/\s*,+\s*/", ',' ,$tagsString);
+        $tags = explode(',', $tagsString);
 
         foreach($images as $image )
         if($image->getError() === 0)
@@ -87,7 +90,7 @@ return function(App $app) {
         if(trim($params['description'] == '')) {
             $arrayError[] = 'Your description is empty!';
         }
-        elseif(strlen(trim($params['description'])) > 300) {
+        elseif(strlen(trim($params['description'])) > 200) {
             $arrayError[] = 'Your description is too long! (Max characters: 300)';
         }
 
@@ -99,8 +102,7 @@ return function(App $app) {
             $arrayError[] ='You need to select one of the 3 trade options!';
         }
         elseif((isset($params['checkCharity']) && ($params['listingType'] !== 'sell' || !in_array($params['charity'], $charities)))
-            || (in_array($params['charity'],$charities) && ($params['listingType'] !== 'sell' || !isset($params['checkCharity']))))
-        {
+            || (in_array($params['charity'],$charities) && ($params['listingType'] !== 'sell' || !isset($params['checkCharity'])))) {
             $arrayError[] = "Only the proceeds from sales can be donated to charity, make sure the confirmation & charity are selected!";
         }
         elseif($params['listingType'] === 'sell') {
@@ -127,6 +129,16 @@ return function(App $app) {
                 $arrayError[] ='You need to confirm your giveaway!';
             }
         }
+
+        if(!empty($params['inputTags'])) {
+            foreach($tags as $tag)
+                if(!preg_match("/^[a-zA-Z0-9_\-]{1,20}$/", $tag) || !preg_match('/[A-Za-z0-9]/', $tag))
+                {
+                    $arrayError[] ='Only Alphanumeric / Dashes / Underscores are allowed in your tags! (Max Char per tag: 20)';
+                    break;
+                }
+        }
+
         if(count($arrayError) > 0)
         {
             $view = View::render('/listings/create', ['errors' => $arrayError, 'params' => $params]);
