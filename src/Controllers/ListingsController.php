@@ -134,10 +134,10 @@ return function(App $app) {
 
         else {
             $dataset->createListing(
-                $params['inputTitle'],
-                $params['description'],
+                preg_replace('/\s+/', ' ', $params['inputTitle']),
+                preg_replace('/\s+/', ' ',$params['description']),
                 $params['listingType'] === 'sell' ? $params['inputPrice'] : null,
-                $params['listingType'] === 'exchange' ? $params['inputItem'] : null,
+                $params['listingType'] === 'exchange' ? preg_replace('/\s+/', ' ',$params['inputItem']) : null,
                 $params['listingType'],
                 [],
                 Auth::getAuthManager()->getUser()->getUserId(),
