@@ -74,6 +74,14 @@ return function(App $app) {
         $charityDataset = new CharityDataset();
         $charities = $charityDataset->getCharities();
         $charityIds = array_map(function(Charity $charity) { return $charity->getCharityId(); }, $charities);
+        $imageError = true;
+
+        foreach($images as $image )
+        if($image->getError() === 0)
+        {
+            $imageError = false;
+            break;
+        }
 
         if (trim($params['inputTitle'] == '')) {
             $arrayError[] = 'Your title is empty!';
@@ -89,8 +97,12 @@ return function(App $app) {
             $arrayError[] = 'Your description is too long! (Max characters: 300)';
         }
 
+        if($imageError) {
+            $arrayError[] = 'You must select at least 1 image!';
+        }
+
         if(!isset($params['listingType'])) {
-            $arrayError[] ='You need to select one of the 3 exchange options!';
+            $arrayError[] ='You need to select one of the 3 trade options!';
         }
         elseif((isset($params['checkCharity']) && ($params['listingType'] !== 'sell' || !in_array($params['charity'], $charityIds)))
             || (in_array($params['charity'], $charityIds) && ($params['listingType'] !== 'sell' || !isset($params['checkCharity']))))
@@ -128,10 +140,10 @@ return function(App $app) {
 
         else {
             $dataset->createListing(
-                $params['inputTitle'],
-                $params['description'],
+                preg_replace('/\s+/', ' ', $params['inputTitle']),
+                preg_replace('/\s+/', ' ',$params['description']),
                 $params['listingType'] === 'sell' ? $params['inputPrice'] : null,
-                $params['listingType'] === 'exchange' ? $params['inputItem'] : null,
+                $params['listingType'] === 'exchange' ? preg_replace('/\s+/', ' ',$params['inputItem']) : null,
                 $params['listingType'],
                 [],
                 Auth::getAuthManager()->getUser()->getUserId(),
