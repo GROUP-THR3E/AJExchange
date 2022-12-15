@@ -68,6 +68,14 @@ return function(App $app) {
         $dataset = new ListingDataset();
         $arrayError = [];
         $charities = ['charityOne', 'charityTwo', 'charityThree'];
+        $imageError = true;
+
+        foreach($images as $image )
+        if($image->getError() === 0)
+        {
+            $imageError = false;
+            break;
+        }
 
         if (trim($params['inputTitle'] == '')) {
             $arrayError[] = 'Your title is empty!';
@@ -83,8 +91,12 @@ return function(App $app) {
             $arrayError[] = 'Your description is too long! (Max characters: 300)';
         }
 
+        if($imageError) {
+            $arrayError[] = 'You must select at least 1 image!';
+        }
+
         if(!isset($params['listingType'])) {
-            $arrayError[] ='You need to select one of the 3 exchange options!';
+            $arrayError[] ='You need to select one of the 3 trade options!';
         }
         elseif((isset($params['checkCharity']) && ($params['listingType'] !== 'sell' || !in_array($params['charity'], $charities)))
             || (in_array($params['charity'],$charities) && ($params['listingType'] !== 'sell' || !isset($params['checkCharity']))))
