@@ -133,7 +133,7 @@ class ListingDataset extends DatasetBase
      * @return bool return true of the creation was successful
      */
     public function createListing(string $name, string $description, ?float $price, ?string $desiredItem, string $type,
-                                  array $tags, int $userId, array $images, int $charityId): bool
+                                  array $tags, int $userId, array $images, ?int $charityId): bool
     {
         $query = 'INSERT INTO Listing (listingName, description, price, desiredItem, type, dateListed, approvalStatus, userId, orderId, charityId)
                   VALUES (:listingName, :description, :price, :desiredItem, :type, :dateListed, :approvalStatus, :userId, NULL, :charityId)';
@@ -169,7 +169,10 @@ class ListingDataset extends DatasetBase
             $imageIndex++;
         }
 
-        return $imageIndex;
+        $tagDataset = new TagDataset();
+        $tagDataset->addListingTags($listingId, $tags);
+
+        return $listingId;
     }
 
     /**
