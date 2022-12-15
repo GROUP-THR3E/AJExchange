@@ -52,30 +52,45 @@ class ListingDataset extends DatasetBase
                                    ?int $userId = null, ?string $approvalStatus = null, bool $hideOwnListings = false,
                                    bool $showOrdered = true, int $limit = 20, int $offset = 0): array
     {
-        $sqlQuery = sprintf(
-            'SELECT listingId, listingName, description, price, desiredItem, type, dateListed, approvalStatus, 
-                    orderId, charityId, charityName, userId, email, password, fullName, role, officeId, officeName, address, GROUP_CONCAT(filename) as imageUrls
+        $filterTags = sizeof($tags) > 0;
+        $tagFilter = 'FIND_IN_SET(:tag0, tags) ';
+        for ($i = 1; $i < sizeof($tags); $i++) {
+            $tagFilter .= "AND FIND_IN_SET(:tag$i, tags) ";
+        }
+
+        $tagSelect = $filterTags ? ',tag': '';
+        $tagGroup = $filterTags ? ', GROUP_CONCAT(tag) as tags': '';
+        $tagQuery = $filterTags ? 'INNER JOIN ListingTag ON Listing.listingId = ListingTag.listingId': '';
+        $hideOwnListingsFilter =  $hideOwnListings ? 'AND Listing.userId <> :ownUserId' : '';
+        $typeFilter = $type === null ? '' : 'AND type = :type';
+        $officeFilter = $officeId === null ? '' : 'AND User.officeId = :officeId';
+        $userFilter = $userId === null ? '' : 'AND Listing.userId = :userId';
+        $approvalFilter = $approvalStatus === null ? '' : 'AND approvalStatus = :approvalStatus';
+        $showOrderedFilter = $showOrdered ? '' : 'AND orderId IS NULL';
+
+        $sqlQuery =
+            "SELECT listingId, listingName, description, price, desiredItem, type, dateListed, approvalStatus, 
+                    orderId, charityId, charityName, userId, email, password, fullName, role, officeId, officeName, 
+                    address, GROUP_CONCAT(filename) as imageUrls $tagGroup
             FROM (
-                SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, filename, charityName FROM Listing
+                SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, filename, 
+                       charityName $tagSelect FROM Listing
                 INNER JOIN User ON Listing.userId = User.userId
                 INNER JOIN Office ON User.officeId = Office.officeId
                 LEFT JOIN Charity ON Listing.charityId = Charity.charityId 
                 LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId
+                $tagQuery
                 WHERE listingName LIKE :query
                 AND imageIndex = 1
-                %s %s %s %s %s %s
+                $hideOwnListingsFilter $typeFilter $officeFilter $userFilter $approvalFilter $showOrderedFilter 
                 ORDER BY Listing.listingId, ListingImage.imageIndex
             ) as Results
             GROUP BY listingId
+            HAVING $tagFilter
             LIMIT :limit OFFSET :offset;
-            ',
-            $hideOwnListings ? 'AND Listing.userId <> :ownUserId' : '',
-            $type === null ? '' : 'AND type = :type',
-            $officeId === null ? '' : 'AND User.officeId = :officeId',
-            $userId === null ? '' : 'AND Listing.userId = :userId',
-            $approvalStatus === null ? '' : 'AND approvalStatus = :approvalStatus',
-            $showOrdered ? '' : 'AND orderId IS NULL'
-        );
+            ";
+
+
 
         $sqlParams = ['query' => "%$query%"];
         if ($hideOwnListings) {
@@ -88,6 +103,9 @@ class ListingDataset extends DatasetBase
             $sqlParams['userId'] = $userId;
         } if ($approvalStatus !== null) {
             $sqlParams['approvalStatus'] = $approvalStatus;
+        } if ($filterTags) {
+            for ($i = 0; $i < sizeof($tags); $i++)
+                $sqlParams["tag$i"] = $tags[$i];
         }
 
         $sqlParams['limit'] = $limit;
@@ -160,7 +178,7 @@ class ListingDataset extends DatasetBase
      * @param string $approvalStatus the approval status to set the listing to
      * @return bool
      */
-    public function setApproval(int $listingId, string $approvalStatus)
+    public function setApproval(int $listingId, string $approvalStatus): bool
     {
         $query = 'UPDATE Listing SET approvalStatus = :approvalStatus WHERE listingId = :listingId';
         $statement = $this->dbHandle->prepare($query);
