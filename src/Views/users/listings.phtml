@@ -45,6 +45,9 @@ $title = "My listings";
                     <h5>Description: <?= $listing->getDescription() ?></h5>
                     <?php if($listing->getType()=='sell'): ?>
                         <h6>Price: £<?= $listing->getPrice() ?> </h6>
+                        <?php if ($listing->getCharity() !== null): ?>
+                            <h6>Proceeds go to <?= $listing->getCharity()->getCharityName() ?></h6>
+                        <?php endif; ?>
                     <?php elseif($listing->getType()=='exchange'): ?>
                         <h6>Exchange for: <?= $listing ->getDesiredItem() ?></h6>
                     <?php elseif($listing->getType()=='giveaway'): ?>

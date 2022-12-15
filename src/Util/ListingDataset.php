@@ -16,20 +16,14 @@ class ListingDataset extends DatasetBase
     public function getListing(int $listingId): Listing
     {
         $query = '
-            SELECT * FROM Listing 
-            INNER JOIN User ON Listing.userId = User.userId
-            INNER JOIN Office ON User.officeId = Office.officeId
-            LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId    
-            WHERE ListingImage.listingId = :listingId
-            GROUP BY Listing.listingId';
-
-        $query = '
-        SELECT listingId, listingName, description, price, desiredItem, type, dateListed, approvalStatus, orderId, userId, email, 
-               password, fullName, role, officeId, officeName, address, GROUP_CONCAT(filename) as imageUrls
+        SELECT listingId, listingName, description, price, desiredItem, type, dateListed, approvalStatus, orderId, 
+               charityId, charityName, userId, email, password, fullName, role, officeId, officeName, address, 
+               GROUP_CONCAT(filename) as imageUrls
         FROM (
-            SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, filename FROM Listing
+            SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, filename, charityName FROM Listing
             INNER JOIN User ON Listing.userId = User.userId
             INNER JOIN Office ON User.officeId = Office.officeId
+            LEFT JOIN Charity ON Listing.charityId = Charity.charityId
             LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId
             WHERE Listing.listingId = :listingId
             ORDER BY Listing.listingId, ListingImage.imageIndex
@@ -60,11 +54,12 @@ class ListingDataset extends DatasetBase
     {
         $sqlQuery = sprintf(
             'SELECT listingId, listingName, description, price, desiredItem, type, dateListed, approvalStatus, 
-                    orderId, userId, email, password, fullName, role, officeId, officeName, address, GROUP_CONCAT(filename) as imageUrls
+                    orderId, charityId, charityName, userId, email, password, fullName, role, officeId, officeName, address, GROUP_CONCAT(filename) as imageUrls
             FROM (
-                SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, filename FROM Listing
+                SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, filename, charityName FROM Listing
                 INNER JOIN User ON Listing.userId = User.userId
                 INNER JOIN Office ON User.officeId = Office.officeId
+                LEFT JOIN Charity ON Listing.charityId = Charity.charityId 
                 LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId
                 WHERE listingName LIKE :query
                 AND imageIndex = 1
