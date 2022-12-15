@@ -60,4 +60,44 @@ class TagDataset extends DatasetBase
         foreach ($tags as $tag)
             $insertListingTag->execute(['tag' => $tag, 'listingId' => $listingId]);
     }
+
+    /**
+     * Chnges the value of listingCount for all the given tags
+     * @param array $tags the tags to update the listing count of
+     * @param int $num the amount to alter the listing counts by
+     */
+    private function changeCounts(array $tags, int $num)
+    {
+        // Prepares string for IN condition
+        $tagsQuery = 'tag IN (';
+        $sqlParams = [];
+        for ($i = 0; $i < sizeof($tags); $i++) {
+            $tagsQuery .= ":tag$i,";
+            $sqlParams["tag$i"] = $tags[$i];
+        }
+        $tagsQuery = rtrim($tagsQuery, ',');
+        $tagsQuery .= ')';
+
+        // Updates all counts
+        $statement = $this->dbHandle->prepare("UPDATE Tag SET taggedListings = taggedListings + $num WHERE $tagsQuery");
+        $statement->execute($sqlParams);
+    }
+
+    /**
+     * Increases the value of listingTag by one for the all the given tags
+     * @param array $tags
+     */
+    public function increaseCounts(array $tags)
+    {
+        $this->changeCounts($tags, 1);
+    }
+
+    /**
+     * Dereases the value of listingTag by one for the all the given tags
+     * @param array $tags
+     */
+    public function decreaseCounts(array $tags)
+    {
+        $this->changeCounts($tags, -1);
+    }
 }

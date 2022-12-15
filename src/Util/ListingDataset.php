@@ -18,12 +18,13 @@ class ListingDataset extends DatasetBase
         $query = '
         SELECT listingId, listingName, description, price, desiredItem, type, dateListed, approvalStatus, orderId, 
                charityId, charityName, userId, email, password, fullName, role, officeId, officeName, address, 
-               GROUP_CONCAT(filename) as imageUrls
+               GROUP_CONCAT(tag) as tags, GROUP_CONCAT(filename) as imageUrls
         FROM (
-            SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, filename, charityName FROM Listing
+            SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, tag, filename, charityName FROM Listing
             INNER JOIN User ON Listing.userId = User.userId
             INNER JOIN Office ON User.officeId = Office.officeId
             LEFT JOIN Charity ON Listing.charityId = Charity.charityId
+            LEFT JOIN ListingTag ON Listing.listingId = ListingTag.listingId 
             LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId
             WHERE Listing.listingId = :listingId
             ORDER BY Listing.listingId, ListingImage.imageIndex
@@ -50,12 +51,12 @@ class ListingDataset extends DatasetBase
      */
     public function searchListings(string $query = '', array $tags = [], ?string $type = null, ?int $officeId = null,
                                    ?int $userId = null, ?string $approvalStatus = null, bool $hideOwnListings = false,
-                                   bool $showOrdered = true, int $limit = 20, int $offset = 0): array
+                                   bool $showOrdered = true, int $limit = 1000000000, int $offset = 0): array
     {
         $filterTags = sizeof($tags) > 0;
-        $tagFilter = 'FIND_IN_SET(:tag0, tags) ';
+        $tagFilterFunc = 'FIND_IN_SET(:tag0, tags) ';
         for ($i = 1; $i < sizeof($tags); $i++) {
-            $tagFilter .= "AND FIND_IN_SET(:tag$i, tags) ";
+            $tagFilterFunc .= "AND FIND_IN_SET(:tag$i, tags) ";
         }
 
         $tagSelect = $filterTags ? ',tag': '';
@@ -67,6 +68,7 @@ class ListingDataset extends DatasetBase
         $userFilter = $userId === null ? '' : 'AND Listing.userId = :userId';
         $approvalFilter = $approvalStatus === null ? '' : 'AND approvalStatus = :approvalStatus';
         $showOrderedFilter = $showOrdered ? '' : 'AND orderId IS NULL';
+        $tagFilter = $filterTags ? "HAVING $tagFilterFunc": '';
 
         $sqlQuery =
             "SELECT listingId, listingName, description, price, desiredItem, type, dateListed, approvalStatus, 
@@ -86,7 +88,7 @@ class ListingDataset extends DatasetBase
                 ORDER BY Listing.listingId, ListingImage.imageIndex
             ) as Results
             GROUP BY listingId
-            HAVING $tagFilter
+            $tagFilter
             LIMIT :limit OFFSET :offset;
             ";
 
@@ -179,12 +181,24 @@ class ListingDataset extends DatasetBase
      * Sets the approval status of the listing of the given id
      * @param int $listingId the id of the listing to update
      * @param string $approvalStatus the approval status to set the listing to
-     * @return bool
      */
-    public function setApproval(int $listingId, string $approvalStatus): bool
+    public function setApproval(int $listingId, string $approvalStatus)
     {
+        // Updates the approval status of the query
         $query = 'UPDATE Listing SET approvalStatus = :approvalStatus WHERE listingId = :listingId';
         $statement = $this->dbHandle->prepare($query);
-        return $statement->execute(['approvalStatus' => $approvalStatus, 'listingId' => $listingId]);
+        $statement->execute(['approvalStatus' => $approvalStatus, 'listingId' => $listingId]);
+
+        // If it is being approved increase the listing count of each of the tags
+        if ($approvalStatus === ApprovalStatus::APPROVED) {
+            $tagsStatement = $this->dbHandle->prepare('SELECT tag FROM ListingTag WHERE listingId = :listingId');
+            $tagsStatement->execute(['listingId' => $listingId]);
+            $tags = [];
+            foreach ($tagsStatement->fetchAll() as $result)
+                $tags[] = $result['tag'];
+
+            $tagDataset = new TagDataset();
+            $tagDataset->increaseCounts($tags);
+        }
     }
 }
