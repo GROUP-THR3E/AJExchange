@@ -17,6 +17,8 @@ class Listing extends ModelBase
     protected int $userId;
     protected ?User $user;
     protected ?int $orderId;
+    protected ?int $charityId;
+    protected ?Charity $charity;
 
     public function __construct(array $dbRow)
     {
@@ -126,5 +128,21 @@ class Listing extends ModelBase
     public function getOrderId(): ?int
     {
         return $this->orderId ?? null;
+    }
+
+    /**
+     * @return int|null the id of the charity for the proceeds to go to, null if none is set
+     */
+    public function getCharityId(): ?int
+    {
+        return $this->charityId;
+    }
+
+    /**
+     * @return Charity|null the charity for the proceeds to go to, null if none is set
+     */
+    public function getCharity(): ?Charity
+    {
+        return $this->charity;
     }
 }
