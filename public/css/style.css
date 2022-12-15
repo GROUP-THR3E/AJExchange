@@ -567,8 +567,9 @@
     }
 
     .create-listing-image-container {
-        height: 100px;
+        height: 75px;
         width: 100px;
+        margin: 5px;
         background-image: url(/public/images/addimage.png);
         background-position: center;
         background-size: contain;
