@@ -16,6 +16,12 @@
     text-align: center;
 }
 
+.orders-title-div {
+    margin-top: 10px;
+    width: 1280px;
+    padding-left: 300px;
+}
+
 .listing-search-result {
     display: flex;
     margin: 20px;
@@ -468,7 +474,6 @@
 
 .search-title-div {
     margin-top: 10px;
-    padding-left: 256px;
     width: 1280px;
 }
 
