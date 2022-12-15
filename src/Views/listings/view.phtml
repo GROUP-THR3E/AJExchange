@@ -26,8 +26,12 @@ $user = Auth::getAuthManager()->getUser();
     <div class="view-listing-interact listing-grid-design">
         <?php if($listing->getType()=='sell'): ?>
         <h4 class="zero-margin">
-            <?= $listing->getUser()->getFullName() ?>
-            <?= $listing->getOrderId() === null ? 'is selling' : 'had sold' ?> for:
+            <?php if(strcmp($user->getUserId(),$listing->getUser()->getUserId()) === 0): ?>
+                <?= $listing->getOrderId() === null ? 'You are selling' : 'You have sold' ?> for:
+            <?php else: ?>
+                <?= $listing->getUser()->getFullName() ?>
+                <?= $listing->getOrderId() === null ? 'is selling' : 'has sold' ?> for:
+            <?php endif; ?>
         </h4>
         <h4><span class="emphasise-item-text">£<?= htmlspecialchars($listing->getPrice()) ?></h4>
         <?php if ($listing->getCharity() !== null): ?>
@@ -35,45 +39,59 @@ $user = Auth::getAuthManager()->getUser();
         <?php endif; ?>
         <?php elseif($listing->getType()=='exchange'): ?>
         <h4 class="zero-margin">
-            <?= $listing->getUser()->getFullName() ?>
-            <?= $listing->getOrderId() === null ? 'Is exchanging' : 'Was exchanged' ?> for:
+            <?php if(strcmp($user->getUserId(),$listing->getUser()->getUserId()) === 0): ?>
+                <?= $listing->getOrderId() === null ? 'You are exchanging' : 'You have exchanged' ?> for:
+            <?php else: ?>
+                <?= $listing->getUser()->getFullName() ?>
+                <?= $listing->getOrderId() === null ? 'is exchanging' : 'has exchanged' ?> for:
+            <?php endif; ?>
         </h4>
         <h4><span class="emphasise-item-text"><?= htmlspecialchars($listing->getDesiredItem()) ?></span>
         </h4>
         <?php elseif($listing->getType()=='giveaway'): ?>
         <h4>
-            <?= $listing->getUser()->getFullName() ?>
-            <?= $listing->getOrderId() === null ? 'Is giving' : 'Has given' ?> away
+            <?php if(strcmp($user->getUserId(),$listing->getUser()->getUserId()) === 0): ?>
+                <?= $listing->getOrderId() === null ? 'You are giving' : 'You have given' ?> away
+            <?php else: ?>
+                <?= $listing->getUser()->getFullName() ?>
+                <?= $listing->getOrderId() === null ? 'is giving' : 'has given' ?> away
+            <?php endif; ?>
         </h4>
         <?php endif; ?>
         <?php if ($listing->getApprovalStatus() === ApprovalStatus::APPROVED && $listing->getUserId() !== $user->getUserId() && $listing->getOrderId() === null): ?>
         <form class="m-4" action="/listings/<?= $listing->getListingId() ?>/order" method="post">
-            <button type="submit" class="btn btn-primary btn-secondary w-100 mt-4">Order</button>
+            <button type="submit" class="btn btn-outline-login w-100">Order</button>
         </form>
         <?php elseif ($listing->getApprovalStatus() === ApprovalStatus::PENDING && $user->getRole() === 'admin' && $listing->getOrderId() === null): ?>
         <div class="d-flex gap-2 mt-4">
             <form class="m-0" action="/listings/<?= $listing->getListingId() ?>/setApproval" method="post">
                 <input type="hidden" name="approvalStatus" value="<?= ApprovalStatus::APPROVED ?>">
-                <button type="submit" class="btn btn-primary btn-secondary ">Approve</button>
+                <button type="submit" class="btn btn-outline-login ">Approve</button>
             </form>
             <form class="m-0" action="/listings/<?= $listing->getListingId() ?>/setApproval" method="post">
                 <input type="hidden" name="approvalStatus" value="<?= ApprovalStatus::DENIED ?>">
-                <button type="submit" class="btn btn-primary btn-secondary ">Deny</button>
+                <button type="submit" class="btn btn-outline-login ">Deny</button>
             </form>
         </div>
-        <?php elseif ($listing->getApprovalStatus() !== ApprovalStatus::APPROVED && $listing->getUserId() === $user->getUserId()): ?>
-        <h3 class="mt-4">Approval Status: <?= $listing->getApprovalStatus() ?></h3>
+        <?php elseif ((strcmp($user->getUserId(),$listing->getUser()->getUserId()) === 0)): ?>
+            <?php if($listing->getApprovalStatus() == ApprovalStatus::APPROVED): ?>
+                <h4>Approval status: <span class="capitalise" style="color: green"><?= htmlspecialchars($listing->getApprovalStatus()) ?></span></h4>
+            <?php elseif($listing->getApprovalStatus() == ApprovalStatus::DENIED): ?>
+                <h4>Approval status: <span class="capitalise" style="color: orange"><?= htmlspecialchars($listing->getApprovalStatus()) ?></span></h4>
+            <?php elseif($listing->getApprovalStatus() == ApprovalStatus::PENDING): ?>
+                <h4>Approval status: <span class="capitalise" style="color: blue"><?= htmlspecialchars($listing->getApprovalStatus()) ?></span></h4>
+            <?php endif; ?>
         <?php endif; ?>
         <h4 class="mt-3">Tags:</h4>
         <div class="home-welcome list-div text-center view-listing-tags">
-            <ul class="tag-list home-list-design list-unstyled">
-                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 1</a></li>
-                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 2</a></li>
-                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 3</a></li>
-                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 4</a></li>
-                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 5</a></li>
-                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 6</a></li>
-                <li class="tag-list"><a href="javascript:void(0)" class="h4 d-block">Category 7</a></li>
+            <ul class="tag-list-container list-unstyled">
+                <li><a href="javascript:void(0)" class="h4 d-block">Category 1</a></li>
+                <li><a href="javascript:void(0)" class="h4 d-block">Category 2</a></li>
+                <li><a href="javascript:void(0)" class="h4 d-block">Category 3</a></li>
+                <li><a href="javascript:void(0)" class="h4 d-block">Category 4</a></li>
+                <li><a href="javascript:void(0)" class="h4 d-block">Category 5</a></li>
+                <li><a href="javascript:void(0)" class="h4 d-block">Category 6</a></li>
+                <li><a href="javascript:void(0)" class="h4 d-block">Category 7</a></li>
             </ul>
         </div>
     </div>
@@ -83,7 +101,6 @@ $user = Auth::getAuthManager()->getUser();
         <?php endforeach; ?>
     </div>
     <div class="view-listing-description listing-grid-design view-listing-description-box text-overflow">
-        <h4 class="view-listing-description-title">Description:</h4>
-        <div><p><?= htmlspecialchars($listing->getDescription()) ?></p></div>
+        <div><h5><?= htmlspecialchars($listing->getDescription()) ?></h5></div>
     </div>
 </div>

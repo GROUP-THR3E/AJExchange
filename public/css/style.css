@@ -162,11 +162,11 @@
 }
 
 .emphasise-item-text {
-    font-size: 200%;
+    font-size: 42px;
 }
 
 .view-listing-main-image {
-    object-fit: contain;
+    object-fit: cover;
     height: 100%;
     width: 100%;
     background: #f8f8f8;
@@ -317,20 +317,25 @@
     color: #1dc3e1;
 }
 
-.tag-list {
+.tag-list-container {
+    display:inline;
+    text-decoration: none;
+}
+
+.tag-list-container li {
     display:inline;
 }
 
-.tag-list a {
+.tag-list-container li a {
     color: black;
     text-decoration: none;
 }
 
-.tag-list a:hover {
+.tag-list-container li a:hover {
     color: #d50032;
 }
 
-.tag-list a:visited {
+.tag-list-container li a:visited {
     color: #1dc3e1;
 }
 
