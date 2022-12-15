@@ -13,7 +13,7 @@ $title = 'listing';
 $user = Auth::getAuthManager()->getUser();
 ?>
 
-<div class="view-listing-grid-container my-5 listing-grid-design mx-auto">
+<div class="view-listing-grid-container listing-grid-design mx-auto">
     <div class="view-listing-main-image-container listing-grid-design">
         <img class="view-listing-main-image w-100" src="<?= $this->listingImage($listing->getImageUrls()[0]) ?>" alt="">
     </div>
@@ -74,7 +74,7 @@ $user = Auth::getAuthManager()->getUser();
             </ul>
         </div>
     </div>
-    <div class="view-listing-extra-images listing-grid-design d-flex flex-column gap-2">
+    <div class="view-listing-extra-images listing-grid-design gap-2">
         <?php foreach ($listing->getImageUrls()  as $image): ?>
         <img class="view-listing-extra-image" src="<?= $this->listingImage($image) ?>" alt="">
         <?php endforeach; ?>

@@ -158,6 +158,8 @@
     grid-row-start: 1;
     grid-row-end: 4;
     padding: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .emphasise-item-text {
@@ -571,5 +573,49 @@
         background-position: center;
         background-size: contain;
     }
+
+    /* View listing page css */
+    .view-listing-grid-container {
+        max-width: 1260px;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .view-listing-main-image-container {
+        overflow: hidden;
+        padding: 0;
+        height: 300px;
+        outline: #eeeeee solid 1px;
+        order: -1;
+    }
+
+    .view-listing-header {
+        padding: 2px;
+        margin-top: 5px;
+        order: -3;
+    }
+
+    .view-listing-extra-images {
+        width: 20%;
+        padding: 0;
+        aspect-ratio: 1/1;
+        object-fit: cover;
+        display: flex;
+        flex-direction: row;
+        order: -1;
+
+    }
+
+    .view-listing-description {
+        padding: 0 20px 20px 20px;
+        order: -1;
+    }
+
+    .listing-grid-design {
+        padding: 5px;
+        font-size: 15px;
+    }
+
 
 }
