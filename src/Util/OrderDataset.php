@@ -5,6 +5,7 @@ namespace GroupThr3e\AJExchange\Util;
 use GroupThr3e\AJExchange\Constants\ApprovalStatus;
 use GroupThr3e\AJExchange\Models\Listing;
 use GroupThr3e\AJExchange\Models\Order;
+use GroupThr3e\AJExchange\Models\Tag;
 
 class OrderDataset extends DatasetBase
 {
@@ -15,24 +16,39 @@ class OrderDataset extends DatasetBase
      */
     public function makeOrder(int $listingId): int|string
     {
-        $listingStatement = $this->dbHandle->prepare('SELECT * FROM Listing WHERE listingId = :listingId');
+        // Retrieves specified listing
+        $listingQuery =
+            'SELECT Listing.*, GROUP_CONCAT(tag) as tags FROM Listing
+             LEFT JOIN ListingTag ON Listing.listingId = ListingTag.listingId
+             WHERE Listing.listingId = :listingId
+             GROUP BY Listing.listingId';
+
+        $listingStatement = $this->dbHandle->prepare($listingQuery);
         $listingStatement->execute(['listingId' => $listingId]);
         $listingResult = $listingStatement->fetch();
         if ($listingResult === false) return 'Listing not found';
 
+        // Check the user isn't trying to order their own listing, or if the listing isn't approved is already ordered
         $listing = new Listing($listingResult);
         $currentId = Auth::getAuthManager()->getUser()->getUserId();
         if ($listing->getApprovalStatus() !== ApprovalStatus::APPROVED) return 'Listing not found';
         if ($listing->getOrderId() !== null) return 'Listing already ordered';
         if ($listing->getUserId() === $currentId) return 'Cannot ordered own listing';
 
+        // Adds the order to the database
         $orderQuery = 'INSERT INTO `Order` (userId, listingId, orderDate) VALUE (:currentId, :listingId, NOW())';
         $orderStatement = $this->dbHandle->prepare($orderQuery);
         $orderStatement->execute(['currentId' => $currentId, 'listingId' => $listingId]);
         $orderId = (int)$this->dbHandle->lastInsertId();
 
+        // Sets the listings orderId to the order
         $updateListing = $this->dbHandle->prepare('UPDATE Listing SET orderId = :orderId WHERE listingId = :listingId');
         $updateListing->execute(['orderId' => $this->dbHandle->lastInsertId(), 'listingId' => $listingId]);
+
+        // Decrements the listing count for each tag
+        $tagDataset = new TagDataset();
+        $tagDataset->decreaseCounts($listing->getTags());
+
         return $orderId;
     }
 

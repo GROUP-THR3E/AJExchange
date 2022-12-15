@@ -18,12 +18,13 @@ class ListingDataset extends DatasetBase
         $query = '
         SELECT listingId, listingName, description, price, desiredItem, type, dateListed, approvalStatus, orderId, 
                charityId, charityName, userId, email, password, fullName, role, officeId, officeName, address, 
-               GROUP_CONCAT(filename) as imageUrls
+               GROUP_CONCAT(tag) as tags, GROUP_CONCAT(filename) as imageUrls
         FROM (
-            SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, filename, charityName FROM Listing
+            SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, tag, filename, charityName FROM Listing
             INNER JOIN User ON Listing.userId = User.userId
             INNER JOIN Office ON User.officeId = Office.officeId
             LEFT JOIN Charity ON Listing.charityId = Charity.charityId
+            LEFT JOIN ListingTag ON Listing.listingId = ListingTag.listingId 
             LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId
             WHERE Listing.listingId = :listingId
             ORDER BY Listing.listingId, ListingImage.imageIndex
@@ -50,32 +51,48 @@ class ListingDataset extends DatasetBase
      */
     public function searchListings(string $query = '', array $tags = [], ?string $type = null, ?int $officeId = null,
                                    ?int $userId = null, ?string $approvalStatus = null, bool $hideOwnListings = false,
-                                   bool $showOrdered = true, int $limit = 20, int $offset = 0): array
+                                   bool $showOrdered = true, int $limit = 1000000000, int $offset = 0): array
     {
-        $sqlQuery = sprintf(
-            'SELECT listingId, listingName, description, price, desiredItem, type, dateListed, approvalStatus, 
-                    orderId, charityId, charityName, userId, email, password, fullName, role, officeId, officeName, address, GROUP_CONCAT(filename) as imageUrls
+        $filterTags = sizeof($tags) > 0;
+        $tagFilterFunc = 'FIND_IN_SET(:tag0, tags) ';
+        for ($i = 1; $i < sizeof($tags); $i++) {
+            $tagFilterFunc .= "AND FIND_IN_SET(:tag$i, tags) ";
+        }
+
+        $tagSelect = $filterTags ? ',tag': '';
+        $tagGroup = $filterTags ? ', GROUP_CONCAT(tag) as tags': '';
+        $tagQuery = $filterTags ? 'INNER JOIN ListingTag ON Listing.listingId = ListingTag.listingId': '';
+        $hideOwnListingsFilter =  $hideOwnListings ? 'AND Listing.userId <> :ownUserId' : '';
+        $typeFilter = $type === null ? '' : 'AND type = :type';
+        $officeFilter = $officeId === null ? '' : 'AND User.officeId = :officeId';
+        $userFilter = $userId === null ? '' : 'AND Listing.userId = :userId';
+        $approvalFilter = $approvalStatus === null ? '' : 'AND approvalStatus = :approvalStatus';
+        $showOrderedFilter = $showOrdered ? '' : 'AND orderId IS NULL';
+        $tagFilter = $filterTags ? "HAVING $tagFilterFunc": '';
+
+        $sqlQuery =
+            "SELECT listingId, listingName, description, price, desiredItem, type, dateListed, approvalStatus, 
+                    orderId, charityId, charityName, userId, email, password, fullName, role, officeId, officeName, 
+                    address, GROUP_CONCAT(filename) as imageUrls $tagGroup
             FROM (
-                SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, filename, charityName FROM Listing
+                SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, filename, 
+                       charityName $tagSelect FROM Listing
                 INNER JOIN User ON Listing.userId = User.userId
                 INNER JOIN Office ON User.officeId = Office.officeId
                 LEFT JOIN Charity ON Listing.charityId = Charity.charityId 
                 LEFT JOIN ListingImage ON Listing.listingId = ListingImage.listingId
+                $tagQuery
                 WHERE listingName LIKE :query
                 AND imageIndex = 1
-                %s %s %s %s %s %s
+                $hideOwnListingsFilter $typeFilter $officeFilter $userFilter $approvalFilter $showOrderedFilter 
                 ORDER BY Listing.listingId, ListingImage.imageIndex
             ) as Results
             GROUP BY listingId
+            $tagFilter
             LIMIT :limit OFFSET :offset;
-            ',
-            $hideOwnListings ? 'AND Listing.userId <> :ownUserId' : '',
-            $type === null ? '' : 'AND type = :type',
-            $officeId === null ? '' : 'AND User.officeId = :officeId',
-            $userId === null ? '' : 'AND Listing.userId = :userId',
-            $approvalStatus === null ? '' : 'AND approvalStatus = :approvalStatus',
-            $showOrdered ? '' : 'AND orderId IS NULL'
-        );
+            ";
+
+
 
         $sqlParams = ['query' => "%$query%"];
         if ($hideOwnListings) {
@@ -88,6 +105,9 @@ class ListingDataset extends DatasetBase
             $sqlParams['userId'] = $userId;
         } if ($approvalStatus !== null) {
             $sqlParams['approvalStatus'] = $approvalStatus;
+        } if ($filterTags) {
+            for ($i = 0; $i < sizeof($tags); $i++)
+                $sqlParams["tag$i"] = $tags[$i];
         }
 
         $sqlParams['limit'] = $limit;
@@ -115,7 +135,7 @@ class ListingDataset extends DatasetBase
      * @return bool return true of the creation was successful
      */
     public function createListing(string $name, string $description, ?float $price, ?string $desiredItem, string $type,
-                                  array $tags, int $userId, array $images, int $charityId): bool
+                                  array $tags, int $userId, array $images, ?int $charityId): bool
     {
         $query = 'INSERT INTO Listing (listingName, description, price, desiredItem, type, dateListed, approvalStatus, userId, orderId, charityId)
                   VALUES (:listingName, :description, :price, :desiredItem, :type, :dateListed, :approvalStatus, :userId, NULL, :charityId)';
@@ -151,19 +171,34 @@ class ListingDataset extends DatasetBase
             $imageIndex++;
         }
 
-        return $imageIndex;
+        $tagDataset = new TagDataset();
+        $tagDataset->addListingTags($listingId, $tags);
+
+        return $listingId;
     }
 
     /**
      * Sets the approval status of the listing of the given id
      * @param int $listingId the id of the listing to update
      * @param string $approvalStatus the approval status to set the listing to
-     * @return bool
      */
     public function setApproval(int $listingId, string $approvalStatus)
     {
+        // Updates the approval status of the query
         $query = 'UPDATE Listing SET approvalStatus = :approvalStatus WHERE listingId = :listingId';
         $statement = $this->dbHandle->prepare($query);
-        return $statement->execute(['approvalStatus' => $approvalStatus, 'listingId' => $listingId]);
+        $statement->execute(['approvalStatus' => $approvalStatus, 'listingId' => $listingId]);
+
+        // If it is being approved increase the listing count of each of the tags
+        if ($approvalStatus === ApprovalStatus::APPROVED) {
+            $tagsStatement = $this->dbHandle->prepare('SELECT tag FROM ListingTag WHERE listingId = :listingId');
+            $tagsStatement->execute(['listingId' => $listingId]);
+            $tags = [];
+            foreach ($tagsStatement->fetchAll() as $result)
+                $tags[] = $result['tag'];
+
+            $tagDataset = new TagDataset();
+            $tagDataset->increaseCounts($tags);
+        }
     }
 }

@@ -23,7 +23,8 @@ class Listing extends ModelBase
     public function __construct(array $dbRow)
     {
         parent::__construct($dbRow);
-        $this->imageUrls = explode(',', $dbRow['imageUrls']);
+        if (isset($dbRow['imageUrls'])) $this->imageUrls = explode(',', $dbRow['imageUrls']);
+        if (isset($dbRow['tags'])) $this->tags = explode(',', $dbRow['tags']);
     }
 
     /**
