@@ -212,6 +212,8 @@
     grid-row-start: 1;
     grid-row-end: 1;
     position: relative;
+    margin-top: 0;
+    margin-bottom: 50px;
 }
 
 .home-grid-container {
@@ -228,8 +230,10 @@
 }
 
 .home-image-titles {
-    font-size: 25px;
+    font-size: 28px;
     padding-right: 10px;
+    margin: 0;
+    font-family: "Arial Rounded MT Bold","sans-serif";
 }
 
 .home-image-descriptions-container {
@@ -474,12 +478,6 @@
 
 .search-margin {
     margin: 0 auto 48px auto;
-}
-
-.home-welcome-images {
-    background-color: #ffffff;
-    outline: #f7f7f7 solid 2px;
-    border-radius: 5px;
 }
 
 .capitalise {
