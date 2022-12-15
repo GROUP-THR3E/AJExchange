@@ -40,8 +40,8 @@ return function(App $app) {
     $app->get('/users/my/listings', function (Request $request, Response $response) {
         $params = $request->getQueryParams();
         $listingDataset = new ListingDataset();
-        $listings = $listingDataset->searchListings(userId: Auth::getAuthManager()->getUser()->getUserId(), approvalStatus: $params['approvalStatus']);
-        $view = View::render('users/listings', ['listings' => $listings, 'approvalStatus' => $params['approvalStatus']]);
+        $listings = $listingDataset->searchListings(userId: Auth::getAuthManager()->getUser()->getUserId(), approvalStatus: $params['approvalStatus'] ?? null);
+        $view = View::render('users/listings', ['listings' => $listings, 'approvalStatus' => $params['approvalStatus'] ?? null]);
         $response->getBody()->write($view);
         return $response;
     });

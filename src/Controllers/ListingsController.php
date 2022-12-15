@@ -1,7 +1,9 @@
 <?php
 
 use GroupThr3e\AJExchange\Constants\ApprovalStatus;
+use GroupThr3e\AJExchange\Models\Charity;
 use GroupThr3e\AJExchange\Util\Auth;
+use GroupThr3e\AJExchange\Util\CharityDataset;
 use GroupThr3e\AJExchange\Util\ListingDataset;
 use GroupThr3e\AJExchange\Util\OrderDataset;
 use GroupThr3e\AJExchange\Util\View;
@@ -57,7 +59,9 @@ return function(App $app) {
     });
 
     $app->get('/listings/create', function (Request $request, Response $response) {
-        $view = View::render('/listings/create' , ['errors' => [] , 'params' => []]);
+        $charityDataset = new CharityDataset();
+        $charities = $charityDataset->getCharities();
+        $view = View::render('/listings/create' , ['errors' => [] , 'params' => [], 'charities' => $charities]);
         $response->getBody()->write($view);
         return $response;
     });
@@ -67,7 +71,9 @@ return function(App $app) {
         $images = $request->getUploadedFiles();
         $dataset = new ListingDataset();
         $arrayError = [];
-        $charities = ['charityOne', 'charityTwo', 'charityThree'];
+        $charityDataset = new CharityDataset();
+        $charities = $charityDataset->getCharities();
+        $charityIds = array_map(function(Charity $charity) { return $charity->getCharityId(); }, $charities);
 
         if (trim($params['inputTitle'] == '')) {
             $arrayError[] = 'Your title is empty!';
@@ -86,8 +92,8 @@ return function(App $app) {
         if(!isset($params['listingType'])) {
             $arrayError[] ='You need to select one of the 3 exchange options!';
         }
-        elseif((isset($params['checkCharity']) && ($params['listingType'] !== 'sell' || !in_array($params['charity'], $charities)))
-            || (in_array($params['charity'],$charities) && ($params['listingType'] !== 'sell' || !isset($params['checkCharity']))))
+        elseif((isset($params['checkCharity']) && ($params['listingType'] !== 'sell' || !in_array($params['charity'], $charityIds)))
+            || (in_array($params['charity'], $charityIds) && ($params['listingType'] !== 'sell' || !isset($params['checkCharity']))))
         {
             $arrayError[] = "Only the proceeds from sales can be donated to charity, make sure the confirmation & charity are selected!";
         }
@@ -117,7 +123,7 @@ return function(App $app) {
         }
         if(count($arrayError) > 0)
         {
-            $view = View::render('/listings/create', ['errors' => $arrayError, 'params' => $params]);
+            $view = View::render('/listings/create', ['errors' => $arrayError, 'params' => $params, 'charities' => $charities]);
         }
 
         else {
@@ -129,7 +135,8 @@ return function(App $app) {
                 $params['listingType'],
                 [],
                 Auth::getAuthManager()->getUser()->getUserId(),
-                $images
+                $images,
+                $params['charity']
             );
             $view = View::render('/listings/createSuccessful');
         }

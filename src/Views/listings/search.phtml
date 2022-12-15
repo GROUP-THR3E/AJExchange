@@ -60,6 +60,9 @@ $title = "Search page";
                     <h6 class="search-description-style"><?= $listing->getUser()->getFullName() ?>, <?= $listing->getUser()->getOffice()->getOfficeName() ?></h6>
                     <?php if($listing->getType()=='sell'): ?>
                         <h6><span class="search-description-style">Selling for: </span></h6><h3>£<?= htmlspecialchars($listing->getPrice()) ?></h3>
+                        <?php if ($listing->getCharity() !== null): ?>
+                            <h6>Proceeds go to <?= $listing->getCharity()->getCharityName() ?></h6>
+                        <?php endif; ?>
                     <?php elseif($listing->getType()=='exchange'): ?>
                         <h6><span class="search-description-style">Exchanging for: </span></h6><h3><?= htmlspecialchars($listing->getDesiredItem()) ?></h3>
                     <?php elseif($listing->getType()=='giveaway'): ?>
