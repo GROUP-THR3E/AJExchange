@@ -158,6 +158,8 @@
     grid-row-start: 1;
     grid-row-end: 4;
     padding: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .emphasise-item-text {
@@ -473,4 +475,148 @@
     background-color: #ffffff;
     outline: #f7f7f7 solid 2px;
     border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+}
+
+@media only screen and (min-width:0px) and (max-width: 768px) {
+    .home-grid-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .home-welcome-images {
+        background-color: #ffffff;
+        outline: #f7f7f7 solid 2px;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .home-image-titles {
+        font-size: 25px;
+        padding-right: 10px;
+    }
+
+    .home-image-containers {
+        margin-top: 20px;
+        margin-left: 10px;
+        width: 98%;
+    }
+
+    .home-images {
+        width: 100%;
+    }
+
+    .home-image-titles {
+        font-size: 50px;
+        padding-right: 10px;
+        text-align: center;
+    }
+
+    .listings-filters-menu {
+        padding: 20px 0;
+        font-size: 12px;
+        text-align: left;
+    }
+
+    .search-title-div {
+        margin-top: 10px;
+        padding-left: 2px;
+        width: 100%;
+    }
+
+    .search-grid-container {
+        column-gap: 5px;
+        row-gap: 5px;
+        display:flex;
+        padding: 2px;
+        text-align: center;
+    }
+
+    .listing-search-result {
+        display: flex;
+        margin: 5px;
+        padding: 2px;
+        font-size: 5px;
+        column-gap: 10px;
+        flex-direction: column;
+    }
+
+    .listing-search-result-image {
+        width: 100%;
+    }
+
+    .create-listing-options-grid {
+        display: flex;
+        gap: 25px;
+        padding: 10px;
+        flex-wrap: wrap;
+    }
+
+    .create-listing-categories {
+        display: flex;
+        padding-top: 6px;
+        flex-direction: column;
+    }
+
+    .exchange-method-option {
+        display: flex;
+    }
+
+    .create-listing-image-container {
+        height: 75px;
+        width: 100px;
+        margin: 5px;
+        background-image: url(/public/images/addimage.png);
+        background-position: center;
+        background-size: contain;
+    }
+
+    /* View listing page css */
+    .view-listing-grid-container {
+        max-width: 1260px;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .view-listing-main-image-container {
+        overflow: hidden;
+        padding: 0;
+        height: 300px;
+        outline: #eeeeee solid 1px;
+        order: -1;
+    }
+
+    .view-listing-header {
+        padding: 2px;
+        margin-top: 5px;
+        order: -3;
+    }
+
+    .view-listing-extra-images {
+        width: 20%;
+        padding: 0;
+        aspect-ratio: 1/1;
+        object-fit: cover;
+        display: flex;
+        flex-direction: row;
+        order: -1;
+
+    }
+
+    .view-listing-description {
+        padding: 0 20px 20px 20px;
+        order: -1;
+    }
+
+    .listing-grid-design {
+        padding: 5px;
+        font-size: 15px;
+    }
+
+
 }
