@@ -34,6 +34,9 @@ $title = "My listings";
         </form>
     </div>
     <div class="listing-search-results search-padding">
+        <?php if(empty($listings)): ?>
+            <h3 class="admin-welcome">No listings with specified filter found in history</h3>
+        <?php else: ?>
         <?php foreach($listings as $listing): ?>
             <div class="listing-search-result search-description-background">
                 <div class="search-description-image">
@@ -66,5 +69,6 @@ $title = "My listings";
                 <h6>You listed this on <?= htmlspecialchars($listing->getDateListed()) ?></h6>
             </div>
         <?php endforeach; ?>
+        <?php endif ?>
     </div>
 </div>
