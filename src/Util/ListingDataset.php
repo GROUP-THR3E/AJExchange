@@ -119,10 +119,11 @@ class ListingDataset extends DatasetBase
      * @param int $userId the id of the user listing the item
      * @return bool return true of the creation was successful
      */
-    public function createListing(string $name, string $description, ?float $price, ?string $desiredItem, string $type, array $tags, int $userId, array $images): bool
+    public function createListing(string $name, string $description, ?float $price, ?string $desiredItem, string $type,
+                                  array $tags, int $userId, array $images, int $charityId): bool
     {
-        $query = 'INSERT INTO Listing (listingName, description, price, desiredItem, type, dateListed, approvalStatus, userId, orderId)
-                  VALUES (:listingName, :description, :price, :desiredItem, :type, :dateListed, :approvalStatus, :userId, NULL)';
+        $query = 'INSERT INTO Listing (listingName, description, price, desiredItem, type, dateListed, approvalStatus, userId, orderId, charityId)
+                  VALUES (:listingName, :description, :price, :desiredItem, :type, :dateListed, :approvalStatus, :userId, NULL, :charityId)';
         $insertListing = $this->dbHandle->prepare($query);
         $insertListing->execute([
             'listingName' => $name,
@@ -132,7 +133,8 @@ class ListingDataset extends DatasetBase
             'type' => $type,
             'dateListed' => (new DateTime())->format('Y-m-d H:i:s'),
             'approvalStatus' => ApprovalStatus::PENDING,
-            'userId' => $userId
+            'userId' => $userId,
+            'charityId' => $charityId
         ]);
 
         $listingId = $this->dbHandle->lastInsertId();
