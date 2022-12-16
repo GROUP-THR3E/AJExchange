@@ -930,6 +930,8 @@ footer{
 
     .mobile-listings-filters-menu {
         display: flex;
+        margin: 2px;
+        flex-direction: column;
     }
 
     .listing-filters-grid {
