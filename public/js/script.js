@@ -32,6 +32,7 @@ function disableAll(){
     enableDisableInputExchange(true);
     enableDisableCharitySelector(true);
     enableDisableCharityConf(true);
+    enableDisableButton(true);
 }
 
 
@@ -48,7 +49,6 @@ function countWords(){
 //Toggles for create form
 function enableDisableButton(x){
     document.getElementById('create_submit').disabled = x;
-
 }
 
 function enableDisableCharitySelector(x){
