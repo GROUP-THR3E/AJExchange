@@ -719,6 +719,10 @@ footer{
     display: none;
 }
 
+.listings-filters-menu {
+    display: none;
+}
+
 @media only screen and (min-width:0px) and (max-width: 768px) {
     .home-grid-container {
         display: flex;
@@ -905,6 +909,8 @@ footer{
     .mobile-search-offcanvas {
         display:flex;
         order: -1;
+        margin-left: 5px;
+        margin-right: 5px;
     }
 
     .listing-search-results {
@@ -918,6 +924,14 @@ footer{
     }
 
     .search-padding {
-        padding: 0px;
+        padding: 0;
+    }
+
+    .listing-filters-grid {
+        margin-top: 5px;
+    }
+
+    .offsett-listings-filters-menu {
+        display: flex;
     }
 }

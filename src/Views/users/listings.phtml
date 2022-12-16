@@ -33,6 +33,37 @@ $title = "My listings";
             <button type="submit" class="btn btn-outline-danger" value="Submit">Apply</button>
         </form>
     </div>
+    <div class="mobile-search-offcanvas">
+        <a class="btn btn-primary w-100" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+            Filters
+        </a>
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Filters</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div class="listing-filters-grid">
+                    <form class="offset-listings-filters-menu search-padding">
+                        <h6 class="filter-title">Filters:</h6>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="to_approve" name="approvalStatus"
+                                   value="<?= ApprovalStatus::PENDING ?>" <?= $approvalStatus === ApprovalStatus::PENDING ? 'checked': '' ?>>
+                            <label for="to_approve">Pending</label><br>
+                            <input class="form-check-input" type="radio" id="approved" name="approvalStatus"
+                                   value="<?= ApprovalStatus::APPROVED ?>" <?= $approvalStatus === ApprovalStatus::APPROVED ? 'checked': '' ?>>
+                            <label for="approved">Approved</label><br>
+                            <input class="form-check-input" type="radio" id="declined" name="approvalStatus"
+                                   value="<?= ApprovalStatus::DENIED ?>" <?= $approvalStatus === ApprovalStatus::DENIED ? 'checked' : '' ?>>
+                            <label for="declined">Denied</label><br>
+                        </div>
+                        <hr class="filter-separation mt-2 mb-3"/>
+                        <button type="submit" class="btn btn-outline-danger" value="Submit">Apply</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="listing-search-results search-padding">
         <?php if(empty($listings)): ?>
             <h3 class="admin-welcome">No listings with specified filter found in history</h3>
