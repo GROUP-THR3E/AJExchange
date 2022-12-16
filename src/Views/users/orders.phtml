@@ -9,7 +9,7 @@ use GroupThr3e\AJExchange\Models\Order;
 $title = 'My orders'
 ?>
 
-<div class="outerDiv mt-5 mx-auto">
+<div class="outerDiv mt-3 mx-auto">
     <div class="mx-auto orders-title-div"><h5 class="search-title">Welcome, <?= Auth::getAuthManager()->getUser()->getFullName() ?>, this is your order history:</h5></div>
     <?php if(empty($orders)): ?>
         <h3 class="admin-welcome">No orders have been made</h3>
