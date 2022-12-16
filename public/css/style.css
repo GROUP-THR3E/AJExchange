@@ -719,7 +719,11 @@ footer{
     display: none;
 }
 
-.listings-filters-menu {
+.admin-mobile-search-offcanvas {
+    display: none;
+}
+
+.mobile-listings-filters-menu {
     display: none;
 }
 
@@ -909,8 +913,6 @@ footer{
     .mobile-search-offcanvas {
         display:flex;
         order: -1;
-        margin-left: 5px;
-        margin-right: 5px;
     }
 
     .listing-search-results {
@@ -918,20 +920,23 @@ footer{
     }
 
     .search-title {
-        text-align: center;
+        text-align: left;
         margin-bottom: 0;
-        margin-top: 5px;
     }
 
-    .search-padding {
-        padding: 0;
+    .admin-mobile-search-offcanvas {
+        display: flex;
+    }
+
+    .mobile-listings-filters-menu {
+        display: flex;
     }
 
     .listing-filters-grid {
-        margin-top: 5px;
+        display: none;
     }
 
-    .offsett-listings-filters-menu {
+    .mobile-listing-filters-grid {
         display: flex;
     }
 }
