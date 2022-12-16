@@ -222,7 +222,7 @@
     grid-row-end: 1;
     position: relative;
     margin-top: 0;
-    margin-bottom: 50px;
+    margin-bottom: 0;
     display: flex;
     flex-direction: row;
 }
@@ -245,6 +245,8 @@
     padding-right: 10px;
     margin: 0;
     font-family: "Arial Rounded MT Bold","sans-serif";
+    width: 49%;
+    text-align: left;
 }
 
 .home-image-descriptions-container {
@@ -292,7 +294,7 @@
 }
 
 .home-logo-misc {
-    margin-top: 50px;
+    margin-top: 80px;
     vertical-align: top;
 }
 
@@ -567,6 +569,22 @@
     --bs-btn-disabled-border-color: #d50032;
     --bs-gradient: none;
     font-family: "Arial Rounded MT Bold","sans-serif";
+}
+
+.home-view-more {
+    font-size: 20px;
+    color:  #2f2f2f;
+    text-align: right;
+    width: 50%;
+    margin: 0;
+}
+
+.home-main-title {
+    font-size: 50px;
+}
+
+.button-box-size {
+    font-size: 20px;
 }
 
 @media only screen and (min-width:0px) and (max-width: 768px) {
