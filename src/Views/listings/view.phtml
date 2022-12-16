@@ -86,7 +86,7 @@ $user = Auth::getAuthManager()->getUser();
         <div class="home-welcome list-div text-center view-listing-tags">
             <ul class="tag-list-container list-unstyled">
                 <?php foreach ($listing->getTags() as $tag): ?>
-                <li><a href="javascript:void(0)" class="h4 d-block"><?= $tag ?></a></li>
+                <li><a href="/listings/search?tags[]=<?= $tag ?>" class="h4 d-block"><?= $tag ?></a></li>
                 <?php endforeach; ?>
             </ul>
         </div>
