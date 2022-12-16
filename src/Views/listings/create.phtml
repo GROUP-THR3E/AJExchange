@@ -57,7 +57,7 @@ $title = 'Create Listing';
     <div class="my-4 mb-3">
         <label for="description">Description</label>
         <textarea type="text" onclick="createEnableDisable();" onkeydown="countWords();" onkeyup="countWords();" class="form-control" name="description" id="description" rows="4" minlength="5" maxlength="200" placeholder="Type here..."><?= $params['description'] ?? '' ?></textarea>
-        <p><span id="word_count">0/300</span></p>
+        <p><span id="word_count">0/200</span></p>
     </div>
     <div class="create-listing-options-grid my-3 mb-3 justify-content-between">
         <div class="exchange-method-option">
