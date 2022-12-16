@@ -54,50 +54,50 @@ $title = "Search page";
                 </form>
             </div>
         </div>
-        <div class="mobile-search-offcanvas">
-            <a class="btn btn-primary w-100" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-                Filters
-            </a>
-            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Filters</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <div class="form-check">
-                        <form action="/listings/search" method="GET">
-                            <h6 class="filter-title">Trade Method</h6>
-                            <?php if(!empty($params['query'])): ?>
-                                <input type="hidden" value="<?= $params['query'] ?? '' ?>" name="query">
-                            <?php else: ?>
-                                <input type="hidden" value="" name="query">
-                            <?php endif;?>
-                            <input class="form-check-input" type="radio" id="trade_selling" name="type" value="sell" <?= isset($params['type']) && $params['type'] === 'sell' ? 'checked': '' ?>>
-                            <label for="trade_selling">Sell</label><br>
-                            <input class="form-check-input" type="radio" id="trade_exchange" name="type" value="exchange" <?= isset($params['type']) && $params['type'] === 'exchange' ? 'checked': '' ?>>
-                            <label for="trade_exchange">Exchange</label><br>
-                            <input class="form-check-input" type="radio" id="trade_giveaway" name="type" value="giveaway" <?= isset($params['type']) && $params['type'] === 'giveaway' ? 'checked': '' ?>>
-                            <label for="trade_giveaway">Giveaway</label><br>
-                            <hr class="filter-separation mt-2 mb-3"/>
-                            <h6 class="filter-title">Price Range</h6>
-                            <input class="form-check-input" type="checkbox" id="price_1" name="price" value=1>
-                            <label for="price_1">Under £50</label><br>
-                            <input class="form-check-input" type="checkbox" id="price_2" name="price" value=2>
-                            <label id="filter-label" for="price_2">£50 to £100</label><br>
-                            <input class="form-check-input" type="checkbox" id="price_3" name="price" value=3>
-                            <label id="filter-label" for="price_3">Over £100</label><br>
-                            <hr class="filter-separation mt-2 mb-3"/>
-                            <h6 class="filter-title">Categories</h6>
-                            <input class="form-check-input" type="checkbox" id="category_1" name="category" value=3>
-                            <label for="category_1">Category 1</label><br>
-                            <input class="form-check-input" type="checkbox" id="category_2" name="category" value=4>
-                            <label for="category_2">Category 2</label><br>
-                            <input class="form-check-input" type="checkbox" id="category_3" name="category" value=5>
-                            <label for="category_3">Category 3</label><br>
-                            <hr class="filter-separation mt-2 mb-3"/>
-                            <button type="submit" class="btn btn-outline-danger" value="Submit">Apply</button>
-                        </form>
-                    </div>
+    </div>
+    <div class="mobile-search-offcanvas">
+        <a class="btn btn-primary w-100" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+            Filters
+        </a>
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Filters</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div class="form-check">
+                    <form action="/listings/search" method="GET">
+                        <h6 class="filter-title">Trade Method</h6>
+                        <?php if(!empty($params['query'])): ?>
+                            <input type="hidden" value="<?= $params['query'] ?? '' ?>" name="query">
+                        <?php else: ?>
+                            <input type="hidden" value="" name="query">
+                        <?php endif;?>
+                        <input class="form-check-input" type="radio" id="trade_selling" name="type" value="sell" <?= isset($params['type']) && $params['type'] === 'sell' ? 'checked': '' ?>>
+                        <label for="trade_selling">Sell</label><br>
+                        <input class="form-check-input" type="radio" id="trade_exchange" name="type" value="exchange" <?= isset($params['type']) && $params['type'] === 'exchange' ? 'checked': '' ?>>
+                        <label for="trade_exchange">Exchange</label><br>
+                        <input class="form-check-input" type="radio" id="trade_giveaway" name="type" value="giveaway" <?= isset($params['type']) && $params['type'] === 'giveaway' ? 'checked': '' ?>>
+                        <label for="trade_giveaway">Giveaway</label><br>
+                        <hr class="filter-separation mt-2 mb-3"/>
+                        <h6 class="filter-title">Price Range</h6>
+                        <input class="form-check-input" type="checkbox" id="price_1" name="price" value=1>
+                        <label for="price_1">Under £50</label><br>
+                        <input class="form-check-input" type="checkbox" id="price_2" name="price" value=2>
+                        <label id="filter-label" for="price_2">£50 to £100</label><br>
+                        <input class="form-check-input" type="checkbox" id="price_3" name="price" value=3>
+                        <label id="filter-label" for="price_3">Over £100</label><br>
+                        <hr class="filter-separation mt-2 mb-3"/>
+                        <h6 class="filter-title">Categories</h6>
+                        <input class="form-check-input" type="checkbox" id="category_1" name="category" value=3>
+                        <label for="category_1">Category 1</label><br>
+                        <input class="form-check-input" type="checkbox" id="category_2" name="category" value=4>
+                        <label for="category_2">Category 2</label><br>
+                        <input class="form-check-input" type="checkbox" id="category_3" name="category" value=5>
+                        <label for="category_3">Category 3</label><br>
+                        <hr class="filter-separation mt-2 mb-3"/>
+                        <button type="submit" class="btn btn-outline-danger" value="Submit">Apply</button>
+                    </form>
                 </div>
             </div>
         </div>
