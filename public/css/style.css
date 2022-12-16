@@ -698,6 +698,11 @@ footer{
     color: #d50032;
 }
 
+.user-navbar {
+    text-align: center;
+    padding-top: 13px;
+}
+
 @media only screen and (min-width:0px) and (max-width: 768px) {
     .home-grid-container {
         display: flex;
