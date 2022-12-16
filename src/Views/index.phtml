@@ -83,9 +83,15 @@ $title = 'AJExchange';
             <div class="py-3 home-logo-misc search-description-background">
                 <div class="home-logo-container h3 text-center">Popular Tags</div>
                 <?php foreach ($data->tags as $tag): ?>
-                <div class="home-logo-container">
-                    <a class="search-link-style" href="/listings/search?tags[]=<?= $tag->getTag() ?>"><button class="btn btn-outline-danger button-box-size"><?= $tag->getTag() ?></button></a>
-                </div>
+                    <?php if(sizeof($data->tags) >= 1 && sizeof($data->tags) <= 7): ?>
+                        <div class="home-logo-container">
+                            <a class="search-link-style" href="/listings/search?tags[]=<?= $tag->getTag() ?>"><button class="btn btn-outline-danger button-box-size"><?= $tag->getTag() ?></button></a>
+                        </div>
+                    <?php elseif(sizeof($data->tags) > 7): ?>
+                        <?php break; ?>
+                    <?php else: ?>
+                        <h5 class="home-welcome">Currently no tags</h5>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </div>
         </div>
