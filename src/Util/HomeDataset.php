@@ -44,6 +44,9 @@ class HomeDataset extends DatasetBase
             $giveawayResults[] = new Listing($result);
         }
 
-        return new HomepageData($saleResults, $exchangeResults, $giveawayResults, []);
+        $tagDataset = new TagDataset();
+        $tags = $tagDataset->getTags();
+
+        return new HomepageData($saleResults, $exchangeResults, $giveawayResults, $tags);
     }
 }
