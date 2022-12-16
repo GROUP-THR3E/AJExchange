@@ -524,7 +524,7 @@
     --bs-btn-disabled-bg: transparent;
     --bs-btn-disabled-border-color: #d50032;
     --bs-gradient: none;
-    font-family: "Arial Rounded MT Bold","sans-serif";
+    font-family: ArialRoundedMTBold,"Arial Rounded MT Bold","Arial Black", Arial, Helvetica, sans-serif;
 }
 
 .btn-outline-light {
@@ -543,7 +543,7 @@
     --bs-btn-disabled-bg: transparent;
     --bs-btn-disabled-border-color: white;
     --bs-gradient: none;
-    font-family: "Arial Rounded MT Bold","sans-serif";
+    font-family: ArialRoundedMTBold,"Arial Rounded MT Bold","Arial Black", Arial, Helvetica, sans-serif;
 }
 
 .btn-outline-login {
@@ -563,7 +563,7 @@
     --bs-btn-disabled-bg: #d50032;
     --bs-btn-disabled-border-color: #d50032;
     --bs-gradient: none;
-    font-family: "Arial Rounded MT Bold","sans-serif";
+    font-family: ArialRoundedMTBold,"Arial Rounded MT Bold","Arial Black", Arial, Helvetica, sans-serif;
 }
 
 .home-view-more {
