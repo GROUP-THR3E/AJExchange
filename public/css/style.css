@@ -219,7 +219,7 @@
     grid-row-end: 1;
     position: relative;
     margin-top: 0;
-    margin-bottom: 50px;
+    margin-bottom: 0;
 }
 
 .home-grid-container {
@@ -240,6 +240,8 @@
     padding-right: 10px;
     margin: 0;
     font-family: "Arial Rounded MT Bold","sans-serif";
+    width: 49%;
+    text-align: left;
 }
 
 .home-image-descriptions-container {
@@ -562,4 +564,16 @@
     --bs-btn-disabled-border-color: #d50032;
     --bs-gradient: none;
     font-family: "Arial Rounded MT Bold","sans-serif";
+}
+
+.home-view-more {
+    font-size: 20px;
+    color:  #2f2f2f;
+    text-align: right;
+    width: 50%;
+    margin: 0;
+}
+
+.home-main-title {
+    font-size: 50px;
 }

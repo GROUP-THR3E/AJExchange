@@ -12,64 +12,65 @@ use GroupThr3e\AJExchange\Util\View;
 $title = 'index';
 ?>
 <div class="outerDiv home-grid-design p-2 m-3 mx-auto">
-    <h1>Recent Listings</h1>
-    <div class="home-grid-container my-4">
+    <div class="home-grid-container">
         <div>
-            <h5 class="home-image-titles">Sales</h5>
+            <h1 class="home-main-title">Recent Listings</h1>
+            <hr class="filter-separation mt-2 mb-3"/>
+            <h5 class="home-image-titles d-inline-block">Sales</h5><h5 class="home-view-more d-inline-block search-link-style"><a href="/listings/search?query=&type=sell">View all sales</a></h5>
             <div class="view-extra-home-images d-flex flex-row gap-3 text-center search-link-style">
                 <?php foreach($data->recentSales as $recentSale): ?>
                 <div class="home-image-containers">
                     <a href="/listings/<?= $recentSale->getListingId() ?>">
                         <img class="home-images" src="<?= $this->listingImage($recentSale->getImageUrls()[0]) ?>" alt="">
                     </a>
-                    <a href="/listings/<?= $recentSale->getListingId() ?>" class="home-image-descriptions-container">£<?= htmlspecialchars($recentSale->getPrice()) ?></a>
+                    <a href="/listings/<?= $recentSale->getListingId() ?>" class="home-image-descriptions-container"><?= htmlspecialchars($recentSale->getListingName()) ?></a>
                 </div>
                 <?php endforeach; ?>
             </div>
-            <h5  class="home-image-titles">Exchanges</h5>
+            <hr class="filter-separation mt-2 mb-3"/>
+            <h5 class="home-image-titles d-inline-block">Exchanges</h5><h5 class="home-view-more d-inline-block search-link-style"><a href="/listings/search?query=&type=exchange">View all exchanges</a></h5>
             <div class="view-extra-home-images d-flex flex-row gap-3 text-center search-link-style">
                 <?php foreach($data->recentExchanges as $recentExchange): ?>
                 <div class="home-image-containers">
                     <a href="/listings/<?= $recentExchange->getListingId() ?>">
                         <img class="home-images" src="<?= $this->listingImage($recentExchange->getImageUrls()[0]) ?>" alt="">
                     </a>
-                    <a href="/listings/<?= $recentExchange->getListingId() ?>" class="home-image-descriptions-container">Wants: <?= htmlspecialchars($recentExchange->getDesiredItem()) ?></a>
+                    <a href="/listings/<?= $recentExchange->getListingId() ?>" class="home-image-descriptions-container"><?= htmlspecialchars($recentExchange->getListingName()) ?></a>
                 </div>
                 <?php endforeach; ?>
             </div>
-            <h5  class="home-image-titles">Giveaways</h5>
+            <hr class="filter-separation mt-2 mb-3"/>
+            <h5 class="home-image-titles d-inline-block">Giveaways</h5><h5 class="home-view-more d-inline-block search-link-style"><a href="/listings/search?query=&type=giveaway">View all giveaways</a></h5>
             <div class="view-extra-home-images d-flex flex-row gap-3 text-center search-link-style">
                 <?php foreach($data->recentGiveaways as $recentGiveaway): ?>
                 <div class="home-image-containers">
                     <a href="/listings/<?= $recentGiveaway->getListingId() ?>">
                         <img class="home-images" src="<?= $this->listingImage($recentGiveaway->getImageUrls()[0]) ?>" alt="">
                     </a>
-                    <a href="/listings/<?= $recentGiveaway->getListingId() ?>" class="home-image-descriptions-container">Free</a>
+                    <a href="/listings/<?= $recentGiveaway->getListingId() ?>" class="home-image-descriptions-container"><?= $recentGiveaway->getListingName() ?></a>
                 </div>
                 <?php endforeach; ?>
             </div>
+            <hr class="filter-separation mt-2 mb-3"/>
         </div>
         <div>
             <div class="py-3 home-grid-design home-logo-misc home-welcome-design">
-                <h2 class="home-welcome white-design-text">Welcome, </h2>
-                <h2 class="home-welcome white-design-text"><?= Auth::getAuthManager()->getUser()->getFullName() ?></h2>
-                <h4 class="home-welcome white-design-text"><?= Auth::getAuthManager()->getUser()->getOffice()->getOfficeName() ?></h4>
-                <div class="home-logo-container">
-                    <h5 class="home-logo-descriptions white-design-text"><a class="text-light" href="/listings/search">View all listings</a></h5>
+                <div class="home-logo-container btn-outline-light">
+                    <h5 class="home-logo-descriptions"><a class="text-light" href="/listings/search">View all listings</a></h5>
                 </div>
                 <div class="home-logo-container">
-                    <h5 class="home-logo-descriptions white-design-text"><a class="text-light" href="/users/my/listings">View your listings</a></h5>
+                    <h5 class="home-logo-descriptions"><a class="text-light" href="/users/my/listings">View your listings</a></h5>
                 </div>
                 <div class="home-logo-container">
-                    <h5 class="home-logo-descriptions white-design-text"><a class="text-light" href="/listings/create">List Item</a></h5>
+                    <h5 class="home-logo-descriptions"><a class="text-light" href="/listings/create">List Item</a></h5>
                 </div>
                 <?php if(Auth::getAuthManager()->getUser()->getRole() == 'admin'): ?>
                 <div class="home-logo-container">
-                    <h5 class="home-logo-descriptions white-design-text"><a class="text-light" href="/listings/adminControls">Admin Controls</a></h5>
+                    <h5 class="home-logo-descriptions"><a class="text-light" href="/listings/adminControls">Admin Controls</a></h5>
                 </div>
                 <?php endif; ?>
                 <div class="home-logo-container">
-                    <h5 class="home-logo-descriptions white-design-text"><a class="text-light" href="/users/my/orders">View your orders</a></h5>
+                    <h5 class="home-logo-descriptions"><a class="text-light" href="/users/my/orders">View your orders</a></h5>
                 </div>
             </div>
             <div class="py-2 home-grid-design home-image-misc categories-color">
