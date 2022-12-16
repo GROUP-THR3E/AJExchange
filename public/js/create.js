@@ -1,13 +1,12 @@
 const createImageContainers = document.getElementsByClassName('create-listing-image-container');
 for (let i = 0; i < createImageContainers.length; i++) {
-   const button = createImageContainers[i].querySelector('.create-listing-image-button');
-   button.onchange = function() {
-       const url = URL.createObjectURL(this.files[0]);
-       createImageContainers[i].style.backgroundImage = 'url(' + url + ')';
-       createImageContainers[i].style.backgroundSize = 'cover';
-   }
+    const button = createImageContainers[i].querySelector('.create-listing-image-button');
+    button.onchange = function() {
+        const url = URL.createObjectURL(this.files[0]);
+        createImageContainers[i].style.backgroundImage = 'url(' + url + ')';
+        createImageContainers[i].style.backgroundSize = 'cover';
+    }
 }
-
 //create inputs
 
 const inputPrice = document.getElementById("inputPrice");
@@ -89,25 +88,25 @@ function enableDisableCheckConf(x){
 //Disables and enables the correct inputs
 function createEnableDisable() {
     let selected;
-        if (radioSell.checked) {
-            enableDisableInputPrice(false);
-            enableDisableCharityConf(false);
-            selected = 'sell';
-            if(charityConf.checked){
-                enableDisableCharitySelector(false);
-            }
-            else{
-                enableDisableCharitySelector(true);
-            }
+    if (radioSell.checked) {
+        enableDisableInputPrice(false);
+        enableDisableCharityConf(false);
+        selected = 'sell';
+        if(charityConf.checked){
+            enableDisableCharitySelector(false);
         }
-        else if (radioExchange.checked) {
-            enableDisableInputExchange(false);
-            selected = 'exchange';
+        else{
+            enableDisableCharitySelector(true);
         }
-        else if (radioGiveaway.checked) {
-            enableDisableCheckConf(false);
-            selected = 'giveaway';
-        }
+    }
+    else if (radioExchange.checked) {
+        enableDisableInputExchange(false);
+        selected = 'exchange';
+    }
+    else if (radioGiveaway.checked) {
+        enableDisableCheckConf(false);
+        selected = 'giveaway';
+    }
     createDisable(selected);
 }
 //disables the correct inputs based on selections including submit
@@ -124,42 +123,34 @@ function createDisable(selected) {
         enableDisableCheckConf(true);
     }
 
-    if (inputTitle.value !== '' && descriptionArea.value !== '' &&  createImage.files.length !== 0) {
+    if (inputTitle.value !== '' && descriptionArea.value !== '' && createImage.files.length !== 0) {
         if (selected === 'sell') {
             if (charityConf.checked === true) {
                 if ((charitySelector.value !== '' && charitySelector.value !== 'Select Charity')) {
 
                     enableDisableButton(false);
-                }
-                else{
+                } else {
                     enableDisableButton(true);
                 }
-            }
-            else if (inputPrice.value !== '') {
+            } else if (inputPrice.value !== '') {
                 enableDisableButton(false);
+            } else {
+                enableDisableButton(true);
             }
-            else{
+        } else if (selected === 'exchange') {
+            if (inputExchange.value !== '') {
+                enableDisableButton(false);
+            } else {
+                enableDisableButton(true);
+            }
+        } else if (selected === 'giveaway') {
+            if (checkConf.checked === true) {
+                enableDisableButton(false);
+            } else {
                 enableDisableButton(true);
             }
         }
-        else if(selected === 'exchange'){
-            if(inputExchange.value !== ''){
-                enableDisableButton(false);
-            }
-            else{
-                enableDisableButton(true);
-            }
-        }
-        else if(selected === 'giveaway'){
-            if(checkConf.checked === true){
-                enableDisableButton(false);
-            }
-            else{
-                enableDisableButton(true);
-            }
-        }
-    }
-    else{
+    } else {
         enableDisableButton(true);
     }
 }

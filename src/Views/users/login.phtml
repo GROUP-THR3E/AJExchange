@@ -6,6 +6,25 @@
 $title = 'login';
 ?>
 
+<?php if(empty($error)): ?>
+<div class="intro">
+    <img src="/public/ajbell_logo.png" alt="AJBell Logo">
+    <h1 class="logo">
+        <span class="logo-parts">A</span>
+        <span class="logo-parts">J</span>
+        <span class="logo-parts">E</span>
+        <span class="logo-parts">x</span>
+        <span class="logo-parts">c</span>
+        <span class="logo-parts">h</span>
+        <span class="logo-parts">a</span>
+        <span class="logo-parts">n</span>
+        <span class="logo-parts">g</span>
+        <span class="logo-parts">e</span>
+    </h1>
+    <p>AJBell's Exclusive Marketplace</p>
+</div>
+<?php endif; ?>
+
 <div class="createOuterDiv text-center p-4 m-5 mx-auto">
     <form action="/users/login" method="post">
             <div class="mb-3">
@@ -27,3 +46,4 @@ $title = 'login';
         <button type="submit" class="btn btn-outline-login w-100 mt-4"> Log in</button>
     </form>
 </div>
+<script src="/public/js/login.js"></script>

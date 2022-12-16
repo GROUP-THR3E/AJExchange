@@ -80,7 +80,7 @@ $title = 'Create Listing';
                         <select class="form-select" id="charity-select" name="charity" aria-label="charityHelp">
                             <option selected>Select Charity</option>
                             <?php foreach ($charities as $charity): ?>
-                            <option value="<?= $charity->getCharityId() ?>"><?= $charity->getCharityName() ?></option>
+                                <option value="<?= $charity->getCharityId() ?>"><?= $charity->getCharityName() ?></option>
                             <?php endforeach; ?>
                         </select>
                     </td>
@@ -106,3 +106,4 @@ $title = 'Create Listing';
         <button id="create_submit" type="submit" class="btn btn-outline-danger">Submit Listing</button>
     </div>
 </form>
+<script src="/public/js/create.js"></script>
