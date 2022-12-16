@@ -253,7 +253,7 @@
     display: block;
     margin: 0 auto;
     word-wrap: break-word;
-    width: 150px;
+    width: 100%;
     line-height: 1.5em;
     overflow: hidden;
 }
