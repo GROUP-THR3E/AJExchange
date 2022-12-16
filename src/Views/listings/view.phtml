@@ -82,17 +82,17 @@ $user = Auth::getAuthManager()->getUser();
                 <h4>Approval status: <span class="capitalise" style="color: blue"><?= htmlspecialchars($listing->getApprovalStatus()) ?></span></h4>
             <?php endif; ?>
         <?php endif; ?>
-        <h4 class="mt-3">Tags:</h4>
-        <div class="home-welcome list-div text-center view-listing-tags">
-            <ul class="tag-list-container list-unstyled">
-                <li><a href="javascript:void(0)" class="h4 d-block">Category 1</a></li>
-                <li><a href="javascript:void(0)" class="h4 d-block">Category 2</a></li>
-                <li><a href="javascript:void(0)" class="h4 d-block">Category 3</a></li>
-                <li><a href="javascript:void(0)" class="h4 d-block">Category 4</a></li>
-                <li><a href="javascript:void(0)" class="h4 d-block">Category 5</a></li>
-                <li><a href="javascript:void(0)" class="h4 d-block">Category 6</a></li>
-                <li><a href="javascript:void(0)" class="h4 d-block">Category 7</a></li>
-            </ul>
+        <h4>Tags:</h4>
+        <div class="home-logo-item">
+            <div class="home-logo-container">
+                <a class="search-link-style" href="/listings/search"><button class="btn btn-outline-login button-item-size">Tag One</button></a>
+            </div>
+            <div class="home-logo-container button-box-size">
+                <a class="search-link-style" href="/users/my/listings"><button class="btn btn-outline-login button-item-size">Tag Two</button></a>
+            </div>
+            <div class="home-logo-container button-box-size">
+                <a class="search-link-style" href="/listings/create"><button class="btn btn-outline-login button-item-size">Tag Three</button></a>
+            </div>
         </div>
     </div>
     <div class="view-listing-extra-images listing-grid-design gap-2">
