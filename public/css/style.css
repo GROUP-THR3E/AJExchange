@@ -19,6 +19,7 @@
 .orders-title-div {
     margin-top: 10px;
     width: 1280px;
+    max-width: 100%;
     padding-left: 300px;
 }
 
@@ -564,8 +565,6 @@
     --bs-btn-disabled-border-color: #d50032;
     --bs-gradient: none;
     font-family: "Arial Rounded MT Bold","sans-serif";
-    display: flex;
-    flex-direction: row;
 }
 
 @media only screen and (min-width:0px) and (max-width: 768px) {
@@ -707,4 +706,7 @@
         font-size: 15px;
     }
 
+    .orders-title-div {
+        padding: 10px;
+    }
 }
