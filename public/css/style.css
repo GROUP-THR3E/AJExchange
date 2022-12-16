@@ -709,4 +709,19 @@
     .orders-title-div {
         padding: 10px;
     }
+    .index-control-box {
+        order: -1;
+    }
+
+    .home-logo-misc {
+        vertical-align: top;
+        margin-top: auto;
+    }
+
+    .home-grid-container {
+        gap: 30px;
+        padding-top: 2px;
+    }
+
+
 }
