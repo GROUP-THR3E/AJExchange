@@ -711,6 +711,10 @@ footer{
     font-size: 20px;
 }
 
+.index-dropdown {
+    display: none;
+}
+
 @media only screen and (min-width:0px) and (max-width: 768px) {
     .home-grid-container {
         display: flex;
@@ -883,5 +887,14 @@ footer{
 
     .home-logo-container {
         padding: 15px;
+    }
+
+    .index-control-box {
+        display: none ;
+    }
+
+    .index-dropdown {
+        order: -1;
+        display: flex;
     }
 }

@@ -88,5 +88,30 @@ $title = 'AJExchange';
                 <?php endforeach; ?>
             </div>
         </div>
+        <div class="btn-group index-dropdown w-100">
+            <button type="button" class="btn btn-outline-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Control panel
+            </button>
+            <ul class="dropdown-menu w-100">
+                <li><a class="dropdown-item" href="/listings/search">View all listings</a></li>
+                <li><a class="dropdown-item" href="/users/my/listings">View your listings</a></li>
+                <li><a class="dropdown-item" href="/listings/create">List an item</a></li>
+                <?php if(Auth::getAuthManager()->getUser()->getRole() == 'admin'): ?>
+                    <li><a class="dropdown-item" href="/listings/adminControls">Admin controls</a></li>
+                <?php endif; ?>
+                <li><a class="dropdown-item" href="/users/my/orders">View your orders</a></li>
+            </ul>
+        </div>
+
+        <div class="btn-group index-dropdown w-100">
+            <button type="button" class="btn btn-outline-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                View Popular Tags
+            </button>
+            <ul class="dropdown-menu w-100">
+                <?php foreach ($data->tags as $tag): ?>
+                    <li><a class="dropdown-item" href="/listings/search?tags[]=<?= $tag->getTag() ?>"><?= $tag->getTag() ?></a></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
     </div>
 </div>
