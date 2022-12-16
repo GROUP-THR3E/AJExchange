@@ -46,7 +46,7 @@
 
 .listing-search-result-description {
     text-align: left;
-    width: 400px;
+    flex-grow: 1;
 }
 
 .listing-search-result-image {
