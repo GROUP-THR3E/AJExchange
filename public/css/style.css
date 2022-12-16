@@ -715,6 +715,10 @@ footer{
     display: none;
 }
 
+.mobile-search-offcanvas {
+    display: none;
+}
+
 @media only screen and (min-width:0px) and (max-width: 768px) {
     .home-grid-container {
         display: flex;
@@ -753,15 +757,14 @@ footer{
     }
 
     .listings-filters-menu {
-        padding: 20px 0;
-        font-size: 12px;
-        text-align: left;
+        display: none;
     }
 
     .search-title-div {
         margin-top: 10px;
         padding-left: 2px;
         width: 100%;
+        text-align: center;
     }
 
     .search-grid-container {
@@ -770,6 +773,7 @@ footer{
         display:flex;
         padding: 2px;
         text-align: center;
+        flex-direction: column;
     }
 
     .listing-search-result {
@@ -896,5 +900,24 @@ footer{
     .index-dropdown {
         order: -1;
         display: flex;
+    }
+
+    .mobile-search-offcanvas {
+        display:flex;
+        order: -1;
+    }
+
+    .listing-search-results {
+        grid-column: 8/8;
+    }
+
+    .search-title {
+        text-align: center;
+        margin-bottom: 0;
+        margin-top: 5px;
+    }
+
+    .search-padding {
+        padding: 0px;
     }
 }
