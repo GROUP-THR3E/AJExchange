@@ -11,7 +11,13 @@ class TagDataset extends DatasetBase
      */
     public function getTags(): array
     {
-        $statement = $this->dbHandle->query('SELECT * FROM Tag');
+        $query =
+            'SELECT * FROM Tag
+             WHERE taggedListings != 0
+             ORDER BY taggedListings DESC
+             LIMIT 5';
+
+        $statement = $this->dbHandle->query($query);
         $tags = [];
         foreach ($statement->fetchAll() as $result) {
             $tags[] = new Tag($result);
