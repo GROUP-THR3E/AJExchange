@@ -80,23 +80,12 @@ $title = 'AJExchange';
                 </div>
             </div>
             <div class="py-3 home-logo-misc search-description-background">
+                <div class="home-logo-container h3 text-center">Popular Tags</div>
+                <?php foreach ($data->tags as $tag): ?>
                 <div class="home-logo-container">
-                    <a class="search-link-style" href="/listings/search"><button class="btn btn-outline-login button-box-size">Tag One</button></a>
+                    <a class="search-link-style" href="/listings/search?tags[]=<?= $tag->getTag() ?>"><button class="btn btn-outline-login button-box-size"><?= $tag->getTag() ?></button></a>
                 </div>
-                <div class="home-logo-container button-box-size">
-                    <a class="search-link-style" href="/users/my/listings"><button class="btn btn-outline-login button-box-size">Tag Two</button></a>
-                </div>
-                <div class="home-logo-container button-box-size">
-                    <a class="search-link-style" href="/listings/create"><button class="btn btn-outline-login button-box-size">Tag Three</button></a>
-                </div>
-                <?php if(Auth::getAuthManager()->getUser()->getRole() == 'admin'): ?>
-                    <div class="home-logo-container button-box-size">
-                        <a class="search-link-style" href="/listings/adminControls"><button class="btn btn-outline-login button-box-size">Tag Four</button></a>
-                    </div>
-                <?php endif; ?>
-                <div class="home-logo-container button-box-size">
-                    <a class="search-link-style" href="/users/my/orders"><button class="btn btn-outline-login button-box-size">Tag Five</button></a>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>

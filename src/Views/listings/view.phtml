@@ -84,15 +84,11 @@ $user = Auth::getAuthManager()->getUser();
         <?php endif; ?>
         <h4>Tags:</h4>
         <div class="home-logo-item">
+            <?php foreach ($listing->getTags() as $tag): ?>
             <div class="home-logo-container">
                 <a class="search-link-style" href="/listings/search"><button class="btn btn-outline-login button-item-size">Tag One</button></a>
             </div>
-            <div class="home-logo-container button-box-size">
-                <a class="search-link-style" href="/users/my/listings"><button class="btn btn-outline-login button-item-size">Tag Two</button></a>
-            </div>
-            <div class="home-logo-container button-box-size">
-                <a class="search-link-style" href="/listings/create"><button class="btn btn-outline-login button-item-size">Tag Three</button></a>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
     <div class="view-listing-extra-images listing-grid-design gap-2">
