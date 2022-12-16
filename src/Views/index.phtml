@@ -61,6 +61,7 @@ $title = 'AJExchange';
         </div>
         <div class="index-control-box">
             <div class="py-3 home-logo-misc search-description-background">
+                <div class="home-logo-container h3 text-center">Control Panel</div>
                 <div class="home-logo-container">
                     <a class="search-link-style" href="/listings/search"><button class="btn btn-outline-danger button-box-size">View all listings</button></a>
                 </div>
@@ -83,7 +84,7 @@ $title = 'AJExchange';
                 <div class="home-logo-container h3 text-center">Popular Tags</div>
                 <?php foreach ($data->tags as $tag): ?>
                 <div class="home-logo-container">
-                    <a class="search-link-style" href="/listings/search?tags[]=<?= $tag->getTag() ?>"><button class="btn btn-outline-login button-box-size"><?= $tag->getTag() ?></button></a>
+                    <a class="search-link-style" href="/listings/search?tags[]=<?= $tag->getTag() ?>"><button class="btn btn-outline-danger button-box-size"><?= $tag->getTag() ?></button></a>
                 </div>
                 <?php endforeach; ?>
             </div>
