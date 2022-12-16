@@ -33,7 +33,7 @@ use GroupThr3e\AJExchange\Util\Auth;
                     <input name="query" class="form-control me-2 flex-grow-1" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-light btn-navbar" type="submit">Search</button>
                 </form>
-                <h6 class="navbar-brand text-light">Current user: <?= Auth::getAuthManager()->getUser()->getFullName() ?></h6>
+                <h6 class="navbar-brand user-navbar">Current user: <?= Auth::getAuthManager()->getUser()->getFullName() ?></h6>
                 <div class="navbar-end-content d-flex">
                     <div class="flex-grow-1"></div>
                     <form action="/users/logout" method="post" class="mb-0">
