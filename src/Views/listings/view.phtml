@@ -84,10 +84,17 @@ $user = Auth::getAuthManager()->getUser();
         <?php endif; ?>
         <h4>Tags:</h4>
         <div class="home-logo-item">
+            <?php if (empty($listing->getTags())): ?>
+            <h5 class="home-welcome">No tags</h5>
+            <?php endif; ?>
             <?php foreach ($listing->getTags() as $tag): ?>
-            <div class="home-logo-container">
-                <a class="search-link-style" href="/listings/search"><button class="btn btn-outline-login button-item-size">Tag One</button></a>
-            </div>
+                <?php if(sizeof($listing->getTags()) >= 1 && sizeof($listing->getTags()) <= 3): ?>
+                    <div class="home-logo-container">
+                        <a class="search-link-style" href="/listings/search"><button class="btn btn-outline-login button-item-size">Tag One</button></a>
+                    </div>
+                <?php elseif(sizeof($listing->getTags()) > 3): ?>
+                    <?php break; ?>
+                <?php endif; ?>
             <?php endforeach; ?>
         </div>
     </div>
