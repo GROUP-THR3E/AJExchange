@@ -78,6 +78,7 @@ return function(App $app) {
         $tagsString = trim($params['inputTags'],", \n\r\t\v\x00");
         $tagsString = preg_replace("/\s*,+\s*/", ',' ,$tagsString);
         $tags = explode(',', $tagsString);
+        $tags = array_filter($tags, function (?string $tag) { return !empty($tag); });
 
         foreach($images as $image )
         if($image->getError() === 0)
@@ -136,13 +137,13 @@ return function(App $app) {
             }
         }
 
-        if(!empty($params['inputTags'])) {
-            foreach($tags as $tag)
-                if(!preg_match("/^[a-zA-Z0-9_\-]{1,20}$/", $tag) || !preg_match('/[A-Za-z0-9]/', $tag))
-                {
-                    $arrayError[] ='Only Alphanumeric / Dashes / Underscores are allowed in your tags! (Max Char per tag: 20)';
+        if(!empty($tags)) {
+            foreach($tags as $tag) {
+                if (!preg_match("/^[a-zA-Z0-9_\-]{1,20}$/", $tag) || !preg_match('/[A-Za-z0-9]/', $tag)) {
+                    $arrayError[] = 'Only Alphanumeric / Dashes / Underscores are allowed in your tags! (Max Char per tag: 20)';
                     break;
                 }
+            }
         }
 
         if(count($arrayError) > 0)
@@ -157,7 +158,7 @@ return function(App $app) {
                 $params['listingType'] === 'sell' ? $params['inputPrice'] : null,
                 $params['listingType'] === 'exchange' ? preg_replace('/\s+/', ' ',$params['inputItem']) : null,
                 $params['listingType'],
-                [],
+                $tags,
                 Auth::getAuthManager()->getUser()->getUserId(),
                 $images,
                 $params['charity']

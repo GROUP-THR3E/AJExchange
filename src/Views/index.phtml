@@ -79,6 +79,7 @@ $title = 'AJExchange';
                 </div>
             </div>
             <div class="py-3 home-logo-misc search-description-background">
+                <div class="home-logo-container h3 text-center">Popular Tags</div>
                 <?php foreach ($data->tags as $tag): ?>
                 <div class="home-logo-container">
                     <a class="search-link-style" href="/listings/search?tags[]=<?= $tag->getTag() ?>"><button class="btn btn-outline-login button-box-size"><?= $tag->getTag() ?></button></a>
