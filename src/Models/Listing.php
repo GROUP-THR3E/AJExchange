@@ -24,7 +24,10 @@ class Listing extends ModelBase
     {
         parent::__construct($dbRow);
         if (isset($dbRow['imageUrls'])) $this->imageUrls = explode(',', $dbRow['imageUrls']);
-        if (isset($dbRow['tags'])) $this->tags = explode(',', $dbRow['tags']);
+        if (isset($dbRow['tags'])) {
+            if (!empty($dbRow['tags'])) $this->tags = explode(',', $dbRow['tags']);
+            else $this->tags = [];
+        }
     }
 
     /**

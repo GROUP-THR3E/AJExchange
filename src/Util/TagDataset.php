@@ -26,15 +26,11 @@ class TagDataset extends DatasetBase
      */
     public function addListingTags(int $listingId, array $tags)
     {
-        // Prepares string for IN condition
-        $tagsQuery = 'tag IN (';
+        // Returns early if the array is empty
+        if (empty($tags)) return;
+
         $sqlParams = [];
-        for ($i = 0; $i < sizeof($tags); $i++) {
-            $tagsQuery .= ":tag$i,";
-            $sqlParams["tag$i"] = $tags[$i];
-        }
-        $tagsQuery = rtrim($tagsQuery, ',');
-        $tagsQuery .= ')';
+        $tagsQuery = DbUtils::prepareInString('tag', $tags, $sqlParams);
 
         // Retrieves all tags from the db that are in the given array
         $statement = $this->dbHandle->prepare("SELECT * FROM Tag WHERE $tagsQuery");
@@ -68,15 +64,11 @@ class TagDataset extends DatasetBase
      */
     private function changeCounts(array $tags, int $num)
     {
-        // Prepares string for IN condition
-        $tagsQuery = 'tag IN (';
+        // Returns early if the array is empty
+        if (empty($tags)) return;
+
         $sqlParams = [];
-        for ($i = 0; $i < sizeof($tags); $i++) {
-            $tagsQuery .= ":tag$i,";
-            $sqlParams["tag$i"] = $tags[$i];
-        }
-        $tagsQuery = rtrim($tagsQuery, ',');
-        $tagsQuery .= ')';
+        $tagsQuery = DbUtils::prepareInString('tag', $tags, $sqlParams);
 
         // Updates all counts
         $statement = $this->dbHandle->prepare("UPDATE Tag SET taggedListings = taggedListings + $num WHERE $tagsQuery");
