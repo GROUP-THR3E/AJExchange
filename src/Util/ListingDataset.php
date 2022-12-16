@@ -89,6 +89,7 @@ class ListingDataset extends DatasetBase
             ) as Results
             GROUP BY listingId
             $tagFilter
+            ORDER BY dateListed DESC
             LIMIT :limit OFFSET :offset;
             ";
 

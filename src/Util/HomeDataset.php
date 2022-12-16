@@ -22,6 +22,7 @@ class HomeDataset extends DatasetBase
              AND orderId IS NULL
              AND imageIndex = 1
              AND userId != $ownId
+             ORDER BY dateListed DESC
              LIMIT 4";
 
         $statement = $this->dbHandle->prepare($listingQuery);
