@@ -3,7 +3,10 @@
  * @var string $title the title of the page
  * @var string $content the main content to display in the page body
  */
+
+use GroupThr3e\AJExchange\Util\Auth;
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,6 +30,9 @@
                     <input name="query" class="form-control me-2 flex-grow-1" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-light btn-navbar" type="submit">Search</button>
                 </form>
+                <?php if(Auth::getAuthManager()->getUser() !== null): ?>
+                    <h6 class="navbar-brand text-light">Current user: <?= Auth::getAuthManager()->getUser()->getFullName() ?></h6>
+                <?php endif ?>
                 <div class="navbar-end-content d-flex">
                     <div class="flex-grow-1"></div>
                     <form action="/users/logout" method="post" class="mb-0">

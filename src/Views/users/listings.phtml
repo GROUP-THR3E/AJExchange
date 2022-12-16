@@ -13,50 +13,62 @@ use GroupThr3e\AJExchange\Util\View;
 $title = "My listings";
 ?>
 
-<h1 class="admin-welcome">Welcome,  <?= Auth::getAuthManager()->getUser()->getFullName() ?>, please check the listings belows:</h1>
-<div class="outerDiv search-grid-container mx-auto">
-    <div class="admin-filters-grid">
-        <form class="listings-filters-menu">
-            <div class="mb-2">
-                <strong>Filters:</strong>
-            </div>
+<div class="mx-auto search-title-div"><h5 class="search-title">Welcome,  <?= Auth::getAuthManager()->getUser()->getFullName() ?>, this is your listing history:</h5></div>
+<div class="outerDiv search-grid-container mx-auto search-margin search-padding">
+    <div class="listing-filters-grid">
+        <form class="listings-filters-menu search-padding">
+            <h6 class="filter-title">Filters:</h6>
             <div class="form-check">
                 <input class="form-check-input" type="radio" id="to_approve" name="approvalStatus"
                        value="<?= ApprovalStatus::PENDING ?>" <?= $approvalStatus === ApprovalStatus::PENDING ? 'checked': '' ?>>
-                <label for="to_approve">To be approved</label><br>
+                <label for="to_approve">Pending</label><br>
                 <input class="form-check-input" type="radio" id="approved" name="approvalStatus"
                        value="<?= ApprovalStatus::APPROVED ?>" <?= $approvalStatus === ApprovalStatus::APPROVED ? 'checked': '' ?>>
                 <label for="approved">Approved</label><br>
                 <input class="form-check-input" type="radio" id="declined" name="approvalStatus"
                        value="<?= ApprovalStatus::DENIED ?>" <?= $approvalStatus === ApprovalStatus::DENIED ? 'checked' : '' ?>>
-                <label for="declined">Declined</label><br>
+                <label for="declined">Denied</label><br>
             </div>
-            <button type="submit" class="btn btn-primary mt-4">Submit</button>
+            <hr class="filter-separation mt-2 mb-3"/>
+            <button type="submit" class="btn btn-outline-danger" value="Submit">Apply</button>
         </form>
     </div>
-    <div class="admin-search-results">
+    <div class="listing-search-results search-padding">
+        <?php if(empty($listings)): ?>
+            <h3 class="admin-welcome">No listings with specified filter found in history</h3>
+        <?php else: ?>
         <?php foreach($listings as $listing): ?>
-            <div class="listing-search-result">
-                <div>
-                    <a href="/listings/<?= $listing->getListingID() ?>"><img class="listing-search-result-image" alt="" src="<?= $this->listingImage($listing->getImageUrls()[0]) ?>"></a>
+            <div class="listing-search-result search-description-background">
+                <div class="search-description-image">
+                    <a href="/listings/<?= $listing->getListingID() ?>">
+                    <img class="listing-search-result-image" alt="" src="<?= $this->listingImage($listing->getImageUrls()[0]) ?>">
+                </a>
                 </div>
-                <div class= "listing-search-result-description">
-                    <a href="/listings/<?= $listing->getListingID() ?>"><h3><?= $listing->getListingName() ?></h3></a>
-                    <h5>Description: <?= $listing->getDescription() ?></h5>
+                <div class= "listing-search-result-description search-link-style text-overflow">
+                    <a class="search-link-style" href="/listings/<?= $listing->getListingID() ?>"><h4><?= htmlspecialchars($listing->getListingName()) ?></h4></a>
+                    <h6 class="search-description-style"><?= $listing->getUser()->getFullName() ?>, <?= $listing->getUser()->getOffice()->getOfficeName() ?></h6>
                     <?php if($listing->getType()=='sell'): ?>
-                        <h6>Price: £<?= $listing->getPrice() ?> </h6>
+                    <h6><span class="search-description-style">Selling for: </span></h6><h3>£<?= htmlspecialchars($listing->getPrice()) ?></h3>
                         <?php if ($listing->getCharity() !== null): ?>
                             <h6>Proceeds go to <?= $listing->getCharity()->getCharityName() ?></h6>
                         <?php endif; ?>
                     <?php elseif($listing->getType()=='exchange'): ?>
-                        <h6>Exchange for: <?= $listing ->getDesiredItem() ?></h6>
+                        <h6><span class="search-description-style">Exchanging for: </span></h6><h3><?= htmlspecialchars($listing->getDesiredItem()) ?></h3>
                     <?php elseif($listing->getType()=='giveaway'): ?>
-                        <h6>Giving away</h6>
+                        <h3>Giving away</span></h3>
                     <?php endif; ?>
-                    <h6>Seller name: <?= $listing->getUser()->getFullName() ?></h6>
-                    <h6>Location: <?= $listing->getUser()->getOffice()->getAddress() ?></h6>
+                    <h6><?= htmlspecialchars($listing->getDescription()) ?></h6>
+                    <?php if($listing->getApprovalStatus() == ApprovalStatus::APPROVED): ?>
+                        <h4>Status: <span class="capitalise" style="color: green"><?= htmlspecialchars($listing->getApprovalStatus()) ?></span></h4>
+                    <?php elseif($listing->getApprovalStatus() == ApprovalStatus::DENIED): ?>
+                        <h4>Status: <span class="capitalise" style="color: orange"><?= htmlspecialchars($listing->getApprovalStatus()) ?></span></h4>
+                    <?php elseif($listing->getApprovalStatus() == ApprovalStatus::PENDING): ?>
+                        <h4>Status: <span class="capitalise" style="color: blue"><?= htmlspecialchars($listing->getApprovalStatus()) ?></span></h4>
+                    <?php endif; ?>
                 </div>
+                <h6>You listed this on <?= htmlspecialchars($listing->getDateListed()) ?></h6>
             </div>
         <?php endforeach; ?>
+        <?php endif ?>
     </div>
 </div>

@@ -3,31 +3,39 @@
  * @var Order[] $orders;
  */
 
+use GroupThr3e\AJExchange\Util\Auth;
 use GroupThr3e\AJExchange\Models\Order;
 
 $title = 'My orders'
 ?>
 
 <div class="outerDiv mt-5 mx-auto">
+    <div class="mx-auto orders-title-div"><h5 class="search-title">Welcome, <?= Auth::getAuthManager()->getUser()->getFullName() ?>, this is your order history:</h5></div>
+    <?php if(empty($orders)): ?>
+        <h3 class="admin-welcome">No orders have been made</h3>
+    <?php else: ?>
     <?php foreach($orders as $order): ?>
-        <div class="listing-search-result">
-            <div>
-                <a href="/listings/<?= $order->getListing()->getListingID() ?>"><img class="listing-search-result-image" alt="" src="<?= $this->listingImage($order->getListing()->getImageUrls()[0]) ?>"></a>
-            </div>
-            <div class= "listing-search-result-description">
-                <a href="/listings/<?= $order->getListing()->getListingID() ?>"><h3><?= $order->getListing()->getListingName() ?></h3></a>
-                <h5>Description: <?= $order->getListing()->getDescription() ?></h5>
-                <?php if($order->getListing()->getType()=='sell'): ?>
-                    <h6>Price: £<?= $order->getListing()->getPrice() ?> </h6>
-                <?php elseif($order->getListing()->getType()=='exchange'): ?>
-                    <h6>Exchange for: <?= $order->getListing()->getDesiredItem() ?></h6>
-                <?php elseif($order->getListing()->getType()=='giveaway'): ?>
-                    <h6>Giving away</h6>
-                <?php endif; ?>
-                <h6>Seller name: <?= $order->getListing()->getUser()->getFullName() ?></h6>
-                <h6>Location: <?= $order->getListing()->getUser()->getOffice()->getAddress() ?></h6>
+            <div class="listing-search-result search-description-background">
+                <div class="search-description-image">
+                        <a href="/listings/<?= $order->getListing()->getListingID() ?>"><img class="listing-search-result-image" alt="" src="<?= $this->listingImage($order->getListing()->getImageUrls()[0]) ?>"></a>
+                </div>
+                <div class= "listing-search-result-description search-link-style text-overflow">
+                    <a class="search-link-style" href="/listings/<?= $order->getListing()->getListingID() ?>"><h4><?= $order->getListing()->getListingName() ?></h4></a>
+                    <h6 class="search-description-style"><?= $order->getListing()->getUser()->getFullName() ?>, <?= $order->getListing()->getUser()->getOffice()->getAddress() ?></h6>
+                    <?php if($order->getListing()->getType()=='sell'): ?>
+                        <h6><span class="search-description-style">Selling for: </span></h6><h3>£<?= $order->getListing()->getPrice() ?></h3>
+                        <?php if ($order->getListing()->getCharity() !== null): ?>
+                            <h6>Proceeds go to <?= $order->getListing()->getCharity()->getCharityName() ?></h6>
+                        <?php endif; ?>
+                    <?php elseif($order->getListing()->getType()=='exchange'): ?>
+                        <h6><span class="search-description-style">Exchanging for: </span></h6><h3><?= $order->getListing()->getDesiredItem() ?></h3>
+                    <?php elseif($order->getListing()->getType()=='giveaway'): ?>
+                        <h3>Giving away</h3>
+                    <?php endif; ?>
+                    <h6><?= $order->getListing()->getDescription() ?></h6>
+                </div>
                 <h4>Ordered on: <?= $order->getOrderDate() ?></h4>
             </div>
-        </div>
     <?php endforeach; ?>
+    <?php endif ?>
 </div>
