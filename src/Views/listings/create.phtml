@@ -32,7 +32,7 @@ $title = 'Create Listing';
     </div>
     <div class="my-4 mb-3 text-center d-flex justify-content-between">
         <div class="create-listing-image-container">
-            <input class="create-listing-image-button" type="file" name="image1">
+            <input id='createImage' class="create-listing-image-button" type="file" name="image1" required>
         </div>
         <div class="create-listing-image-container">
             <input class="create-listing-image-button" type="file" name="image2">
@@ -96,6 +96,6 @@ $title = 'Create Listing';
         </div>
     </div>
     <div class="my-4 mb-3 text-center">
-        <button id="create_submit" type="submit" class="btn btn-outline-danger">Submit Listing</button>
+        <button id="create_submit" type="submit" class="btn btn-outline-danger" disabled>Submit Listing</button>
     </div>
 </form>

@@ -8,26 +8,42 @@ for (let i = 0; i < createImageContainers.length; i++) {
    }
 }
 
-window.addEventListener('load', () => {createEnableDisable(); createDisableAll();});
-window.addEventListener('keydown', () => {createEnableDisable();});
-window.addEventListener('click', () => {createEnableDisable();});
+//create inputs
 
-function createDisableAll(){
-    enableDisableInputPrice(true);
-    enableDisableCharityConf(true);
-    enableDisableCharitySelector(true);
-    enableDisableInputExchange(true);
+const inputPrice = document.getElementById("inputPrice");
+const inputExchange = document.getElementById('inputItem');
+const checkConf = document.getElementById('checkConf');
+const inputTitle = document.getElementById('inputTitle');
+const descriptionArea = document.getElementById('description');
+const charitySelector = document.getElementById('charity-select')
+const charityConf = document.getElementById('checkCharity');
+const radioSell = document.getElementById('radio_sell');
+const radioExchange = document.getElementById('radio_exchange');
+const radioGiveaway = document.getElementById('radio_giveaway');
+const createImage = document.getElementById('createImage');
+
+document.getElementById('form_create').addEventListener('keydown', () => {createEnableDisable();});
+document.getElementById('form_create').addEventListener('click', () => {createEnableDisable();});
+window.addEventListener('load', () => {disableAll()});
+
+function disableAll(){
     enableDisableCheckConf(true);
+    enableDisableInputPrice(true);
+    enableDisableInputExchange(true);
+    enableDisableCharitySelector(true);
+    enableDisableCharityConf(true);
 }
 
+
 function countWords(){
-    let numWords = getDescription().value.trim().length;
+    let numWords = descriptionArea.value.trim().length;
     if(numWords === 0){
-        getDescription().value = null;
+        descriptionArea.value = null;
     }
     document.getElementById("word_count")
         .innerHTML = numWords + '/200';
 }
+
 
 //Toggles for create form
 function enableDisableButton(x){
@@ -38,95 +54,57 @@ function enableDisableButton(x){
 function enableDisableCharitySelector(x){
     document.getElementById('charity-select').disabled = x;
     if(x === true){
-        getCharityConf().checked = false;
+        charityConf.checked = false;
     }
 }
 
 function enableDisableCharityConf(x){
     document.getElementById('checkCharity').disabled = x;
     if(x === true){
-        getCharitySelector(). value = 'Select Charity';
+        charitySelector. value = 'Select Charity';
     }
 }
 
 function enableDisableInputPrice(x){
-    getInputPrice().disabled = x;
+    inputPrice.disabled = x;
     if(x === true){
-        getInputPrice().value = '';
+        inputPrice.value = '';
     }
 }
 
 function enableDisableInputExchange(x){
-    getInputExchange().disabled = x;
+    inputExchange.disabled = x;
     if(x === true){
-        getInputExchange().value = '';
+        inputExchange.value = '';
     }
 }
 
 function enableDisableCheckConf(x){
-    getCheckConf().disabled = x;
+    checkConf.disabled = x;
     if(x === true){
-        getCheckConf().checked = false;
+        checkConf.checked = false;
     }
-}
-
-//Accessors for create
-
-function getInputPrice(){
-    return document.getElementById("inputPrice");
-}
-
-function getInputExchange(){
-    return document.getElementById('inputItem');
-}
-
-function getCheckConf(){
-    return document.getElementById('checkConf');
-}
-
-function getInputTitle(){
-    return document.getElementById('inputTitle');
-}
-
-function getDescription(){
-    return document.getElementById('description');
-}
-function getCharitySelector(){
-    return document.getElementById('charity-select')
-}
-function getCharityConf(){
-    return document.getElementById('checkCharity');
-}
-
-function getRadioSell(){
-    return document.getElementById('radio_sell');
-}
-function getRadioExchange(){
-    return document.getElementById('radio_exchange');
-}
-function getRadioGiveaway(){
-    return document.getElementById('radio_giveaway');
 }
 
 //Disables and enables the correct inputs
 function createEnableDisable() {
     let selected;
-        if (getRadioSell().checked) {
+        if (radioSell.checked) {
             enableDisableInputPrice(false);
             enableDisableCharityConf(false);
             selected = 'sell';
-            if(getCharityConf().checked){
+            if(charityConf.checked){
                 enableDisableCharitySelector(false);
             }
             else{
                 enableDisableCharitySelector(true);
             }
         }
-        else if (getRadioExchange().checked) {
+        else if (radioExchange.checked) {
             enableDisableInputExchange(false);
             selected = 'exchange';
         }
-        else if (getRadioGiveaway().checked) {
+        else if (radioGiveaway.checked) {
             enableDisableCheckConf(false);
             selected = 'giveaway';
         }
@@ -145,10 +123,11 @@ function createDisable(selected) {
     if (selected !== 'giveaway') {
         enableDisableCheckConf(true);
     }
-    if (getInputTitle().value !== '' && getDescription().value !== '') {
+
+    if (inputTitle.value !== '' && descriptionArea.value !== '' &&  createImage.files.length !== 0) {
         if (selected === 'sell') {
-            if (getCharityConf().checked === true) {
-                if ((getCharitySelector().value !== '' && getCharitySelector().value !== 'Select Charity') && getInputPrice().value !== '') {
+            if (charityConf.checked === true) {
+                if ((charitySelector.value !== '' && charitySelector.value !== 'Select Charity')) {
 
                     enableDisableButton(false);
                 }
@@ -156,7 +135,7 @@ function createDisable(selected) {
                     enableDisableButton(true);
                 }
             }
-            else if (getInputPrice().value !== '') {
+            else if (inputPrice.value !== '') {
                 enableDisableButton(false);
             }
             else{
@@ -164,7 +143,7 @@ function createDisable(selected) {
             }
         }
         else if(selected === 'exchange'){
-            if(getInputExchange().value !== ''){
+            if(inputExchange.value !== ''){
                 enableDisableButton(false);
             }
             else{
@@ -172,7 +151,7 @@ function createDisable(selected) {
             }
         }
         else if(selected === 'giveaway'){
-            if(getCheckConf().checked === true){
+            if(checkConf.checked === true){
                 enableDisableButton(false);
             }
             else{
