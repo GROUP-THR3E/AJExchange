@@ -270,11 +270,6 @@
     margin-bottom: 60px;
 }
 
-.home-logo-container {
-    margin-left: 40px;
-    padding: 15px;
-}
-
 .home-logos {
     height: 50px;
     width: 50px;
@@ -587,6 +582,15 @@
     font-size: 20px;
 }
 
+.home-logo-container {
+    padding: 15px 45px;
+}
+
+.home-logo-container > a, .home-logo-container > a > button {
+    width: 100%;
+    display: inline-block;
+}
+
 @media only screen and (min-width:0px) and (max-width: 768px) {
     .home-grid-container {
         display: flex;
@@ -609,9 +613,9 @@
     }
 
     .home-image-containers {
-        margin-top: 20px;
-        margin-left: 10px;
-        width: 98%;
+        width: 100%;
+        margin: 20px 0 0 0;
+        padding: 0 10px;
     }
 
     .home-images {
@@ -743,5 +747,21 @@
         padding-top: 2px;
     }
 
+    .search-description-background {
+        background-color: initial;
+        outline: initial;
+    }
 
+    .home-main-title {
+        font-size: 40px;
+        margin-left: 10px;
+    }
+
+    .home-image-titles {
+        font-size: 35px;
+    }
+
+    .home-logo-container {
+        padding: 15px;
+    }
 }
