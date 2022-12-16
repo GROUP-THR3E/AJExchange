@@ -40,7 +40,7 @@ return function(App $app) {
         $listing = $dataset->getListing($args['listingId']);
         $currentUser = Auth::getAuthManager()->getUser();
         if ($listing->getOrderId() !== null && ($listing->getUserId() !== $currentUser->getUserId()
-                || $currentUser->getRole() === 'admin')) {
+                || $currentUser->getRole() !== 'admin')) {
             $view = View::render('messageLink', [
                 'pageTitle' => 'Listing error',
                 'message' => 'This listing has been ordered',
