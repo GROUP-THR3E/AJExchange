@@ -98,7 +98,7 @@ $user = Auth::getAuthManager()->getUser();
             <?php endforeach; ?>
         </div>
     </div>
-    <div class="view-listing-extra-images listing-grid-design gap-2">
+    <div class="view-listing-extra-images listing-grid-design gap-0 gap-sm-2">
         <?php foreach ($listing->getImageUrls() as $image): ?>
         <img class="view-listing-extra-image" src="<?= $this->listingImage($image) ?>" alt="">
         <?php endforeach; ?>
