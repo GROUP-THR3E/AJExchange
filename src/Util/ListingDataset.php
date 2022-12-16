@@ -18,7 +18,7 @@ class ListingDataset extends DatasetBase
         $query = '
         SELECT listingId, listingName, description, price, desiredItem, type, dateListed, approvalStatus, orderId, 
                charityId, charityName, userId, email, password, fullName, role, officeId, officeName, address, 
-               GROUP_CONCAT(tag) as tags, GROUP_CONCAT(filename) as imageUrls
+               COALESCE(GROUP_CONCAT(tag), \'\') as tags, GROUP_CONCAT(filename) as imageUrls
         FROM (
             SELECT Listing.*, email, password, fullName, role, User.officeId, officeName, address, tag, filename, charityName FROM Listing
             INNER JOIN User ON Listing.userId = User.userId

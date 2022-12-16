@@ -18,7 +18,7 @@ class OrderDataset extends DatasetBase
     {
         // Retrieves specified listing
         $listingQuery =
-            'SELECT Listing.*, GROUP_CONCAT(tag) as tags FROM Listing
+            'SELECT Listing.*, COALESCE(GROUP_CONCAT(tag), \'\') as tags FROM Listing
              LEFT JOIN ListingTag ON Listing.listingId = ListingTag.listingId
              WHERE Listing.listingId = :listingId
              GROUP BY Listing.listingId';
