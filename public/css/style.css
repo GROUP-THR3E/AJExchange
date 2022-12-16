@@ -671,7 +671,6 @@ footer{
 .footer-bottom{
     outline: gray solid 1px;
     background: #F2F2EA;
-    width: 100vw;
     padding: 5px 0;
     text-align: center;
 }
