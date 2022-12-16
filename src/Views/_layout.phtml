@@ -25,14 +25,13 @@ use GroupThr3e\AJExchange\Util\Auth;
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-toggler-target" aria-controls="navbar-toggler-target" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <?php if(Auth::getAuthManager()->getUser() !== null): ?>
             <div class="collapse navbar-collapse mt-4 mb-2 my-lg-0" id="navbar-toggler-target">
                 <form action="/listings/search" method="get" class="d-flex my-lg-0 mb-3 mx-5 flex-grow-1" role="search">
                     <input name="query" class="form-control me-2 flex-grow-1" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-light btn-navbar" type="submit">Search</button>
                 </form>
-                <?php if(Auth::getAuthManager()->getUser() !== null): ?>
-                    <h6 class="navbar-brand text-light">Current user: <?= Auth::getAuthManager()->getUser()->getFullName() ?></h6>
-                <?php endif ?>
+                <h6 class="navbar-brand text-light">Current user: <?= Auth::getAuthManager()->getUser()->getFullName() ?></h6>
                 <div class="navbar-end-content d-flex">
                     <div class="flex-grow-1"></div>
                     <form action="/users/logout" method="post" class="mb-0">
@@ -40,6 +39,7 @@ use GroupThr3e\AJExchange\Util\Auth;
                     </form>
                 </div>
             </div>
+            <?php endif ?>
         </div>
     </nav>
     <div><?= $content ?></div>
