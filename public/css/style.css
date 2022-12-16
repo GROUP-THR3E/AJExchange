@@ -223,6 +223,8 @@
     position: relative;
     margin-top: 0;
     margin-bottom: 50px;
+    display: flex;
+    flex-direction: row;
 }
 
 .home-grid-container {
@@ -574,7 +576,7 @@
         width: 100%;
     }
 
-    .home-welcome-images {
+    .view-extra-home-images {
         background-color: #ffffff;
         outline: #f7f7f7 solid 2px;
         border-radius: 5px;
