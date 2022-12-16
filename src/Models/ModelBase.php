@@ -22,11 +22,11 @@ class ModelBase
             // primitive type an exception is thrown the dbRow is checked to assign a value directly.
             try {
                 $propertyReflector = new ReflectionClass($property->getType()->getName());
-                $dbRowCheck = $propertyReflector->getMethod('checkDbRow');
+                $dbRowCheck = $propertyReflector->getMethod('checkDbRow')->getClosure();
 
                 // Checks the properties class, and only creates a new class if the dbRow contains enough data
                 if ($propertyReflector->isSubclassOf(ModelBase::class) ) {
-                    $this->$propertyName = $dbRowCheck->invoke(null, $dbRow)
+                    $this->$propertyName = $dbRowCheck($propertyReflector, $dbRow)
                         ? $propertyReflector->newInstanceArgs([$dbRow])
                         : null;
                 }
@@ -39,9 +39,8 @@ class ModelBase
     }
 
     // Checks that all the properties that aren't an array or inherit ModelBase are set present in the dbRow
-    protected static function checkDbRow(array $dbRow): bool
+    protected static function checkDbRow(ReflectionClass $classReflector, array $dbRow): bool
     {
-        $classReflector = new ReflectionClass(static::class);
         $primaryKey = lcfirst($classReflector->getShortName()) . 'Id';
         foreach ($classReflector->getProperties() as $property) {
             if ($property->getType()->isBuiltin() && $property->getName() !== $primaryKey
