@@ -908,14 +908,18 @@ footer{
     }
 
     .view-listing-extra-images {
-        width: 20%;
+        width: 100%;
+        height: 73px;
         padding: 0;
         aspect-ratio: 1/1;
         object-fit: cover;
         display: flex;
         flex-direction: row;
         order: -1;
+    }
 
+    .view-listing-extra-image {
+        width: 20%;
     }
 
     .view-listing-description {
